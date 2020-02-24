@@ -18,8 +18,9 @@ Individual authentication.
 ~~~
 dotnet ef migrations add InitialDbCreation --project DAL.App.EF --startup-project WebApp
 ~~~
-4. Update the database:
+4. (Delete the old database and) update the database:
 ~~~
+dotnet ef database drop --project DAL.App.EF --startup-project WebApp
 dotnet ef database update --project DAL.App.EF --startup-project WebApp
 ~~~
 5. Create HTML controllers in WEB APP folder to check that the database is okay:
@@ -27,16 +28,21 @@ dotnet ef database update --project DAL.App.EF --startup-project WebApp
  - needs Microsoft.EntityFrameworkCore.Design;
  - needs Microsoft.EntityFrameworkCore.SqlServer;
 ~~~
-dotnet aspnet-codegenerator controller -name PersonsController -actions -m Person -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
-dotnet aspnet-codegenerator controller -name ContactsController -actions -m Contact -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
-dotnet aspnet-codegenerator controller -name ContactTypesController -actions -m ContactType -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name PersonsController          -actions -m Person          -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name ContactsController         -actions -m Contact         -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name ContactTypesController     -actions -m ContactType     -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 ~~~
 
 6. REST API controllers: 
 ~~~
-dotnet aspnet-codegenerator controller -name PersonsController -actions -m Person -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
-dotnet aspnet-codegenerator controller -name ContactsController -actions -m Contact -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
-dotnet aspnet-codegenerator controller -name ContactTypesController -actions -m ContactType -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name PersonsController          -actions -m Person          -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name ContactsController         -actions -m Contact         -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name ContactTypesController     -actions -m ContactType     -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+~~~
+
+7. Generate identity UI:
+~~~
+dotnet aspnet-codegenerator identity -dc DAL.App.EF.AppDbContext -f
 ~~~
 
 #

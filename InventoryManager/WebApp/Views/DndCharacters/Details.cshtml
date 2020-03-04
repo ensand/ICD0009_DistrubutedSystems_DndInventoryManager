@@ -1,0 +1,60 @@
+@model Domain.DndCharacter
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>DndCharacter</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Level)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Level)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.GoldPieces)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.GoldPieces)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PlatinumPieces)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PlatinumPieces)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SilverPieces)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SilverPieces)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CopperPieces)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CopperPieces)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

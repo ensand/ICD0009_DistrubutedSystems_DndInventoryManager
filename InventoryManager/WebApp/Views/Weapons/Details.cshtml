@@ -1,0 +1,96 @@
+@model Domain.Weapon
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Weapon</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AttackType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AttackType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WeaponType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WeaponType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WeaponSize)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WeaponSize)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ToHit)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ToHit)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Damage)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Damage)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Range)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Range)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ValueInGp)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ValueInGp)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Silvered)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Silvered)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Finesse)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Finesse)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TwoHanded)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TwoHanded)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

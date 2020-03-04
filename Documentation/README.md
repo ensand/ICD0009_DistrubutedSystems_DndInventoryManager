@@ -28,9 +28,15 @@ dotnet ef database update --project DAL.App.EF --startup-project WebApp
  - needs Microsoft.EntityFrameworkCore.Design;
  - needs Microsoft.EntityFrameworkCore.SqlServer;
 ~~~
-dotnet aspnet-codegenerator controller -name PersonsController          -actions -m Person          -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
-dotnet aspnet-codegenerator controller -name ContactsController         -actions -m Contact         -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
-dotnet aspnet-codegenerator controller -name ContactTypesController     -actions -m ContactType     -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name DndCharactersController            -actions -m DndCharacter            -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name WeaponsController                  -actions -m Weapon                  -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name ArmorController                    -actions -m Armor                   -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name MagicalItemsController             -actions -m MagicalItem             -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name OtherEquipmentsController          -actions -m OtherEquipment          -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name CharactersWeaponsController        -actions -m CharactersWeapons       -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name CharactersArmorController          -actions -m CharactersArmor         -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name CharactersMagicalItemsController   -actions -m CharactersMagicalItems  -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name CharactersEquipmentsController     -actions -m CharactersEquipment     -dc ApplicationDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 ~~~
 
 6. REST API controllers: 

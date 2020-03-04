@@ -8,5 +8,9 @@ namespace DAL.Base
     {
         [MaxLength(36)]
         public virtual string Id { get; set; } = Guid.NewGuid().ToString();
+        
+        [MinLength(1)]
+        [MaxLength(256)]
+        public string? Comment { get; set; }
     }
 }

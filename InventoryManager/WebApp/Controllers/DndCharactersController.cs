@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DAL;
+using DAL.App.EF;
 using Domain;
 
 namespace WebApp.Controllers
 {
     public class DndCharactersController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly AppDbContext _context;
 
-        public DndCharactersController(ApplicationDbContext context)
+        public DndCharactersController(AppDbContext context)
         {
             _context = context;
         }
@@ -22,11 +22,12 @@ namespace WebApp.Controllers
         // GET: DndCharacters
         public async Task<IActionResult> Index()
         {
-            return View(await _context.DndCharacters.ToListAsync());
+            var appDbContext = _context.DndCharacters.Include(d => d.AppUser);
+            return View(await appDbContext.ToListAsync());
         }
 
         // GET: DndCharacters/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
             {
@@ -34,6 +35,7 @@ namespace WebApp.Controllers
             }
 
             var dndCharacter = await _context.DndCharacters
+                .Include(d => d.AppUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (dndCharacter == null)
             {
@@ -46,6 +48,7 @@ namespace WebApp.Controllers
         // GET: DndCharacters/Create
         public IActionResult Create()
         {
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName");
             return View();
         }
 
@@ -54,19 +57,21 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Level,GoldPieces,PlatinumPieces,SilverPieces,CopperPieces,Id,Comment")] DndCharacter dndCharacter)
+        public async Task<IActionResult> Create([Bind("AppUserId,Name,Level,GoldPieces,PlatinumPieces,SilverPieces,CopperPieces,Id,Comment")] DndCharacter dndCharacter)
         {
             if (ModelState.IsValid)
             {
+                dndCharacter.Id = Guid.NewGuid();
                 _context.Add(dndCharacter);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", dndCharacter.AppUserId);
             return View(dndCharacter);
         }
 
         // GET: DndCharacters/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
@@ -78,6 +83,7 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", dndCharacter.AppUserId);
             return View(dndCharacter);
         }
 
@@ -86,7 +92,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,Level,GoldPieces,PlatinumPieces,SilverPieces,CopperPieces,Id,Comment")] DndCharacter dndCharacter)
+        public async Task<IActionResult> Edit(Guid id, [Bind("AppUserId,Name,Level,GoldPieces,PlatinumPieces,SilverPieces,CopperPieces,Id,Comment")] DndCharacter dndCharacter)
         {
             if (id != dndCharacter.Id)
             {
@@ -113,11 +119,12 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", dndCharacter.AppUserId);
             return View(dndCharacter);
         }
 
         // GET: DndCharacters/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
@@ -125,6 +132,7 @@ namespace WebApp.Controllers
             }
 
             var dndCharacter = await _context.DndCharacters
+                .Include(d => d.AppUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (dndCharacter == null)
             {
@@ -137,7 +145,7 @@ namespace WebApp.Controllers
         // POST: DndCharacters/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var dndCharacter = await _context.DndCharacters.FindAsync(id);
             _context.DndCharacters.Remove(dndCharacter);
@@ -145,7 +153,7 @@ namespace WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DndCharacterExists(string id)
+        private bool DndCharacterExists(Guid id)
         {
             return _context.DndCharacters.Any(e => e.Id == id);
         }

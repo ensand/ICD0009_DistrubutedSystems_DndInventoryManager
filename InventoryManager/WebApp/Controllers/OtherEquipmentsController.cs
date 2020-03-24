@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DAL;
+using DAL.App.EF;
 using Domain;
 
 namespace WebApp.Controllers
 {
     public class OtherEquipmentsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly AppDbContext _context;
 
-        public OtherEquipmentsController(ApplicationDbContext context)
+        public OtherEquipmentsController(AppDbContext context)
         {
             _context = context;
         }
@@ -22,11 +22,12 @@ namespace WebApp.Controllers
         // GET: OtherEquipments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.OtherEquipments.ToListAsync());
+            var appDbContext = _context.OtherEquipments.Include(o => o.DndCharacter);
+            return View(await appDbContext.ToListAsync());
         }
 
         // GET: OtherEquipments/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
             {
@@ -34,6 +35,7 @@ namespace WebApp.Controllers
             }
 
             var otherEquipment = await _context.OtherEquipments
+                .Include(o => o.DndCharacter)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (otherEquipment == null)
             {
@@ -46,6 +48,7 @@ namespace WebApp.Controllers
         // GET: OtherEquipments/Create
         public IActionResult Create()
         {
+            ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name");
             return View();
         }
 
@@ -54,19 +57,21 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,ValueInGp,Quantity,Id,Comment")] OtherEquipment otherEquipment)
+        public async Task<IActionResult> Create([Bind("DndCharacterId,BaseItem,Name,ValueInGp,Quantity,Id,Comment")] OtherEquipment otherEquipment)
         {
             if (ModelState.IsValid)
             {
+                otherEquipment.Id = Guid.NewGuid();
                 _context.Add(otherEquipment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", otherEquipment.DndCharacterId);
             return View(otherEquipment);
         }
 
         // GET: OtherEquipments/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
@@ -78,6 +83,7 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", otherEquipment.DndCharacterId);
             return View(otherEquipment);
         }
 
@@ -86,7 +92,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,ValueInGp,Quantity,Id,Comment")] OtherEquipment otherEquipment)
+        public async Task<IActionResult> Edit(Guid id, [Bind("DndCharacterId,BaseItem,Name,ValueInGp,Quantity,Id,Comment")] OtherEquipment otherEquipment)
         {
             if (id != otherEquipment.Id)
             {
@@ -113,11 +119,12 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", otherEquipment.DndCharacterId);
             return View(otherEquipment);
         }
 
         // GET: OtherEquipments/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
@@ -125,6 +132,7 @@ namespace WebApp.Controllers
             }
 
             var otherEquipment = await _context.OtherEquipments
+                .Include(o => o.DndCharacter)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (otherEquipment == null)
             {
@@ -137,7 +145,7 @@ namespace WebApp.Controllers
         // POST: OtherEquipments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var otherEquipment = await _context.OtherEquipments.FindAsync(id);
             _context.OtherEquipments.Remove(otherEquipment);
@@ -145,7 +153,7 @@ namespace WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool OtherEquipmentExists(string id)
+        private bool OtherEquipmentExists(Guid id)
         {
             return _context.OtherEquipments.Any(e => e.Id == id);
         }

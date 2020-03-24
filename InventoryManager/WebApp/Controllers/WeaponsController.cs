@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DAL;
+using DAL.App.EF;
 using Domain;
 
 namespace WebApp.Controllers
 {
     public class WeaponsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly AppDbContext _context;
 
-        public WeaponsController(ApplicationDbContext context)
+        public WeaponsController(AppDbContext context)
         {
             _context = context;
         }
@@ -22,11 +22,12 @@ namespace WebApp.Controllers
         // GET: Weapons
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Weapons.ToListAsync());
+            var appDbContext = _context.Weapons.Include(w => w.DndCharacter);
+            return View(await appDbContext.ToListAsync());
         }
 
         // GET: Weapons/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
             {
@@ -34,6 +35,7 @@ namespace WebApp.Controllers
             }
 
             var weapon = await _context.Weapons
+                .Include(w => w.DndCharacter)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (weapon == null)
             {
@@ -46,6 +48,7 @@ namespace WebApp.Controllers
         // GET: Weapons/Create
         public IActionResult Create()
         {
+            ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name");
             return View();
         }
 
@@ -54,19 +57,21 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,AttackType,WeaponType,WeaponSize,ToHit,Damage,Range,ValueInGp,Quantity,Silvered,Finesse,TwoHanded,Id,Comment")] Weapon weapon)
+        public async Task<IActionResult> Create([Bind("DndCharacterId,BaseItem,Name,AttackType,WeaponType,WeaponSize,ToHit,Damage,Range,ValueInGp,Quantity,Silvered,Finesse,TwoHanded,Id,Comment")] Weapon weapon)
         {
             if (ModelState.IsValid)
             {
+                weapon.Id = Guid.NewGuid();
                 _context.Add(weapon);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", weapon.DndCharacterId);
             return View(weapon);
         }
 
         // GET: Weapons/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
@@ -78,6 +83,7 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", weapon.DndCharacterId);
             return View(weapon);
         }
 
@@ -86,7 +92,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,AttackType,WeaponType,WeaponSize,ToHit,Damage,Range,ValueInGp,Quantity,Silvered,Finesse,TwoHanded,Id,Comment")] Weapon weapon)
+        public async Task<IActionResult> Edit(Guid id, [Bind("DndCharacterId,BaseItem,Name,AttackType,WeaponType,WeaponSize,ToHit,Damage,Range,ValueInGp,Quantity,Silvered,Finesse,TwoHanded,Id,Comment")] Weapon weapon)
         {
             if (id != weapon.Id)
             {
@@ -113,11 +119,12 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", weapon.DndCharacterId);
             return View(weapon);
         }
 
         // GET: Weapons/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
@@ -125,6 +132,7 @@ namespace WebApp.Controllers
             }
 
             var weapon = await _context.Weapons
+                .Include(w => w.DndCharacter)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (weapon == null)
             {
@@ -137,7 +145,7 @@ namespace WebApp.Controllers
         // POST: Weapons/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var weapon = await _context.Weapons.FindAsync(id);
             _context.Weapons.Remove(weapon);
@@ -145,7 +153,7 @@ namespace WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool WeaponExists(string id)
+        private bool WeaponExists(Guid id)
         {
             return _context.Weapons.Any(e => e.Id == id);
         }

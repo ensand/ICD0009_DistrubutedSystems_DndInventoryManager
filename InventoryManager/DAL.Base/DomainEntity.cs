@@ -6,11 +6,9 @@ namespace DAL.Base
 {
     public abstract class DomainEntity : IDomainEntity
     {
-        [MaxLength(36)]
-        public virtual string Id { get; set; } = Guid.NewGuid().ToString();
+        public virtual Guid Id { get; set; }
         
-        [MinLength(1)]
-        [MaxLength(256)]
-        public string? Comment { get; set; }
+        [MaxLength(1024)]
+        public virtual string? Comment { get; set; }
     }
 }

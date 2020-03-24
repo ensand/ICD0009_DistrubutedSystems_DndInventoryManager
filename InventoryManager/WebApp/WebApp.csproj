@@ -14,12 +14,111 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
-        <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\DAL.App.EF\DAL.App.EF.csproj" />
-      <ProjectReference Include="..\DAL\DAL.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Armor\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Armor\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Armor\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Armor\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Armor\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersArmor\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersArmor\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersArmor\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersArmor\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersArmor\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersEquipments\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersEquipments\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersEquipments\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersEquipments\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersEquipments\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersMagicalItems\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersMagicalItems\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersMagicalItems\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersMagicalItems\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersMagicalItems\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersWeapons\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersWeapons\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersWeapons\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersWeapons\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\CharactersWeapons\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Weapons\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Weapons\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Weapons\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Weapons\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Weapons\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OtherEquipments\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OtherEquipments\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OtherEquipments\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OtherEquipments\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OtherEquipments\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MagicalItems\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MagicalItems\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MagicalItems\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MagicalItems\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MagicalItems\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\DndCharacters\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\DndCharacters\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\DndCharacters\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\DndCharacters\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\DndCharacters\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Views\Armor\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\Armor\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\Armor\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\Armor\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\Armor\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\MagicalItems\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\MagicalItems\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\MagicalItems\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\MagicalItems\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\MagicalItems\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\DndCharacters\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\DndCharacters\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\DndCharacters\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\DndCharacters\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\DndCharacters\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\OtherEquipments\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\OtherEquipments\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\OtherEquipments\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\OtherEquipments\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\OtherEquipments\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\Weapons\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\Weapons\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\Weapons\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\Weapons\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\Weapons\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\Armor\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\Armor\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\Armor\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\Armor\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\Armor\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\DndCharacters\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\DndCharacters\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\DndCharacters\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\DndCharacters\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\DndCharacters\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\MagicalItems\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\MagicalItems\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\MagicalItems\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\MagicalItems\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\MagicalItems\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\OtherEquipments\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\OtherEquipments\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\OtherEquipments\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\OtherEquipments\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\OtherEquipments\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\Weapons\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\Weapons\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\Weapons\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\Weapons\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\Weapons\Index.cshtml" />
     </ItemGroup>
 
 </Project>

@@ -66,6 +66,7 @@
       <_ContentIncludedByDefault Remove="Views\DndCharacters\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Views\DndCharacters\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Views\DndCharacters\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Identity\Pages\_ViewStart.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

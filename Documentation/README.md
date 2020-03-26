@@ -43,7 +43,7 @@ dotnet aspnet-codegenerator controller -name ContactsController -actions -m Cont
 dotnet aspnet-codegenerator controller -name ContactTypesController -actions -m ContactType -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
 ~~~
 
-7. Generate identity UI:
+7. Generate identity UI (in web app):
 ~~~
 dotnet aspnet-codegenerator identity -dc DAL.App.EF.AppDbContext -f
 ~~~

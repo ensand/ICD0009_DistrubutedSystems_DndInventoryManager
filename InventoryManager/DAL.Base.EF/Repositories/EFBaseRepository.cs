@@ -8,17 +8,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Base.EF.Repositories
 {
-    public class BaseRepository<TEntity> : BaseRepository<TEntity, Guid> 
+    public class EFBaseRepository<TEntity, TDbContext> : BaseRepository<TEntity, Guid, TDbContext>, IBaseRepository<TEntity> 
         where TEntity : class, IDomainEntity<Guid>, new()
+        where TDbContext: DbContext
     {
-        public BaseRepository(DbContext dbContext) : base (dbContext)
+        public EFBaseRepository(DbContext dbContext) : base (dbContext)
         {
         }
     }
     
-    public class BaseRepository<TEntity, TKey> : IBaseRepository.IBaseRepository<TEntity, TKey>
+    public class BaseRepository<TEntity, TKey, TDbContext> : IBaseRepository<TEntity, TKey>
         where TEntity : class, IDomainEntity<TKey>, new() 
+        
         where TKey : struct, IComparable
+        where TDbContext : DbContext
     {
         protected DbContext RepoDbContext;
         protected DbSet<TEntity> RepoDbSet;
@@ -69,16 +72,6 @@ namespace DAL.Base.EF.Repositories
         public virtual TEntity Remove(params object[] id)
         {
             return Remove(Find(id));
-        }
-
-        public virtual int SaveChanges()
-        {
-            return RepoDbContext.SaveChanges();
-        }
-
-        public virtual async Task<int> SaveChangesAsync()
-        {
-            return await RepoDbContext.SaveChangesAsync();
         }
     }
 }

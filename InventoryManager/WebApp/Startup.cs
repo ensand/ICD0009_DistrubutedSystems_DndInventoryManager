@@ -35,12 +35,25 @@ namespace WebApp
             services.AddControllersWithViews();
             
             services.AddRazorPages();
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsAllowAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin();
+                        builder.AllowAnyHeader();
+                        builder.AllowAnyMethod();
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             UpdateDatabase(app, env, Configuration);
+
+            app.UseCors("CorsAllowAll");
             
             if (env.IsDevelopment())
             {

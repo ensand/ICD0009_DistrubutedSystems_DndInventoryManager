@@ -13,19 +13,31 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DndCharacter)
+                @Html.DisplayNameFor(model => model.AppUser)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.BaseItem)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.DndCharacter)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Type)
+                @Html.DisplayNameFor(model => model.ArmorType)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BaseAc)
+                @Html.DisplayNameFor(model => model.Ac)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StealthDisadvantage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StrengthRequirement)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Proficiency)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Weight)
@@ -37,9 +49,6 @@
                 @Html.DisplayNameFor(model => model.Quantity)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StealthDisadvantage)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Comment)
             </th>
             <th></th>
@@ -49,19 +58,31 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.DndCharacter.Name)
+                @Html.DisplayFor(modelItem => item.AppUser.FirstName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.BaseItem)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.DndCharacter.Name)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Type)
+                @Html.DisplayFor(modelItem => item.ArmorType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BaseAc)
+                @Html.DisplayFor(modelItem => item.Ac)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StealthDisadvantage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StrengthRequirement)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Proficiency)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Weight)
@@ -71,9 +92,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StealthDisadvantage)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Comment)

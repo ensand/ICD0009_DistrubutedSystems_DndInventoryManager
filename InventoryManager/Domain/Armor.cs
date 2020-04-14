@@ -9,10 +9,13 @@ namespace Domain
 {
     public class Armor : DomainEntity
     {
-        public Guid DndCharacterId { get; set; }
-        public DndCharacter DndCharacter { get; set; } = default!;
+        public Guid? AppUserId { get; set; }
+        public AppUser? AppUser { get; set; }
         
         public bool BaseItem { get; set; }
+
+        public Guid? DndCharacterId { get; set; }
+        public DndCharacter? DndCharacter { get; set; } = default!;
         
         [MinLength(1)]
         [MaxLength(128)]
@@ -20,12 +23,19 @@ namespace Domain
         
         [MinLength(1)]
         [MaxLength(128)]
-        public string Type { get; set; } = default!;
+        public string? ArmorType { get; set; } // light/medium/heavy
 
-        public int BaseAc { get; set; }
-        public int Weight { get; set; }
-        public int ValueInGp { get; set; }
-        public int Quantity { get; set; }
+        [MinLength(1)] 
+        [MaxLength(128)] 
+        public string Ac { get; set; } = default!; // base + modifiers
+        
         public bool StealthDisadvantage { get; set; }
+        public int? StrengthRequirement { get; set; }
+        
+        public bool? Proficiency { get; set; }
+
+        public int Weight { get; set; }
+        public double ValueInGp { get; set; }
+        public int Quantity { get; set; }
     }
 }

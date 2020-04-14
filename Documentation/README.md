@@ -38,9 +38,11 @@ dotnet aspnet-codegenerator controller -name OtherEquipmentsController   -action
 
 6. REST API controllers: 
 ~~~
-dotnet aspnet-codegenerator controller -name PersonsController -actions -m Person -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
-dotnet aspnet-codegenerator controller -name ContactsController -actions -m Contact -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
-dotnet aspnet-codegenerator controller -name ContactTypesController -actions -m ContactType -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name DndCharactersController    -actions -m DndCharacter    -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name WeaponsController          -actions -m Weapon          -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name ArmorController            -actions -m Armor           -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name MagicalItemsController     -actions -m MagicalItem     -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name OtherEquipmentsController  -actions -m OtherEquipment  -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
 ~~~
 
 7. Generate identity UI (in web app):

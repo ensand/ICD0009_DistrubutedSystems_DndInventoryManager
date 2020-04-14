@@ -22,7 +22,7 @@ namespace WebApp.Controllers
         // GET: Armor
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Armors.Include(a => a.DndCharacter);
+            var appDbContext = _context.Armors.Include(a => a.AppUser).Include(a => a.DndCharacter);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -35,6 +35,7 @@ namespace WebApp.Controllers
             }
 
             var armor = await _context.Armors
+                .Include(a => a.AppUser)
                 .Include(a => a.DndCharacter)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (armor == null)
@@ -48,16 +49,17 @@ namespace WebApp.Controllers
         // GET: Armor/Create
         public IActionResult Create()
         {
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName");
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name");
             return View();
         }
 
         // POST: Armor/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DndCharacterId,BaseItem,Name,Type,BaseAc,Weight,ValueInGp,Quantity,StealthDisadvantage,Id,Comment")] Armor armor)
+        public async Task<IActionResult> Create([Bind("AppUserId,BaseItem,DndCharacterId,Name,ArmorType,Ac,StealthDisadvantage,StrengthRequirement,Proficiency,Weight,ValueInGp,Quantity,Id,Comment")] Armor armor)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +68,7 @@ namespace WebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", armor.AppUserId);
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", armor.DndCharacterId);
             return View(armor);
         }
@@ -83,16 +86,17 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", armor.AppUserId);
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", armor.DndCharacterId);
             return View(armor);
         }
 
         // POST: Armor/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("DndCharacterId,BaseItem,Name,Type,BaseAc,Weight,ValueInGp,Quantity,StealthDisadvantage,Id,Comment")] Armor armor)
+        public async Task<IActionResult> Edit(Guid id, [Bind("AppUserId,BaseItem,DndCharacterId,Name,ArmorType,Ac,StealthDisadvantage,StrengthRequirement,Proficiency,Weight,ValueInGp,Quantity,Id,Comment")] Armor armor)
         {
             if (id != armor.Id)
             {
@@ -119,6 +123,7 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", armor.AppUserId);
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", armor.DndCharacterId);
             return View(armor);
         }
@@ -132,6 +137,7 @@ namespace WebApp.Controllers
             }
 
             var armor = await _context.Armors
+                .Include(a => a.AppUser)
                 .Include(a => a.DndCharacter)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (armor == null)

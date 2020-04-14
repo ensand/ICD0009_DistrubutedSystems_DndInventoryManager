@@ -22,10 +22,13 @@
                 @Html.DisplayNameFor(model => model.Level)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.PlatinumPieces)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.GoldPieces)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PlatinumPieces)
+                @Html.DisplayNameFor(model => model.ElectrumPieces)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.SilverPieces)
@@ -41,39 +44,40 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-    @if (item != null) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AppUser.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Level)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GoldPieces)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PlatinumPieces)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SilverPieces)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CopperPieces)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Comment)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Level)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlatinumPieces)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GoldPieces)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ElectrumPieces)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SilverPieces)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CopperPieces)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
 }
     </tbody>
 </table>

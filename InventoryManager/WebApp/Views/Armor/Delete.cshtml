@@ -12,10 +12,10 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DndCharacter)
+            @Html.DisplayNameFor(model => model.AppUser)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DndCharacter.Name)
+            @Html.DisplayFor(model => model.AppUser.FirstName)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.BaseItem)
@@ -24,22 +24,46 @@
             @Html.DisplayFor(model => model.BaseItem)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DndCharacter)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DndCharacter.Name)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
+            @Html.DisplayNameFor(model => model.ArmorType)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Type)
+            @Html.DisplayFor(model => model.ArmorType)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BaseAc)
+            @Html.DisplayNameFor(model => model.Ac)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BaseAc)
+            @Html.DisplayFor(model => model.Ac)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StealthDisadvantage)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StealthDisadvantage)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StrengthRequirement)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StrengthRequirement)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Proficiency)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Proficiency)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Weight)
@@ -58,12 +82,6 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Quantity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StealthDisadvantage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StealthDisadvantage)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Comment)

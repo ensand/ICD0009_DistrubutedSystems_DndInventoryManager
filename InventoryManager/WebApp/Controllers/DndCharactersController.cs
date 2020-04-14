@@ -53,11 +53,11 @@ namespace WebApp.Controllers
         }
 
         // POST: DndCharacters/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AppUserId,Name,Level,GoldPieces,PlatinumPieces,SilverPieces,CopperPieces,Id,Comment")] DndCharacter dndCharacter)
+        public async Task<IActionResult> Create([Bind("AppUserId,Name,Level,PlatinumPieces,GoldPieces,ElectrumPieces,SilverPieces,CopperPieces,Id,Comment")] DndCharacter dndCharacter)
         {
             if (ModelState.IsValid)
             {
@@ -88,11 +88,11 @@ namespace WebApp.Controllers
         }
 
         // POST: DndCharacters/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("AppUserId,Name,Level,GoldPieces,PlatinumPieces,SilverPieces,CopperPieces,Id,Comment")] DndCharacter dndCharacter)
+        public async Task<IActionResult> Edit(Guid id, [Bind("AppUserId,Name,Level,PlatinumPieces,GoldPieces,ElectrumPieces,SilverPieces,CopperPieces,Id,Comment")] DndCharacter dndCharacter)
         {
             if (id != dndCharacter.Id)
             {

@@ -163,8 +163,9 @@ namespace DAL.App.EF.Migrations
                     AppUserId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
                     Level = table.Column<int>(nullable: true),
-                    GoldPieces = table.Column<int>(nullable: false),
                     PlatinumPieces = table.Column<int>(nullable: false),
+                    GoldPieces = table.Column<int>(nullable: false),
+                    ElectrumPieces = table.Column<int>(nullable: false),
                     SilverPieces = table.Column<int>(nullable: false),
                     CopperPieces = table.Column<int>(nullable: false)
                 },
@@ -185,25 +186,34 @@ namespace DAL.App.EF.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Comment = table.Column<string>(maxLength: 1024, nullable: true),
-                    DndCharacterId = table.Column<Guid>(nullable: false),
+                    AppUserId = table.Column<Guid>(nullable: true),
                     BaseItem = table.Column<bool>(nullable: false),
+                    DndCharacterId = table.Column<Guid>(nullable: true),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
-                    Type = table.Column<string>(maxLength: 128, nullable: false),
-                    BaseAc = table.Column<int>(nullable: false),
+                    ArmorType = table.Column<string>(maxLength: 128, nullable: true),
+                    Ac = table.Column<string>(maxLength: 128, nullable: false),
+                    StealthDisadvantage = table.Column<bool>(nullable: false),
+                    StrengthRequirement = table.Column<int>(nullable: true),
+                    Proficiency = table.Column<bool>(nullable: true),
                     Weight = table.Column<int>(nullable: false),
-                    ValueInGp = table.Column<int>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false),
-                    StealthDisadvantage = table.Column<bool>(nullable: false)
+                    ValueInGp = table.Column<double>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Armors", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Armors_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Armors_DndCharacters_DndCharacterId",
                         column: x => x.DndCharacterId,
                         principalTable: "DndCharacters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -213,11 +223,11 @@ namespace DAL.App.EF.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Comment = table.Column<string>(maxLength: 1024, nullable: true),
                     DndCharacterId = table.Column<Guid>(nullable: false),
-                    BaseItem = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
                     Spell = table.Column<string>(maxLength: 128, nullable: false),
                     MaxCharges = table.Column<int>(nullable: false),
                     CurrentCharges = table.Column<int>(nullable: false),
+                    ValueInGp = table.Column<double>(nullable: false),
                     Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -240,7 +250,7 @@ namespace DAL.App.EF.Migrations
                     DndCharacterId = table.Column<Guid>(nullable: false),
                     BaseItem = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
-                    ValueInGp = table.Column<int>(nullable: false),
+                    ValueInGp = table.Column<double>(nullable: false),
                     Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -260,31 +270,41 @@ namespace DAL.App.EF.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Comment = table.Column<string>(maxLength: 1024, nullable: true),
-                    DndCharacterId = table.Column<Guid>(nullable: false),
+                    AppUserId = table.Column<Guid>(nullable: true),
                     BaseItem = table.Column<bool>(nullable: false),
+                    DndCharacterId = table.Column<Guid>(nullable: true),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
-                    AttackType = table.Column<string>(maxLength: 128, nullable: false),
+                    DamageDice = table.Column<string>(maxLength: 128, nullable: false),
+                    DamageType = table.Column<string>(maxLength: 128, nullable: false),
                     WeaponType = table.Column<string>(maxLength: 128, nullable: false),
-                    WeaponSize = table.Column<string>(maxLength: 128, nullable: false),
-                    ToHit = table.Column<string>(maxLength: 128, nullable: false),
-                    Damage = table.Column<string>(maxLength: 128, nullable: false),
-                    Range = table.Column<int>(nullable: false),
-                    ValueInGp = table.Column<int>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false),
+                    WeaponRange = table.Column<string>(maxLength: 128, nullable: false),
+                    Properties = table.Column<string>(maxLength: 512, nullable: false),
                     Silvered = table.Column<bool>(nullable: false),
-                    Finesse = table.Column<bool>(nullable: false),
-                    TwoHanded = table.Column<bool>(nullable: false)
+                    Proficiency = table.Column<bool>(nullable: true),
+                    ValueInGp = table.Column<double>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Weapons", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Weapons_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Weapons_DndCharacters_DndCharacterId",
                         column: x => x.DndCharacterId,
                         principalTable: "DndCharacters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Armors_AppUserId",
+                table: "Armors",
+                column: "AppUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Armors_DndCharacterId",
@@ -344,6 +364,11 @@ namespace DAL.App.EF.Migrations
                 name: "IX_OtherEquipments_DndCharacterId",
                 table: "OtherEquipments",
                 column: "DndCharacterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Weapons_AppUserId",
+                table: "Weapons",
+                column: "AppUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Weapons_DndCharacterId",

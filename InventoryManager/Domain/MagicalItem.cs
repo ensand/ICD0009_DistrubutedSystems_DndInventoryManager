@@ -12,8 +12,6 @@ namespace Domain
         public Guid DndCharacterId { get; set; }
         public DndCharacter DndCharacter { get; set; } = default!;
         
-        public bool BaseItem { get; set; }
-        
         [MinLength(1)]
         [MaxLength(128)]
         public string Name { get; set; } = default!;
@@ -24,6 +22,7 @@ namespace Domain
 
         public int MaxCharges { get; set; }
         public int CurrentCharges { get; set; }
+        public double ValueInGp { get; set; }
         public int Quantity { get; set; }
     }
 }

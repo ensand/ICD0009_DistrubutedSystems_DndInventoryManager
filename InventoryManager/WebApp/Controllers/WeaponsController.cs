@@ -22,7 +22,7 @@ namespace WebApp.Controllers
         // GET: Weapons
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Weapons.Include(w => w.DndCharacter);
+            var appDbContext = _context.Weapons.Include(w => w.AppUser).Include(w => w.DndCharacter);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -35,6 +35,7 @@ namespace WebApp.Controllers
             }
 
             var weapon = await _context.Weapons
+                .Include(w => w.AppUser)
                 .Include(w => w.DndCharacter)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (weapon == null)
@@ -48,16 +49,17 @@ namespace WebApp.Controllers
         // GET: Weapons/Create
         public IActionResult Create()
         {
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName");
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name");
             return View();
         }
 
         // POST: Weapons/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DndCharacterId,BaseItem,Name,AttackType,WeaponType,WeaponSize,ToHit,Damage,Range,ValueInGp,Quantity,Silvered,Finesse,TwoHanded,Id,Comment")] Weapon weapon)
+        public async Task<IActionResult> Create([Bind("AppUserId,BaseItem,DndCharacterId,Name,DamageDice,DamageType,WeaponType,WeaponRange,Properties,Silvered,Proficiency,ValueInGp,Quantity,Id,Comment")] Weapon weapon)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +68,7 @@ namespace WebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", weapon.AppUserId);
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", weapon.DndCharacterId);
             return View(weapon);
         }
@@ -83,16 +86,17 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", weapon.AppUserId);
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", weapon.DndCharacterId);
             return View(weapon);
         }
 
         // POST: Weapons/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("DndCharacterId,BaseItem,Name,AttackType,WeaponType,WeaponSize,ToHit,Damage,Range,ValueInGp,Quantity,Silvered,Finesse,TwoHanded,Id,Comment")] Weapon weapon)
+        public async Task<IActionResult> Edit(Guid id, [Bind("AppUserId,BaseItem,DndCharacterId,Name,DamageDice,DamageType,WeaponType,WeaponRange,Properties,Silvered,Proficiency,ValueInGp,Quantity,Id,Comment")] Weapon weapon)
         {
             if (id != weapon.Id)
             {
@@ -119,6 +123,7 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", weapon.AppUserId);
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", weapon.DndCharacterId);
             return View(weapon);
         }
@@ -132,6 +137,7 @@ namespace WebApp.Controllers
             }
 
             var weapon = await _context.Weapons
+                .Include(w => w.AppUser)
                 .Include(w => w.DndCharacter)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (weapon == null)

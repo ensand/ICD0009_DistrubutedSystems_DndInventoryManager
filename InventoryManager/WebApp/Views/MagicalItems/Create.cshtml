@@ -16,11 +16,6 @@
                 <label asp-for="DndCharacterId" class="control-label"></label>
                 <select asp-for="DndCharacterId" class ="form-control" asp-items="ViewBag.DndCharacterId"></select>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="BaseItem" /> @Html.DisplayNameFor(model => model.BaseItem)
-                </label>
-            </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -40,6 +35,11 @@
                 <label asp-for="CurrentCharges" class="control-label"></label>
                 <input asp-for="CurrentCharges" class="form-control" />
                 <span asp-validation-for="CurrentCharges" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ValueInGp" class="control-label"></label>
+                <input asp-for="ValueInGp" class="form-control" />
+                <span asp-validation-for="ValueInGp" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Quantity" class="control-label"></label>

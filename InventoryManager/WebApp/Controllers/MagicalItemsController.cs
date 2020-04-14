@@ -53,11 +53,11 @@ namespace WebApp.Controllers
         }
 
         // POST: MagicalItems/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DndCharacterId,BaseItem,Name,Spell,MaxCharges,CurrentCharges,Quantity,Id,Comment")] MagicalItem magicalItem)
+        public async Task<IActionResult> Create([Bind("DndCharacterId,Name,Spell,MaxCharges,CurrentCharges,ValueInGp,Quantity,Id,Comment")] MagicalItem magicalItem)
         {
             if (ModelState.IsValid)
             {
@@ -88,11 +88,11 @@ namespace WebApp.Controllers
         }
 
         // POST: MagicalItems/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("DndCharacterId,BaseItem,Name,Spell,MaxCharges,CurrentCharges,Quantity,Id,Comment")] MagicalItem magicalItem)
+        public async Task<IActionResult> Edit(Guid id, [Bind("DndCharacterId,Name,Spell,MaxCharges,CurrentCharges,ValueInGp,Quantity,Id,Comment")] MagicalItem magicalItem)
         {
             if (id != magicalItem.Id)
             {

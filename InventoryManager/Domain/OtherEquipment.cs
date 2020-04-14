@@ -17,7 +17,7 @@ namespace Domain
         [MaxLength(128)]
         public string Name { get; set; } = default!;
 
-        public int ValueInGp { get; set; }
+        public double ValueInGp { get; set; }
         public int Quantity { get; set; }
     }
 }

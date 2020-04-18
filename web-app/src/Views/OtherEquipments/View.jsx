@@ -1,12 +1,20 @@
 import React from 'react';
 
 import Modal from '../../Components/Modal/Modal.jsx';
-import {TextField} from '@material-ui/core';
+import {Button, TextField} from '@material-ui/core';
 
 function View() {
 
     const [items, setItems] = React.useState([]);
     const [modalOpen, toggleModal] = React.useState(false);
+    const [uploadType, setUploadType] = React.useState();
+    const [itemId, setItemId] = React.useState();
+
+    const [name, setName] = React.useState("");
+    const [weight, setWeight] = React.useState("");
+    const [valueInGp, setValueInGp] = React.useState("");
+    const [quantity, setQuantity] = React.useState("");
+    const [comment, setComment] = React.useState("");
 
     const fetchItems = async () => {
         const apiCall = await fetch("https://localhost:5001/api/OtherEquipments");
@@ -19,24 +27,53 @@ function View() {
         fetchItems();
     }
 
-    const createItem = async (e) => {
-        e.preventDefault();
+    const createItem = async () => {
         const newObj = {
-            name: e.target.elements.name.value,
-            weight: parseFloat(e.target.elements.weight.value),
-            valueInGp: parseFloat(e.target.elements.valueInGp.value),
-            quantity: parseInt(e.target.elements.quantity.value, 10),
-            comment: e.target.elements.comment.value === "" || e.target.elements.comment.value === undefined ? null : e.target.elements.comment.value
+            name,
+            weight: parseFloat(weight),
+            valueInGp: parseFloat(valueInGp),
+            quantity: quantity.value === undefined ? 1 : parseInt(quantity.value, 10),
+            comment: comment === "" ? null : comment
         };
+
+        if (uploadType === 'PUT' && itemId) {
+            newObj["id"] = itemId;
+        }
         
-        await fetch('https://localhost:5001/api/OtherEquipments', 
+        await fetch(`https://localhost:5001/api/OtherEquipments/${uploadType === 'PUT' && itemId ? itemId : ""}`, 
             {
-                method: 'POST', 
+                method: uploadType, 
                 headers: {
                     "Content-Type": "application/json"
                 }, body: JSON.stringify(newObj)
             });
         fetchItems();
+    }
+
+    const editItem = async (id) => {
+        const item = await fetch(`https://localhost:5001/api/OtherEquipments/${id}`, {method: 'GET', headers: {"Content-Type": "application/json"}})
+            .then(response => response.json())
+            .catch(error => console.log('error', error));
+        
+        toggleModal(true);
+        setUploadType('PUT');
+        setItemId(id);
+
+        setName(item.name);
+        setWeight(item.weight);
+        setValueInGp(item.valueInGp);
+        setQuantity(item.quantity);
+        setComment(item.comment ? item.comment : "");
+    }
+
+    const handleModalClose = () => {
+        setName("");
+        setWeight("");
+        setValueInGp("");
+        setQuantity("");
+        setComment("");
+
+        toggleModal(false);
     }
 
     React.useEffect(() => {
@@ -46,15 +83,15 @@ function View() {
     return (
         <div>
             <h1>Index</h1>
-            <p><button onClick={() => toggleModal(true)}>Create New</button></p>
+            <p><Button variant="contained" color="primary" onClick={() => {setUploadType('POST'); toggleModal(true);}}>Create New</Button></p>
             {modalOpen && 
-                <Modal onClose={() => toggleModal(false)} onSave={(e) => {toggleModal(false); createItem(e);}} title="Create new equipment">
+                <Modal onClose={() => handleModalClose()} onSave={(e) => {handleModalClose(); createItem();}} title="Create new equipment">
                     <div style={{display: "flex", flexDirection: "column"}}>
-                        <TextField name="name" label="Name"/>
-                        <TextField type="number" name="weight" step="0.01" label="Weight"/>
-                        <TextField type="float" name="valueInGp" step="0.01" label="Value in gp"/>
-                        <TextField type="number" name="quantity" label="Quantity"/>
-                        <TextField name="comment" label="Comment"/>
+                        <TextField name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
+                        <TextField type="number" name="weight" step="0.01" label="Weight" value={weight} onChange={(e) => setWeight(e.target.value)}/>
+                        <TextField type="float" name="valueInGp" step="0.01" label="Value in gp" value={valueInGp} onChange={(e) => setValueInGp(e.target.value)}/>
+                        <TextField type="number" name="quantity" label="Quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
+                        <TextField name="comment" label="Comment" value={comment} onChange={(e) => setComment(e.target.value)}/>
                     </div>
                 </Modal>}
             <table className="table">
@@ -98,8 +135,8 @@ function View() {
                                     {item.comment ? item.comment : "-"}
                                 </td>
                                 <td>
-                                    <button>Edit</button> |
-                                    <button onClick={() => deleteItem(item.id)}>Delete</button>
+                                    <Button variant="contained" size="small" onClick={() => editItem(item.id)}>Edit</Button>
+                                    <Button variant="contained" size="small" onClick={() => deleteItem(item.id)}>Delete</Button>
                                 </td>
                             </tr>
                         );

@@ -21,7 +21,7 @@ function View() {
     return (
         <div>
             <h1>Index</h1>
-            <p><a>Create New</a></p>
+            <p><button>Create New</button></p>
             <table className="table">
                 <thead>
                     <tr>
@@ -87,9 +87,9 @@ function View() {
                                     {item.comment ? item.comment : "-"}
                                 </td>
                                 <td>
-                                    <a>Edit</a> |
-                                    <a>Details</a> |
-                                    <a>Delete</a>
+                                    <button>Edit</button> |
+                                    <button>Details</button> |
+                                    <button>Delete</button>
                                 </td>
                             </tr>
                         );

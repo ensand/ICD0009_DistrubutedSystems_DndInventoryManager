@@ -22,7 +22,7 @@ function View() {
     return (
         <div>
             <h1>Index</h1>
-            <p><a>Create New</a></p>
+            <p><button>Create New</button></p>
             <table className="table">
                 <thead>
                     <tr>
@@ -88,7 +88,7 @@ function View() {
                                     {item.comment ? item.comment : "-"}
                                 </td>
                                 <td>
-                                    <a>Edit</a> |
+                                    <button>Edit</button> |
                                     <button onClick={() => deleteItem(item.id)}>Delete</button>
                                 </td>
                             </tr>

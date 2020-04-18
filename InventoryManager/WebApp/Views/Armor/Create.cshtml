@@ -50,10 +50,10 @@
                 <input asp-for="StrengthRequirement" class="form-control" />
                 <span asp-validation-for="StrengthRequirement" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Proficiency" class="control-label"></label>
-                <input asp-for="Proficiency" class="form-control" />
-                <span asp-validation-for="Proficiency" class="text-danger"></span>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Proficiency" /> @Html.DisplayNameFor(model => model.Proficiency)
+                </label>
             </div>
             <div class="form-group">
                 <label asp-for="Weight" class="control-label"></label>

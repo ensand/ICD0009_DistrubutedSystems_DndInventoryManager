@@ -9,19 +9,19 @@ namespace Domain
 {
     public class MagicalItem : DomainEntity
     {
-        public Guid DndCharacterId { get; set; }
-        public DndCharacter DndCharacter { get; set; } = default!;
+        public Guid? DndCharacterId { get; set; }
+        public DndCharacter? DndCharacter { get; set; }
         
         [MinLength(1)]
         [MaxLength(128)]
         public string Name { get; set; } = default!;
         
-        [MinLength(1)]
-        [MaxLength(128)]
-        public string Spell { get; set; } = default!;
+        [MaxLength(256)]
+        public string? Spell { get; set; } = default!;
 
         public int MaxCharges { get; set; }
         public int CurrentCharges { get; set; }
+        
         public double ValueInGp { get; set; }
         public int Quantity { get; set; }
     }

@@ -15,13 +15,12 @@ namespace Domain
         public bool BaseItem { get; set; }
 
         public Guid? DndCharacterId { get; set; }
-        public DndCharacter? DndCharacter { get; set; } = default!;
+        public DndCharacter? DndCharacter { get; set; }
         
         [MinLength(1)]
         [MaxLength(128)]
         public string Name { get; set; } = default!;
         
-        [MinLength(1)]
         [MaxLength(128)]
         public string? ArmorType { get; set; } // light/medium/heavy
 
@@ -32,9 +31,9 @@ namespace Domain
         public bool StealthDisadvantage { get; set; }
         public int? StrengthRequirement { get; set; }
         
-        public bool? Proficiency { get; set; }
+        public bool Proficiency { get; set; }
 
-        public int Weight { get; set; }
+        public double Weight { get; set; }
         public double ValueInGp { get; set; }
         public int Quantity { get; set; }
     }

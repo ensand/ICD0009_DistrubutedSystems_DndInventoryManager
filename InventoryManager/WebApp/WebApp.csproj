@@ -147,6 +147,35 @@
       <UpToDateCheckInput Remove="Views\Weapons\Details.cshtml" />
       <UpToDateCheckInput Remove="Views\Weapons\Edit.cshtml" />
       <UpToDateCheckInput Remove="Views\Weapons\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\Armor\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\Armor\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\Armor\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\Armor\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\Armor\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\DndCharacters\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\DndCharacters\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\DndCharacters\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\DndCharacters\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\DndCharacters\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\MagicalItems\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\MagicalItems\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\MagicalItems\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\MagicalItems\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\MagicalItems\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\OtherEquipments\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\OtherEquipments\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\OtherEquipments\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\OtherEquipments\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\OtherEquipments\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\Weapons\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\Weapons\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\Weapons\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\Weapons\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\Weapons\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Controllers" />
     </ItemGroup>
 
 </Project>

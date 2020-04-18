@@ -36,14 +36,14 @@ namespace Domain
         [MaxLength(128)] 
         public string WeaponRange { get; set; } = default!; //  melee/ranged
         
-        [MinLength(1)] 
         [MaxLength(512)] 
-        public string Properties { get; set; } = default!;
+        public string? Properties { get; set; }
 
         public bool Silvered { get; set; }
 
-        public bool? Proficiency { get; set; }
+        public bool Proficiency { get; set; }
 
+        public double Weight { get; set; }
         public double ValueInGp { get; set; }
         public int Quantity { get; set; }
     }

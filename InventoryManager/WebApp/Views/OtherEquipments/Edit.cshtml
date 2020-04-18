@@ -17,15 +17,15 @@
                 <select asp-for="DndCharacterId" class="form-control" asp-items="ViewBag.DndCharacterId"></select>
                 <span asp-validation-for="DndCharacterId" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="BaseItem" /> @Html.DisplayNameFor(model => model.BaseItem)
-                </label>
-            </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Weight" class="control-label"></label>
+                <input asp-for="Weight" class="form-control" />
+                <span asp-validation-for="Weight" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ValueInGp" class="control-label"></label>

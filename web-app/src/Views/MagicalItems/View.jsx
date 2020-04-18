@@ -10,13 +10,14 @@ function View() {
         setItems(data);
     }
 
+    const deleteItem = async (id) => {
+        await fetch(`https://localhost:5001/api/MagicalItems/${id}`, {method: 'DELETE'});
+        fetchItems();
+    }
+
     React.useEffect(() => {
         fetchItems();
     }, []);
-
-    React.useEffect(() => {
-        console.log(items);
-    }, [items]);
 
     return (
         <div>
@@ -82,8 +83,7 @@ function View() {
                                 </td>
                                 <td>
                                     <a>Edit</a> |
-                                    <a>Details</a> |
-                                    <a>Delete</a>
+                                    <button onClick={() => deleteItem(item.id)}>Delete</button>
                                 </td>
                             </tr>
                         );

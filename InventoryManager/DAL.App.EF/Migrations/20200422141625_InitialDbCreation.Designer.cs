@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200418130113_InitialDbCreation")]
+    [Migration("20200422141625_InitialDbCreation")]
     partial class InitialDbCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,30 +32,24 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<Guid?>("AppUserId")
+                    b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ArmorType")
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<bool>("BaseItem")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(1024)")
-                        .HasMaxLength(1024);
+                        .HasColumnType("nvarchar(2048)")
+                        .HasMaxLength(2048);
 
-                    b.Property<Guid?>("DndCharacterId")
+                    b.Property<Guid>("DndCharacterId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
-
-                    b.Property<bool>("Proficiency")
-                        .HasColumnType("bit");
+                        .HasColumnType("nvarchar(512)")
+                        .HasMaxLength(512);
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -66,11 +60,11 @@ namespace DAL.App.EF.Migrations
                     b.Property<int?>("StrengthRequirement")
                         .HasColumnType("int");
 
-                    b.Property<double>("ValueInGp")
-                        .HasColumnType("float");
+                    b.Property<float>("ValueInGp")
+                        .HasColumnType("real");
 
-                    b.Property<double>("Weight")
-                        .HasColumnType("float");
+                    b.Property<float>("Weight")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -91,8 +85,8 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(1024)")
-                        .HasMaxLength(1024);
+                        .HasColumnType("nvarchar(2048)")
+                        .HasMaxLength(2048);
 
                     b.Property<int>("CopperPieces")
                         .HasColumnType("int");
@@ -103,13 +97,10 @@ namespace DAL.App.EF.Migrations
                     b.Property<int>("GoldPieces")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Level")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(512)")
+                        .HasMaxLength(512);
 
                     b.Property<int>("PlatinumPieces")
                         .HasColumnType("int");
@@ -235,13 +226,13 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(1024)")
-                        .HasMaxLength(1024);
+                        .HasColumnType("nvarchar(2048)")
+                        .HasMaxLength(2048);
 
                     b.Property<int>("CurrentCharges")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("DndCharacterId")
+                    b.Property<Guid>("DndCharacterId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("MaxCharges")
@@ -249,8 +240,8 @@ namespace DAL.App.EF.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(512)")
+                        .HasMaxLength(512);
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -259,8 +250,11 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<double>("ValueInGp")
-                        .HasColumnType("float");
+                    b.Property<float>("ValueInGp")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Weight")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -276,25 +270,25 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(1024)")
-                        .HasMaxLength(1024);
+                        .HasColumnType("nvarchar(2048)")
+                        .HasMaxLength(2048);
 
-                    b.Property<Guid?>("DndCharacterId")
+                    b.Property<Guid>("DndCharacterId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(512)")
+                        .HasMaxLength(512);
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<double>("ValueInGp")
-                        .HasColumnType("float");
+                    b.Property<float>("ValueInGp")
+                        .HasColumnType("real");
 
-                    b.Property<double>("Weight")
-                        .HasColumnType("float");
+                    b.Property<float>("Weight")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -309,15 +303,12 @@ namespace DAL.App.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AppUserId")
+                    b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("BaseItem")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(1024)")
-                        .HasMaxLength(1024);
+                        .HasColumnType("nvarchar(2048)")
+                        .HasMaxLength(2048);
 
                     b.Property<string>("DamageDice")
                         .IsRequired()
@@ -329,20 +320,17 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<Guid?>("DndCharacterId")
+                    b.Property<Guid>("DndCharacterId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
-
-                    b.Property<bool>("Proficiency")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Properties")
                         .HasColumnType("nvarchar(512)")
                         .HasMaxLength(512);
+
+                    b.Property<string>("Properties")
+                        .HasColumnType("nvarchar(1024)")
+                        .HasMaxLength(1024);
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -350,8 +338,8 @@ namespace DAL.App.EF.Migrations
                     b.Property<bool>("Silvered")
                         .HasColumnType("bit");
 
-                    b.Property<double>("ValueInGp")
-                        .HasColumnType("float");
+                    b.Property<float>("ValueInGp")
+                        .HasColumnType("real");
 
                     b.Property<string>("WeaponRange")
                         .IsRequired()
@@ -363,8 +351,8 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<double>("Weight")
-                        .HasColumnType("float");
+                    b.Property<float>("Weight")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -424,12 +412,10 @@ namespace DAL.App.EF.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -465,12 +451,10 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -483,20 +467,24 @@ namespace DAL.App.EF.Migrations
             modelBuilder.Entity("Domain.Armor", b =>
                 {
                     b.HasOne("Domain.Identity.AppUser", "AppUser")
-                        .WithMany("BaseArmors")
-                        .HasForeignKey("AppUserId");
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain.DndCharacter", "DndCharacter")
                         .WithMany("Armor")
-                        .HasForeignKey("DndCharacterId");
+                        .HasForeignKey("DndCharacterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.DndCharacter", b =>
                 {
                     b.HasOne("Domain.Identity.AppUser", "AppUser")
-                        .WithMany("Characters")
+                        .WithMany()
                         .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -504,25 +492,33 @@ namespace DAL.App.EF.Migrations
                 {
                     b.HasOne("Domain.DndCharacter", "DndCharacter")
                         .WithMany("MagicalItems")
-                        .HasForeignKey("DndCharacterId");
+                        .HasForeignKey("DndCharacterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.OtherEquipment", b =>
                 {
                     b.HasOne("Domain.DndCharacter", "DndCharacter")
                         .WithMany("OtherEquipment")
-                        .HasForeignKey("DndCharacterId");
+                        .HasForeignKey("DndCharacterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Weapon", b =>
                 {
                     b.HasOne("Domain.Identity.AppUser", "AppUser")
-                        .WithMany("BaseWeapons")
-                        .HasForeignKey("AppUserId");
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain.DndCharacter", "DndCharacter")
                         .WithMany("Weapons")
-                        .HasForeignKey("DndCharacterId");
+                        .HasForeignKey("DndCharacterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -530,7 +526,7 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.Identity.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -539,7 +535,7 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -548,7 +544,7 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -557,13 +553,13 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.Identity.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -572,7 +568,7 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

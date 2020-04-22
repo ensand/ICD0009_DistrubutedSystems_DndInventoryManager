@@ -16,9 +16,6 @@
                 @Html.DisplayNameFor(model => model.DndCharacter)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Spell)
             </th>
             <th>
@@ -28,13 +25,19 @@
                 @Html.DisplayNameFor(model => model.CurrentCharges)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weight)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.ValueInGp)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comment)
             </th>
             <th></th>
         </tr>
@@ -46,9 +49,6 @@
                 @Html.DisplayFor(modelItem => item.DndCharacter.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Spell)
             </td>
             <td>
@@ -58,13 +58,19 @@
                 @Html.DisplayFor(modelItem => item.CurrentCharges)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.ValueInGp)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comment)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

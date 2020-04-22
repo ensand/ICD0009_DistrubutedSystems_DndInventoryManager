@@ -11,11 +11,6 @@ namespace Domain
         public Guid AppUserId { get; set; }
         public AppUser? AppUser { get; set; }
         
-        [MinLength(1)]
-        [MaxLength(128)]
-        public string Name { get; set; } = default!;
-        public int? Level { get; set; }
-
         public int PlatinumPieces { get; set; }
         public int GoldPieces { get; set; }
         public int ElectrumPieces { get; set; }

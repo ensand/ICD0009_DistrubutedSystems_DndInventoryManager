@@ -59,7 +59,7 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AppUserId,BaseItem,DndCharacterId,Name,ArmorType,Ac,StealthDisadvantage,StrengthRequirement,Proficiency,Weight,ValueInGp,Quantity,Id,Comment")] Armor armor)
+        public async Task<IActionResult> Create([Bind("AppUserId,DndCharacterId,ArmorType,Ac,StealthDisadvantage,StrengthRequirement,Id,Comment,Name,Weight,ValueInGp,Quantity")] Armor armor)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("AppUserId,BaseItem,DndCharacterId,Name,ArmorType,Ac,StealthDisadvantage,StrengthRequirement,Proficiency,Weight,ValueInGp,Quantity,Id,Comment")] Armor armor)
+        public async Task<IActionResult> Edit(Guid id, [Bind("AppUserId,DndCharacterId,ArmorType,Ac,StealthDisadvantage,StrengthRequirement,Id,Comment,Name,Weight,ValueInGp,Quantity")] Armor armor)
         {
             if (id != armor.Id)
             {

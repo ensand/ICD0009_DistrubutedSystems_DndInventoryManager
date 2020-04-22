@@ -5,7 +5,12 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Identity
 {
-    public class AppUser : IdentityUser<Guid>
+    public class AppUser : AppUser<Guid>
+    {
+    }
+
+    public class AppUser<TKey> : IdentityUser<TKey> 
+        where TKey : IEquatable<TKey>
     {
         [MinLength(1)] 
         [MaxLength(64)] 
@@ -14,9 +19,5 @@ namespace Domain.Identity
         [MinLength(1)]
         [MaxLength(64)]
         public string LastName { get; set; } = default!;
-
-        public ICollection<DndCharacter>? Characters { get; set; }
-        public ICollection<Armor>? BaseArmors { get; set; }
-        public ICollection<Weapon>? BaseWeapons { get; set; }
     }
 }

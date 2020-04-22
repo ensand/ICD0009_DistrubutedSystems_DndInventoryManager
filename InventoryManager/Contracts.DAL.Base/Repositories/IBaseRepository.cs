@@ -11,7 +11,7 @@ namespace Contracts.DAL.Base.Repositories
 
     public interface IBaseRepository<TEntity, TKey>
         where TEntity : class, IDomainEntity<TKey>, new()
-        where TKey : struct, IComparable
+        where TKey : struct, IEquatable<TKey>
     {
         IEnumerable<TEntity> All();
         Task<IEnumerable<TEntity>> AllAsync();

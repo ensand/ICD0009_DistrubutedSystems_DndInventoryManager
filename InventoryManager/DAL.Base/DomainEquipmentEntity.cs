@@ -1,15 +1,14 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using Contracts.DAL.Base;
 
 namespace DAL.Base
 {
-    public abstract class DomainEntity : DomainEntity<Guid>
+    public abstract class DomainEquipmentEntity : DomainEquipmentEntity<Guid>
     {
     }
-
     
-    public abstract class DomainEntity<TKey> : IDomainEntity<TKey>
+    public abstract class DomainEquipmentEntity<TKey> : IDomainEquipmentEntity<TKey>
         where TKey : struct, IEquatable<TKey>
     {
         public virtual TKey Id { get; set; }
@@ -18,7 +17,13 @@ namespace DAL.Base
         public virtual string? Comment { get; set; }
 
         [MinLength(1)]
-        [MaxLength(512)] 
+        [MaxLength(512)]
         public virtual string Name { get; set; } = default!;
+        
+        public virtual float Weight { get; set; }
+        
+        public virtual float ValueInGp { get; set; }
+        
+        public virtual int Quantity { get; set; }
     }
 }

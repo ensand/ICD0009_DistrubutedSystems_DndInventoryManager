@@ -59,7 +59,7 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AppUserId,BaseItem,DndCharacterId,Name,DamageDice,DamageType,WeaponType,WeaponRange,Properties,Silvered,Proficiency,Weight,ValueInGp,Quantity,Id,Comment")] Weapon weapon)
+        public async Task<IActionResult> Create([Bind("AppUserId,DndCharacterId,DamageDice,DamageType,WeaponType,WeaponRange,Properties,Silvered,Id,Comment,Name,Weight,ValueInGp,Quantity")] Weapon weapon)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("AppUserId,BaseItem,DndCharacterId,Name,DamageDice,DamageType,WeaponType,WeaponRange,Properties,Silvered,Proficiency,Weight,ValueInGp,Quantity,Id,Comment")] Weapon weapon)
+        public async Task<IActionResult> Edit(Guid id, [Bind("AppUserId,DndCharacterId,DamageDice,DamageType,WeaponType,WeaponRange,Properties,Silvered,Id,Comment,Name,Weight,ValueInGp,Quantity")] Weapon weapon)
         {
             if (id != weapon.Id)
             {

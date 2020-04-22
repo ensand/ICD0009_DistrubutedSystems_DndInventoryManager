@@ -57,7 +57,7 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DndCharacterId,Name,Spell,MaxCharges,CurrentCharges,ValueInGp,Quantity,Id,Comment")] MagicalItem magicalItem)
+        public async Task<IActionResult> Create([Bind("DndCharacterId,Spell,MaxCharges,CurrentCharges,Id,Comment,Name,Weight,ValueInGp,Quantity")] MagicalItem magicalItem)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("DndCharacterId,Name,Spell,MaxCharges,CurrentCharges,ValueInGp,Quantity,Id,Comment")] MagicalItem magicalItem)
+        public async Task<IActionResult> Edit(Guid id, [Bind("DndCharacterId,Spell,MaxCharges,CurrentCharges,Id,Comment,Name,Weight,ValueInGp,Quantity")] MagicalItem magicalItem)
         {
             if (id != magicalItem.Id)
             {

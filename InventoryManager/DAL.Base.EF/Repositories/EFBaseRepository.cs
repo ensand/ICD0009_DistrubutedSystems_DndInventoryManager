@@ -20,7 +20,7 @@ namespace DAL.Base.EF.Repositories
     public class BaseRepository<TEntity, TKey, TDbContext> : IBaseRepository<TEntity, TKey>
         where TEntity : class, IDomainEntity<TKey>, new() 
         
-        where TKey : struct, IComparable
+        where TKey : struct, IEquatable<TKey>
         where TDbContext : DbContext
     {
         protected DbContext RepoDbContext;

@@ -6,10 +6,13 @@ namespace Contracts.DAL.Base
     {
     }
     
-    // No metadata needed initially
-    // public interface IDomainEntity<TKey> : IDomainBaseEntity<TKey>, IDomainEntityMetadata
-    public interface IDomainEntity<TKey> : IDomainBaseEntity<TKey>
-        where TKey : struct, IComparable
+    public interface IDomainEntity<TKey>
+        where TKey : struct, IEquatable<TKey>
     {
+        public TKey Id { get; set; }
+
+        public string? Comment { get; set; }
+
+        public string Name { get; set; }
     }
 }

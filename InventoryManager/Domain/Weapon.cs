@@ -1,25 +1,18 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using DAL.Base;
 using Domain.Identity;
 
 namespace Domain
 {
-    public class Weapon : DomainEntity
+    public class Weapon : DomainEquipmentEntity
     {
-        public Guid? AppUserId { get; set; }
+        public Guid AppUserId { get; set; }
         public AppUser? AppUser { get; set; }
         
-        public bool BaseItem { get; set; }
-
-        public Guid? DndCharacterId { get; set; }
+        public Guid DndCharacterId { get; set; }
         public DndCharacter? DndCharacter { get; set; } = default!;
         
-        [MinLength(1)]
-        [MaxLength(128)]
-        public string Name { get; set; } = default!;
-
         [MinLength(1)]
         [MaxLength(128)]
         public string DamageDice { get; set; } = default!;
@@ -36,15 +29,9 @@ namespace Domain
         [MaxLength(128)] 
         public string WeaponRange { get; set; } = default!; //  melee/ranged
         
-        [MaxLength(512)] 
+        [MaxLength(1024)] 
         public string? Properties { get; set; }
 
         public bool Silvered { get; set; }
-
-        public bool Proficiency { get; set; }
-
-        public double Weight { get; set; }
-        public double ValueInGp { get; set; }
-        public int Quantity { get; set; }
     }
 }

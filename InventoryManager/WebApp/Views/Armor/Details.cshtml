@@ -17,22 +17,10 @@
             @Html.DisplayFor(model => model.AppUser.FirstName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BaseItem)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BaseItem)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DndCharacter)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DndCharacter.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ArmorType)
@@ -59,10 +47,16 @@
             @Html.DisplayFor(model => model.StrengthRequirement)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Proficiency)
+            @Html.DisplayNameFor(model => model.Comment)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Proficiency)
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Weight)
@@ -81,12 +75,6 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Quantity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Comment)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Comment)
         </dd>
     </dl>
 </div>

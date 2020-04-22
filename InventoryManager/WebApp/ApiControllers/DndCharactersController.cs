@@ -7,11 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
 using Domain;
+using Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class DndCharactersController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -25,14 +29,14 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DndCharacter>>> GetDndCharacters()
         {
-            return await _context.DndCharacters.ToListAsync();
+            return await _context.DndCharacters.Where(o => o.AppUserId == User.UserGuidId()).ToListAsync();
         }
 
         // GET: api/DndCharacters/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DndCharacter>> GetDndCharacter(Guid id)
         {
-            var dndCharacter = await _context.DndCharacters.FindAsync(id);
+            var dndCharacter = await _context.DndCharacters.FirstOrDefaultAsync(o => o.Id == id && o.AppUserId == User.UserGuidId());
 
             if (dndCharacter == null)
             {

@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
 using Domain;
+using Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "user")]
     public class DndCharactersController : Controller
     {
         private readonly AppDbContext _context;
@@ -22,7 +25,10 @@ namespace WebApp.Controllers
         // GET: DndCharacters
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.DndCharacters.Include(d => d.AppUser);
+            var appDbContext = _context.DndCharacters
+                .Include(d => d.AppUser)
+                .Where(o => o.AppUserId == User.UserGuidId());
+            
             return View(await appDbContext.ToListAsync());
         }
 
@@ -36,7 +42,8 @@ namespace WebApp.Controllers
 
             var dndCharacter = await _context.DndCharacters
                 .Include(d => d.AppUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id && m.AppUserId == User.UserGuidId());
+            
             if (dndCharacter == null)
             {
                 return NotFound();
@@ -48,7 +55,6 @@ namespace WebApp.Controllers
         // GET: DndCharacters/Create
         public IActionResult Create()
         {
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName");
             return View();
         }
 
@@ -59,14 +65,15 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("AppUserId,PlatinumPieces,GoldPieces,ElectrumPieces,SilverPieces,CopperPieces,Id,Comment,Name")] DndCharacter dndCharacter)
         {
+            dndCharacter.AppUserId = User.UserGuidId();
+            
             if (ModelState.IsValid)
             {
-                dndCharacter.Id = Guid.NewGuid();
                 _context.Add(dndCharacter);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", dndCharacter.AppUserId);
+            
             return View(dndCharacter);
         }
 
@@ -78,12 +85,13 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var dndCharacter = await _context.DndCharacters.FindAsync(id);
+            var dndCharacter = await _context.DndCharacters.FirstOrDefaultAsync(o => o.Id == id && o.AppUserId == User.UserGuidId());
+            
             if (dndCharacter == null)
             {
                 return NotFound();
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", dndCharacter.AppUserId);
+            
             return View(dndCharacter);
         }
 
@@ -94,6 +102,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("AppUserId,PlatinumPieces,GoldPieces,ElectrumPieces,SilverPieces,CopperPieces,Id,Comment,Name")] DndCharacter dndCharacter)
         {
+            dndCharacter.Id = User.UserGuidId();
+            
             if (id != dndCharacter.Id)
             {
                 return NotFound();
@@ -119,7 +129,7 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", dndCharacter.AppUserId);
+            
             return View(dndCharacter);
         }
 
@@ -132,8 +142,8 @@ namespace WebApp.Controllers
             }
 
             var dndCharacter = await _context.DndCharacters
-                .Include(d => d.AppUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id && m.AppUserId == User.UserGuidId());
+            
             if (dndCharacter == null)
             {
                 return NotFound();
@@ -147,7 +157,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var dndCharacter = await _context.DndCharacters.FindAsync(id);
+            var dndCharacter = await _context.DndCharacters.FirstOrDefaultAsync(o => o.Id == id && o.AppUserId == User.UserGuidId());
+            
             _context.DndCharacters.Remove(dndCharacter);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

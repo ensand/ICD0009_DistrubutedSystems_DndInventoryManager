@@ -36,7 +36,8 @@ namespace WebApp
             
             services.AddIdentity<AppUser, AppRole>()
                 .AddDefaultUI()
-                .AddEntityFrameworkStores<AppDbContext>();
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
             
             services.AddControllersWithViews();
             

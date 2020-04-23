@@ -1,11 +1,13 @@
 import React from 'react';
 
 import {Link} from 'react-router-dom';
+import {useStoreState, useStoreActions} from 'easy-peasy';
 
 
 function AccountLinks(props) {
 
-    const userIsLoggedIn = props.userIsLoggedIn;
+    const userIsLoggedIn = useStoreState(state => state.appState.userLoggedIn);
+    const logout = useStoreActions(state => state.appState.logout);
 
     return (
         userIsLoggedIn ? 
@@ -14,7 +16,7 @@ function AccountLinks(props) {
                 <Link className="nav-link text-dark" to="/AccountDetails">Hello there, [user firstName goes here]</Link>
             </li>
             <li className="nav-item">
-                <Link className="nav-link text-dark" to="/">Logout</Link>
+                <Link className="nav-link text-dark" to="/" onClick={() => logout()}>Logout</Link>
             </li>
         </ul>
 

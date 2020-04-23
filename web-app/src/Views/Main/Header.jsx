@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 import AccountLinks from './AccountLinks.jsx';
 
 
-function Header(props) {
+function Header() {
     return (
         <header>
             <nav className="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -32,7 +32,7 @@ function Header(props) {
                                 <Link className="nav-link text-dark" to="/OtherEquipment">Other equipment</Link>
                             </li>
                         </ul>
-                        <AccountLinks userIsLoggedIn={props.userIsLoggedIn}/>
+                        <AccountLinks />
                     </div>
                 </div>
             </nav>

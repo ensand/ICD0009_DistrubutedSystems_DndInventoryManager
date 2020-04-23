@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 
 import {Switch, Route} from 'react-router-dom';
+import {useStoreState} from 'easy-peasy';
 
 import Header from './Views/Main/Header.jsx';
 import Main from './Views/Main/Main.jsx';
@@ -21,11 +22,11 @@ import OtherEquipmentView from './Views/OtherEquipments/View.jsx';
 
 function App() {
 
-    const userIsLoggedIn = false;
+    const userIsLoggedIn = useStoreState(state => state.appState.userLoggedIn);
 
     return (
         <div className="main">
-            <Header userIsLoggedIn={userIsLoggedIn}/>
+            <Header/>
             <div className="container">
                 <main role="main" className="pb-3">
                     <Switch>
@@ -37,6 +38,9 @@ function App() {
                         </Route>
                         <Route path="/Privacy">
                             <Privacy />
+                        </Route>
+                        <Route path="/ForgotPassword">
+                            <div>Tough shit. Make a new account.</div>
                         </Route>
                         {!userIsLoggedIn && <Route path="/Register">
                             <Register />

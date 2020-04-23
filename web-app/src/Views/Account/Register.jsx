@@ -34,11 +34,15 @@ function Register() {
             }).then(response => response.json())
             .catch(error => console.log('error', error));
         
-        if (res.status === "Registration successful") {
+        if (res !== undefined && res.status === "Registration successful") {
             setError(false);
             history.push("/");
         } else {
-            setError(res.status);
+            if (res === undefined) {
+                setError("Something went wrong...");
+            } else {
+                setError(res.status);
+            }
         }
     }
 
@@ -82,7 +86,7 @@ function Register() {
                     <h4>Nope.</h4>
                     <hr />
                     <div>Your registration attempt has failed.</div>
-                    <div>{error}: <TranslateServerResponse res={error}/></div>
+                    <div>{error}</div>
                 </div>}
             </div>
         </div>

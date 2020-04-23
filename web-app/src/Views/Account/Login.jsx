@@ -34,13 +34,17 @@ function Login() {
                 body: JSON.stringify({email, password}),
             }).then(response => response.json())
             .catch(error => console.log('error', error));
-        
-        if (res.status === "Login successful") {
+
+        if (res !== undefined && res.status === "Login successful") {
             setError(false);
             loginAction({token: res.token, rememberMe, email, password});
             history.push("/");
         } else {
-            setError(res.status);
+            if (res === undefined) {
+                setError("Something went wrong...");
+            } else {
+                setError(res.status);
+            }
         }
     }
 
@@ -88,7 +92,7 @@ function Login() {
                     <h4>Nope.</h4>
                     <hr />
                     <div>Your log-in attempt has failed.</div>
-                    <div>{error}: <TranslateServerResponse res={error}/></div>
+                    <div>{error}</div>
                 </div>}
             </div>
         </div>

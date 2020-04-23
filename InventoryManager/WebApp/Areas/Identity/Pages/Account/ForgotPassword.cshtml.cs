@@ -26,14 +26,14 @@ namespace WebApp.Areas.Identity.Pages.Account
             _emailSender = emailSender;
         }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
+        [BindProperty] 
+        public InputModel Input { get; set; } = default!;
 
         public class InputModel
         {
             [Required]
             [EmailAddress]
-            public string Email { get; set; }
+            public string Email { get; set; } = default!;
         }
 
         public async Task<IActionResult> OnPostAsync()

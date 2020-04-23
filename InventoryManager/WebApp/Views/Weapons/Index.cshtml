@@ -13,9 +13,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.AppUser)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.DndCharacter)
             </th>
             <th>
@@ -55,14 +52,14 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AppUser.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DndCharacter.Name)
-            </td>
+            @if (item.DndCharacter != null)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.DndCharacter.Name)
+                </td>
+            }
             <td>
                 @Html.DisplayFor(modelItem => item.DamageDice)
             </td>
@@ -101,7 +98,7 @@
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
-        </tr>
-}
+        </tr>   
+    }
     </tbody>
 </table>

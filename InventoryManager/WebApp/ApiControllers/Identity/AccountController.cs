@@ -57,7 +57,25 @@ namespace WebApp.ApiControllers.Identity
         [HttpPost]
         public async Task<ActionResult<string>> Register([FromBody] RegisterDTO model)
         {
-            throw new NotImplementedException();
+            var appUser = await _userManager.FindByEmailAsync(model.Email);
+            if (appUser != null)
+            {
+                _logger.LogInformation("Web-Api register. User already exists: " + model.Email);
+                return StatusCode(403);
+            }
+            
+            var newUser = new AppUser {Email = model.Email, UserName = model.Email, FirstName = model.FirstName, LastName = model.LastName};
+            var result = _userManager.CreateAsync(newUser, model.Password).Result;
+            
+            if (!result.Succeeded)
+            {
+                throw new ApplicationException("User creation failed: " + model.Email);
+            }
+            
+            var roleResult = _userManager.AddToRoleAsync(newUser, "user").Result;
+            
+            _logger.LogInformation("New user registered: " + model.Email);
+            return Ok(new {status = "Registration successful"});
         }
 
         public class LoginDTO // add required, min/max length

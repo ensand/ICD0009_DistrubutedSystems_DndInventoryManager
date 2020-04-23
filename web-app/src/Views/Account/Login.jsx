@@ -5,6 +5,8 @@ import {Link, useHistory} from 'react-router-dom';
 import {Button, Checkbox, FormControl, FormControlLabel, IconButton, Input, InputAdornment, InputLabel, TextField} from '@material-ui/core';
 import {VisibilityOff, Visibility} from '@material-ui/icons';
 
+import {TranslateServerResponse} from '../../Utils/ServerResponse';
+
 
 function Login() {
     const history = useHistory();
@@ -24,10 +26,7 @@ function Login() {
             {
                 method: 'POST', 
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({
-                    "email": email,
-                    "password": password
-                }),
+                body: JSON.stringify({email, password}),
             }).then(response => response.json())
             .catch(error => console.log('error', error));
         
@@ -89,39 +88,6 @@ function Login() {
             </div>
         </div>
     );
-}
-
-function TranslateServerResponse(props) {
-    switch(props.res) {
-        case 400:
-            return "Bad request";
-        case 401:
-            return "Unauthorized";
-        case 403:
-            return "Forbidden";
-        case 404:
-            return "Not found";
-        case 408:
-            return "Request timeout";
-        case 413:
-            return "Payload too large. Fuck off you bloody wanker-hacker >:(";
-
-        case 500:
-            return "Internal server error";
-        case 501:
-            return "Not implemented";
-        case 502:
-            return "Bad gateway";
-        case 503:
-            return "Service unavailable";
-        case 504:
-            return "Gateway timeout";
-        case 507:
-            return "Insufficient Storage";
-
-        default:
-            return "[not handled]";
-    }
 }
 
 export default Login;

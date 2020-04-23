@@ -21,6 +21,11 @@ function Login() {
     const [error, setError] = React.useState(false);
 
     const login = async () => {
+        if (email === "" || password === "") {
+            console.log("No.");
+            return;
+        }
+
         const res = await fetch(
             'https://localhost:5001/api/account/login', 
             {

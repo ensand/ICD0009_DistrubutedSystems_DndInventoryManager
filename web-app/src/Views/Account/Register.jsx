@@ -20,6 +20,11 @@ function Register() {
     const [error, setError] = React.useState(false);
 
     const register = async () => {
+        if (email === "" || firstName === "" || lastName === "" || password === "" || confirmPassword === "") {
+            console.log("No.");
+            return;
+        }
+
         const res = await fetch(
             'https://localhost:5001/api/account/register', 
             {

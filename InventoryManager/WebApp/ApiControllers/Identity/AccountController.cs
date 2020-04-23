@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Domain.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -80,15 +81,29 @@ namespace WebApp.ApiControllers.Identity
 
         public class LoginDTO // add required, min/max length
         {
+            [MinLength(5)]
+            [MaxLength(1024)]
             public string Email { get; set; }
+            
+            [MaxLength(1024)]
             public string Password { get; set; }
         }
 
         public class RegisterDTO // add required, min/max length
         {
+            [MinLength(5)]
+            [MaxLength(1024)]
             public string Email { get; set; }
+            
+            [MaxLength(1024)]
             public string Password { get; set; }
+            
+            [MinLength(1)] 
+            [MaxLength(64)]
             public string FirstName { get; set; }
+            
+            [MinLength(1)] 
+            [MaxLength(64)] 
             public string LastName { get; set; }
         }
     }

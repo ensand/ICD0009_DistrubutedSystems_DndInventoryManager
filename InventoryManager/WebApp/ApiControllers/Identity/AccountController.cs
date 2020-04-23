@@ -81,30 +81,30 @@ namespace WebApp.ApiControllers.Identity
 
         public class LoginDTO // add required, min/max length
         {
-            [MinLength(5)]
-            [MaxLength(1024)]
-            public string Email { get; set; }
+            [MinLength(5)] 
+            [MaxLength(1024)] 
+            public string Email { get; set; } = default!;
             
             [MaxLength(1024)]
-            public string Password { get; set; }
+            public string Password { get; set; } = default!;
         }
 
         public class RegisterDTO // add required, min/max length
         {
             [MinLength(5)]
             [MaxLength(1024)]
-            public string Email { get; set; }
+            public string Email { get; set; } = default!;
             
             [MaxLength(1024)]
-            public string Password { get; set; }
+            public string Password { get; set; } = default!;
             
             [MinLength(1)] 
             [MaxLength(64)]
-            public string FirstName { get; set; }
+            public string FirstName { get; set; } = default!;
             
             [MinLength(1)] 
             [MaxLength(64)] 
-            public string LastName { get; set; }
+            public string LastName { get; set; } = default!;
         }
     }
 }

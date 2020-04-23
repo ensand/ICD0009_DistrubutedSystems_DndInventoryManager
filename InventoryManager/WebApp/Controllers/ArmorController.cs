@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,9 +6,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
 using Domain;
+using Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "user")]
     public class ArmorController : Controller
     {
         private readonly AppDbContext _context;
@@ -22,7 +24,11 @@ namespace WebApp.Controllers
         // GET: Armor
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Armors.Include(a => a.AppUser).Include(a => a.DndCharacter);
+            var appDbContext = _context.Armors
+                .Include(a => a.AppUser)
+                .Include(a => a.DndCharacter)
+                .Where(a => a.AppUserId == User.UserGuidId());
+            
             return View(await appDbContext.ToListAsync());
         }
 
@@ -37,7 +43,8 @@ namespace WebApp.Controllers
             var armor = await _context.Armors
                 .Include(a => a.AppUser)
                 .Include(a => a.DndCharacter)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(a => a.Id == id && a.AppUserId == User.UserGuidId());
+            
             if (armor == null)
             {
                 return NotFound();
@@ -49,7 +56,6 @@ namespace WebApp.Controllers
         // GET: Armor/Create
         public IActionResult Create()
         {
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName");
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name");
             return View();
         }
@@ -59,16 +65,17 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AppUserId,DndCharacterId,ArmorType,Ac,StealthDisadvantage,StrengthRequirement,Id,Comment,Name,Weight,ValueInGp,Quantity")] Armor armor)
+        public async Task<IActionResult> Create(Armor armor)
         {
+            armor.AppUserId = User.UserGuidId();
+            
             if (ModelState.IsValid)
             {
-                armor.Id = Guid.NewGuid();
                 _context.Add(armor);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", armor.AppUserId);
+            
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", armor.DndCharacterId);
             return View(armor);
         }
@@ -81,12 +88,13 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var armor = await _context.Armors.FindAsync(id);
+            var armor = await _context.Armors.FirstOrDefaultAsync(a => a.Id == id && a.AppUserId == User.UserGuidId());
+            
             if (armor == null)
             {
                 return NotFound();
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", armor.AppUserId);
+            
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", armor.DndCharacterId);
             return View(armor);
         }
@@ -96,8 +104,10 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("AppUserId,DndCharacterId,ArmorType,Ac,StealthDisadvantage,StrengthRequirement,Id,Comment,Name,Weight,ValueInGp,Quantity")] Armor armor)
+        public async Task<IActionResult> Edit(Guid id, Armor armor)
         {
+            armor.AppUserId = User.UserGuidId();
+            
             if (id != armor.Id)
             {
                 return NotFound();
@@ -123,7 +133,7 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", armor.AppUserId);
+            
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", armor.DndCharacterId);
             return View(armor);
         }
@@ -139,7 +149,8 @@ namespace WebApp.Controllers
             var armor = await _context.Armors
                 .Include(a => a.AppUser)
                 .Include(a => a.DndCharacter)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(a => a.Id == id && a.AppUserId == User.UserGuidId());
+            
             if (armor == null)
             {
                 return NotFound();
@@ -153,7 +164,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var armor = await _context.Armors.FindAsync(id);
+            var armor = await _context.Armors.FirstOrDefaultAsync(a => a.Id == id && a.AppUserId == User.UserGuidId());
+            
             _context.Armors.Remove(armor);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

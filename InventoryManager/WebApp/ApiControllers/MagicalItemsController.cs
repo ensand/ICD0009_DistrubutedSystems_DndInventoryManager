@@ -2,16 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
 using Domain;
+using Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MagicalItemsController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -25,14 +28,14 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MagicalItem>>> GetMagicalItems()
         {
-            return await _context.MagicalItems.ToListAsync();
+            return await _context.MagicalItems.Where(m => m.AppUserId == User.UserGuidId()).ToListAsync();
         }
 
         // GET: api/MagicalItems/5
         [HttpGet("{id}")]
         public async Task<ActionResult<MagicalItem>> GetMagicalItem(Guid id)
         {
-            var magicalItem = await _context.MagicalItems.FindAsync(id);
+            var magicalItem = await _context.MagicalItems.FirstOrDefaultAsync(m => m.Id == id && m.AppUserId == User.UserGuidId());
 
             if (magicalItem == null)
             {

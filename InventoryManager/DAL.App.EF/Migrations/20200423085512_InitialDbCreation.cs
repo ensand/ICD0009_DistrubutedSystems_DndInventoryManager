@@ -223,6 +223,7 @@ namespace DAL.App.EF.Migrations
                     Weight = table.Column<float>(nullable: false),
                     ValueInGp = table.Column<float>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
+                    AppUserId = table.Column<Guid>(nullable: false),
                     DndCharacterId = table.Column<Guid>(nullable: false),
                     Spell = table.Column<string>(maxLength: 256, nullable: true),
                     MaxCharges = table.Column<int>(nullable: false),
@@ -231,6 +232,12 @@ namespace DAL.App.EF.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MagicalItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MagicalItems_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MagicalItems_DndCharacters_DndCharacterId",
                         column: x => x.DndCharacterId,
@@ -249,11 +256,18 @@ namespace DAL.App.EF.Migrations
                     Weight = table.Column<float>(nullable: false),
                     ValueInGp = table.Column<float>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
+                    AppUserId = table.Column<Guid>(nullable: false),
                     DndCharacterId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OtherEquipments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OtherEquipments_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_OtherEquipments_DndCharacters_DndCharacterId",
                         column: x => x.DndCharacterId,
@@ -353,9 +367,19 @@ namespace DAL.App.EF.Migrations
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MagicalItems_AppUserId",
+                table: "MagicalItems",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MagicalItems_DndCharacterId",
                 table: "MagicalItems",
                 column: "DndCharacterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OtherEquipments_AppUserId",
+                table: "OtherEquipments",
+                column: "AppUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OtherEquipments_DndCharacterId",

@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
 using Domain;
@@ -27,7 +25,7 @@ namespace WebApp.Controllers
         {
             var appDbContext = _context.DndCharacters
                 .Include(d => d.AppUser)
-                .Where(o => o.AppUserId == User.UserGuidId());
+                .Where(d => d.AppUserId == User.UserGuidId());
             
             return View(await appDbContext.ToListAsync());
         }
@@ -42,7 +40,7 @@ namespace WebApp.Controllers
 
             var dndCharacter = await _context.DndCharacters
                 .Include(d => d.AppUser)
-                .FirstOrDefaultAsync(m => m.Id == id && m.AppUserId == User.UserGuidId());
+                .FirstOrDefaultAsync(d => d.Id == id && d.AppUserId == User.UserGuidId());
             
             if (dndCharacter == null)
             {
@@ -63,7 +61,7 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AppUserId,PlatinumPieces,GoldPieces,ElectrumPieces,SilverPieces,CopperPieces,Id,Comment,Name")] DndCharacter dndCharacter)
+        public async Task<IActionResult> Create(DndCharacter dndCharacter)
         {
             dndCharacter.AppUserId = User.UserGuidId();
             
@@ -85,7 +83,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var dndCharacter = await _context.DndCharacters.FirstOrDefaultAsync(o => o.Id == id && o.AppUserId == User.UserGuidId());
+            var dndCharacter = await _context.DndCharacters.FirstOrDefaultAsync(d => d.Id == id && d.AppUserId == User.UserGuidId());
             
             if (dndCharacter == null)
             {
@@ -100,9 +98,9 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("AppUserId,PlatinumPieces,GoldPieces,ElectrumPieces,SilverPieces,CopperPieces,Id,Comment,Name")] DndCharacter dndCharacter)
+        public async Task<IActionResult> Edit(Guid id, DndCharacter dndCharacter)
         {
-            dndCharacter.Id = User.UserGuidId();
+            dndCharacter.AppUserId = User.UserGuidId();
             
             if (id != dndCharacter.Id)
             {
@@ -142,7 +140,7 @@ namespace WebApp.Controllers
             }
 
             var dndCharacter = await _context.DndCharacters
-                .FirstOrDefaultAsync(m => m.Id == id && m.AppUserId == User.UserGuidId());
+                .FirstOrDefaultAsync(d => d.Id == id && d.AppUserId == User.UserGuidId());
             
             if (dndCharacter == null)
             {
@@ -157,7 +155,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var dndCharacter = await _context.DndCharacters.FirstOrDefaultAsync(o => o.Id == id && o.AppUserId == User.UserGuidId());
+            var dndCharacter = await _context.DndCharacters.FirstOrDefaultAsync(d => d.Id == id && d.AppUserId == User.UserGuidId());
             
             _context.DndCharacters.Remove(dndCharacter);
             await _context.SaveChangesAsync();

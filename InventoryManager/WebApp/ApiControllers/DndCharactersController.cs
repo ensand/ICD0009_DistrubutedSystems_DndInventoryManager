@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
@@ -29,14 +28,14 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DndCharacter>>> GetDndCharacters()
         {
-            return await _context.DndCharacters.Where(o => o.AppUserId == User.UserGuidId()).ToListAsync();
+            return await _context.DndCharacters.Where(d => d.AppUserId == User.UserGuidId()).ToListAsync();
         }
 
         // GET: api/DndCharacters/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DndCharacter>> GetDndCharacter(Guid id)
         {
-            var dndCharacter = await _context.DndCharacters.FirstOrDefaultAsync(o => o.Id == id && o.AppUserId == User.UserGuidId());
+            var dndCharacter = await _context.DndCharacters.FirstOrDefaultAsync(d => d.Id == id && d.AppUserId == User.UserGuidId());
 
             if (dndCharacter == null)
             {
@@ -95,6 +94,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<DndCharacter>> DeleteDndCharacter(Guid id)
         {
             var dndCharacter = await _context.DndCharacters.FindAsync(id);
+            
             if (dndCharacter == null)
             {
                 return NotFound();

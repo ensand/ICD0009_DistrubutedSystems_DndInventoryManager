@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,9 +6,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
 using Domain;
+using Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "user")]
     public class MagicalItemsController : Controller
     {
         private readonly AppDbContext _context;
@@ -22,7 +24,11 @@ namespace WebApp.Controllers
         // GET: MagicalItems
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.MagicalItems.Include(m => m.DndCharacter);
+            var appDbContext = _context.MagicalItems
+                .Include(m => m.AppUser)
+                .Include(m => m.DndCharacter)
+                .Where(m => m.AppUserId == User.UserGuidId());
+                
             return View(await appDbContext.ToListAsync());
         }
 
@@ -35,8 +41,10 @@ namespace WebApp.Controllers
             }
 
             var magicalItem = await _context.MagicalItems
+                .Include(m => m.AppUser)
                 .Include(m => m.DndCharacter)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id && m.AppUserId == User.UserGuidId());
+            
             if (magicalItem == null)
             {
                 return NotFound();
@@ -57,15 +65,17 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DndCharacterId,Spell,MaxCharges,CurrentCharges,Id,Comment,Name,Weight,ValueInGp,Quantity")] MagicalItem magicalItem)
+        public async Task<IActionResult> Create(MagicalItem magicalItem)
         {
+            magicalItem.AppUserId = User.UserGuidId();
+            
             if (ModelState.IsValid)
             {
-                magicalItem.Id = Guid.NewGuid();
                 _context.Add(magicalItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", magicalItem.DndCharacterId);
             return View(magicalItem);
         }
@@ -78,11 +88,13 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var magicalItem = await _context.MagicalItems.FindAsync(id);
+            var magicalItem = await _context.MagicalItems.FirstOrDefaultAsync(m => m.Id == id && m.AppUserId == User.UserGuidId());
+            
             if (magicalItem == null)
             {
                 return NotFound();
             }
+
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", magicalItem.DndCharacterId);
             return View(magicalItem);
         }
@@ -92,8 +104,10 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("DndCharacterId,Spell,MaxCharges,CurrentCharges,Id,Comment,Name,Weight,ValueInGp,Quantity")] MagicalItem magicalItem)
+        public async Task<IActionResult> Edit(Guid id, MagicalItem magicalItem)
         {
+            magicalItem.AppUserId = User.UserGuidId();
+            
             if (id != magicalItem.Id)
             {
                 return NotFound();
@@ -119,6 +133,7 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", magicalItem.DndCharacterId);
             return View(magicalItem);
         }
@@ -132,8 +147,10 @@ namespace WebApp.Controllers
             }
 
             var magicalItem = await _context.MagicalItems
+                .Include(m => m.AppUser)
                 .Include(m => m.DndCharacter)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id && m.AppUserId == User.UserGuidId());
+            
             if (magicalItem == null)
             {
                 return NotFound();
@@ -147,7 +164,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var magicalItem = await _context.MagicalItems.FindAsync(id);
+            var magicalItem = await _context.MagicalItems.FirstOrDefaultAsync(m => m.Id == id && m.AppUserId == User.UserGuidId());
+            
             _context.MagicalItems.Remove(magicalItem);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

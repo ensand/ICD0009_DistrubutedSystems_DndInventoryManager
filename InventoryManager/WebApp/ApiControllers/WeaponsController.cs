@@ -2,16 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
 using Domain;
+using Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class WeaponsController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -25,14 +28,14 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Weapon>>> GetWeapons()
         {
-            return await _context.Weapons.ToListAsync();
+            return await _context.Weapons.Where(w => w.AppUserId == User.UserGuidId()).ToListAsync();
         }
 
         // GET: api/Weapons/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Weapon>> GetWeapon(Guid id)
         {
-            var weapon = await _context.Weapons.FindAsync(id);
+            var weapon = await _context.Weapons.FirstOrDefaultAsync(w => w.Id == id && w.AppUserId == User.UserGuidId());
 
             if (weapon == null)
             {

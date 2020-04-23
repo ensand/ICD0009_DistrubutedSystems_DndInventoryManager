@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200422141625_InitialDbCreation")]
+    [Migration("20200423085512_InitialDbCreation")]
     partial class InitialDbCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -225,6 +225,9 @@ namespace DAL.App.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(2048)")
                         .HasMaxLength(2048);
@@ -258,6 +261,8 @@ namespace DAL.App.EF.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AppUserId");
+
                     b.HasIndex("DndCharacterId");
 
                     b.ToTable("MagicalItems");
@@ -267,6 +272,9 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Comment")
@@ -291,6 +299,8 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("DndCharacterId");
 
@@ -490,6 +500,12 @@ namespace DAL.App.EF.Migrations
 
             modelBuilder.Entity("Domain.MagicalItem", b =>
                 {
+                    b.HasOne("Domain.Identity.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Domain.DndCharacter", "DndCharacter")
                         .WithMany("MagicalItems")
                         .HasForeignKey("DndCharacterId")
@@ -499,6 +515,12 @@ namespace DAL.App.EF.Migrations
 
             modelBuilder.Entity("Domain.OtherEquipment", b =>
                 {
+                    b.HasOne("Domain.Identity.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Domain.DndCharacter", "DndCharacter")
                         .WithMany("OtherEquipment")
                         .HasForeignKey("DndCharacterId")

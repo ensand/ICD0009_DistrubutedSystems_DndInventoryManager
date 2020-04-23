@@ -8,8 +8,15 @@ function View() {
 
     const fetchItems = async () => {
         const apiCall = await fetch("https://localhost:5001/api/DndCharacters");
-        const data = await apiCall.json();
-        setItems(data);
+        let data;
+        try {
+            data = await apiCall.json();
+        } catch (e) {
+            console.log("Error: ", e);
+        }
+        if (data !== undefined) {
+            setItems(data);
+        }
     }
 
     const deleteItem = async (id) => {

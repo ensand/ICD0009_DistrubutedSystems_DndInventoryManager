@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,9 +6,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
 using Domain;
+using Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "user")]
     public class OtherEquipmentsController : Controller
     {
         private readonly AppDbContext _context;
@@ -22,7 +24,11 @@ namespace WebApp.Controllers
         // GET: OtherEquipments
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.OtherEquipments.Include(o => o.DndCharacter);
+            var appDbContext = _context.OtherEquipments
+                .Include(o => o.AppUser)
+                .Include(o => o.DndCharacter)
+                .Where(o => o.AppUserId == User.UserGuidId());
+            
             return View(await appDbContext.ToListAsync());
         }
 
@@ -35,8 +41,10 @@ namespace WebApp.Controllers
             }
 
             var otherEquipment = await _context.OtherEquipments
+                .Include(o => o.AppUser)
                 .Include(o => o.DndCharacter)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(o => o.Id == id && o.AppUserId == User.UserGuidId());
+            
             if (otherEquipment == null)
             {
                 return NotFound();
@@ -57,15 +65,17 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DndCharacterId,Id,Comment,Name,Weight,ValueInGp,Quantity")] OtherEquipment otherEquipment)
+        public async Task<IActionResult> Create(OtherEquipment otherEquipment)
         {
+            otherEquipment.AppUserId = User.UserGuidId();
+
             if (ModelState.IsValid)
             {
-                otherEquipment.Id = Guid.NewGuid();
                 _context.Add(otherEquipment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", otherEquipment.DndCharacterId);
             return View(otherEquipment);
         }
@@ -78,11 +88,12 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var otherEquipment = await _context.OtherEquipments.FindAsync(id);
+            var otherEquipment = await _context.OtherEquipments.FirstOrDefaultAsync(o => o.Id == id && o.AppUserId == User.UserGuidId());
             if (otherEquipment == null)
             {
                 return NotFound();
             }
+            
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", otherEquipment.DndCharacterId);
             return View(otherEquipment);
         }
@@ -92,8 +103,10 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("DndCharacterId,Id,Comment,Name,Weight,ValueInGp,Quantity")] OtherEquipment otherEquipment)
+        public async Task<IActionResult> Edit(Guid id, OtherEquipment otherEquipment)
         {
+            otherEquipment.AppUserId = User.UserGuidId();
+
             if (id != otherEquipment.Id)
             {
                 return NotFound();
@@ -119,6 +132,7 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            
             ViewData["DndCharacterId"] = new SelectList(_context.DndCharacters, "Id", "Name", otherEquipment.DndCharacterId);
             return View(otherEquipment);
         }
@@ -132,8 +146,10 @@ namespace WebApp.Controllers
             }
 
             var otherEquipment = await _context.OtherEquipments
+                .Include(o => o.AppUser)
                 .Include(o => o.DndCharacter)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(o => o.Id == id && o.AppUserId == User.UserGuidId());
+            
             if (otherEquipment == null)
             {
                 return NotFound();
@@ -147,7 +163,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var otherEquipment = await _context.OtherEquipments.FindAsync(id);
+            var otherEquipment = await _context.OtherEquipments.FirstOrDefaultAsync(o => o.Id == id && o.AppUserId == User.UserGuidId());
+            
             _context.OtherEquipments.Remove(otherEquipment);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

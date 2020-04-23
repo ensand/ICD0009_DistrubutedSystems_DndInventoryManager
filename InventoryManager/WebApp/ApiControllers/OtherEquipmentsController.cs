@@ -2,16 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
 using Domain;
+using Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class OtherEquipmentsController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -25,14 +28,14 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OtherEquipment>>> GetOtherEquipments()
         {
-            return await _context.OtherEquipments.ToListAsync();
+            return await _context.OtherEquipments.Where(o => o.AppUserId == User.UserGuidId()).ToListAsync();
         }
 
         // GET: api/OtherEquipments/5
         [HttpGet("{id}")]
         public async Task<ActionResult<OtherEquipment>> GetOtherEquipment(Guid id)
         {
-            var otherEquipment = await _context.OtherEquipments.FindAsync(id);
+            var otherEquipment = await _context.OtherEquipments.FirstOrDefaultAsync(o => o.Id == id && o.AppUserId == User.UserGuidId());
 
             if (otherEquipment == null)
             {

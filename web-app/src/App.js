@@ -4,6 +4,9 @@ import './App.css';
 import {Link, Switch, Route} from 'react-router-dom';
 
 import Main from './Views/Main/Main.jsx';
+import Privacy from './Views/Main/Privacy.jsx';
+import Login from './Views/Main/Login.jsx';
+
 import CharacterView from './Views/DndCharacters/View.jsx';
 import ArmorView from './Views/Armor/View.jsx';
 import WeaponsView from './Views/Weapons/View.jsx';
@@ -16,13 +19,12 @@ function App() {
             <header>
                 <nav className="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
                     <div className="container">
-                        <Link className="navbar-brand" to="/">WebApp</Link>
+                        <Link className="navbar-brand" to="/">Inventory manager</Link>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                                 aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
                         </button>
-                        <div className="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                            {/* <partial name="_LoginPartial" /> */}
+                        <div className="navbar-collapse collapse d-sm-inline-flex flex-sm-row">                            
                             <ul className="navbar-nav flex-grow-1">
                                 <li className="nav-item">
                                     <Link className="nav-link text-dark" to="/Characters">Characters</Link>
@@ -40,6 +42,7 @@ function App() {
                                     <Link className="nav-link text-dark" to="/OtherEquipment">Other equipment</Link>
                                 </li>
                             </ul>
+                            <Login />
                         </div>
                     </div>
                 </nav>
@@ -50,6 +53,10 @@ function App() {
                         <Route exact path="/">
                             <Main />
                         </Route>
+                        <Route path="/Privacy">
+                            <Privacy />
+                        </Route>
+
                         <Route path="/Characters">
                             <CharacterView />
                         </Route>
@@ -71,7 +78,7 @@ function App() {
 
             <footer className="border-top footer text-muted">
                 <div className="container">
-                    &copy; 2020 - WebApp - <Link to="/">Privacy</Link>
+                    &copy; 2020 - Inventory manager - <Link to="/Privacy">Privacy</Link>
                 </div>
             </footer>
         </div>

@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.AppUser)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.DndCharacter)
             </th>
             <th>
@@ -45,6 +48,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser.FirstName)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DndCharacter.Name)
             </td>

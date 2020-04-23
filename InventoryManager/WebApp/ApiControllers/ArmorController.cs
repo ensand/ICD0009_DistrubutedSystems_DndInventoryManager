@@ -2,16 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
 using Domain;
+using Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ArmorController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -25,14 +28,14 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Armor>>> GetArmors()
         {
-            return await _context.Armors.ToListAsync();
+            return await _context.Armors.Where(a => a.AppUserId == User.UserGuidId()).ToListAsync();
         }
 
         // GET: api/Armor/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Armor>> GetArmor(Guid id)
         {
-            var armor = await _context.Armors.FindAsync(id);
+            var armor = await _context.Armors.FirstOrDefaultAsync(a => a.Id == id && a.AppUserId == User.UserGuidId());
 
             if (armor == null)
             {
@@ -91,6 +94,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<Armor>> DeleteArmor(Guid id)
         {
             var armor = await _context.Armors.FindAsync(id);
+            
             if (armor == null)
             {
                 return NotFound();

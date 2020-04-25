@@ -6,6 +6,7 @@ import {Button, Checkbox, FormControl, FormControlLabel, IconButton, Input, Inpu
 import {VisibilityOff, Visibility} from '@material-ui/icons';
 
 import {TranslateServerResponse} from '../../Utils/ServerResponse';
+import {loginReq} from '../../Utils/AccountActions';
 
 
 function Login() {
@@ -26,18 +27,12 @@ function Login() {
             return;
         }
 
-        const res = await fetch(
-            'https://localhost:5001/api/account/login', 
-            {
-                method: 'POST', 
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({email, password}),
-            }).then(response => response.json())
-            .catch(error => console.log('error', error));
+        const res = await loginReq({email, password});
+
 
         if (res !== undefined && res.status === "Login successful") {
             setError(false);
-            loginAction({token: res.token, rememberMe, email, password});
+            loginAction({token: res.token, rememberMe});
             history.push("/");
         } else {
             if (res === undefined) {
@@ -55,7 +50,7 @@ function Login() {
                 <div className="col-md-4">
                     <h4>Use a local account to log in.</h4>
                     <hr />
-                    <TextField className="space-top-bottom" name="email" label="Email" value={email} fullWidth onChange={(e) => setEmail(e.target.value)}/>
+                    <TextField className="space-top-bottom" type="email" name="email" label="Email" value={email} fullWidth onChange={(e) => setEmail(e.target.value)}/>
                     
                     <FormControl fullWidth className="space-top-bottom">
                         <InputLabel htmlFor="password">Password</InputLabel>

@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 
-import {Switch, Route} from 'react-router-dom';
-import {useStoreState} from 'easy-peasy';
+import {Switch, Route, useHistory} from 'react-router-dom';
+import {useStoreState, useStoreActions} from 'easy-peasy';
 
 import Header from './Views/Main/Header.jsx';
 import Main from './Views/Main/Main.jsx';
@@ -20,9 +20,32 @@ import WeaponsView from './Views/Weapons/View.jsx';
 import MagicalItemsView from './Views/MagicalItems/View.jsx';
 import OtherEquipmentView from './Views/OtherEquipments/View.jsx';
 
+import {loginReq} from './Utils/AccountActions';
+
 function App() {
+    const history = useHistory();
 
     const userIsLoggedIn = useStoreState(state => state.appState.userLoggedIn);
+    const loginAction = useStoreActions(state => state.appState.login);
+
+    React.useEffect(() => {
+        async function doLogin() {
+            const res = await loginReq({token: sessionStorage.getItem("token")}, true); 
+            if (res !== undefined && res.status === "Login successful") {
+                loginAction({token: res.token});
+                history.push("/");
+            }
+        } 
+
+        console.log(sessionStorage.getItem("appuser_rememberMe") )
+
+        if ((sessionStorage.getItem("appuser_rememberMe") === 'true' || sessionStorage.getItem("appuser_rememberMe") === true)
+            && sessionStorage.getItem("appuser_token") !== undefined) {
+                console.log('login!!');
+                doLogin();                
+        }
+
+    }, []);
 
     return (
         <div className="main">

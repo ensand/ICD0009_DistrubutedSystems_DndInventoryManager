@@ -33,7 +33,7 @@ namespace WebApp.ApiControllers.Identity
             if (appUser == null)
             {
                 _logger.LogInformation("Web-Api login. User not found: " + model.Email);
-                return StatusCode(403);
+                return StatusCode(404);
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(appUser, model.Password, false);
@@ -53,6 +53,12 @@ namespace WebApp.ApiControllers.Identity
             
             _logger.LogInformation("Web-Api login. User attempted login with bad password: " + model.Email);
             return StatusCode(403);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> LoginWithToken([FromBody] string token)
+        {
+            throw new NotImplementedException();
         }
         
         [HttpPost]
@@ -87,6 +93,17 @@ namespace WebApp.ApiControllers.Identity
             
             [MaxLength(1024)]
             public string Password { get; set; } = default!;
+        }
+
+        public class TokenLoginDTO
+        {
+            [MinLength(5)] 
+            [MaxLength(1024)] 
+            public string Email { get; set; } = default!;
+            
+            [MinLength(5)] 
+            [MaxLength(4096)] 
+            public string Token { get; set; } = default!;
         }
 
         public class RegisterDTO // add required, min/max length

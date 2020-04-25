@@ -1,9 +1,12 @@
 import React from 'react';
 
+import {useStoreState} from 'easy-peasy';
+
 import Modal from '../../Components/Modal/Modal.jsx';
 import {Button, TextField} from '@material-ui/core';
 
 function View() {
+    const token = useStoreState(state => state.appState.token);
 
     const [items, setItems] = React.useState([]);
     const [modalOpen, toggleModal] = React.useState(false);
@@ -51,7 +54,8 @@ function View() {
             {
                 method: uploadType, 
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization":  `bearer ${token}`
                 }, body: JSON.stringify(newObj)
             });
         fetchItems();

@@ -53,7 +53,7 @@ function Register() {
                 <div className="col-md-4">
                     <h4>Create a new account.</h4>
                     <hr />
-                    <TextField className="space-top-bottom" name="email" label="Email" value={email} fullWidth onChange={(e) => setEmail(e.target.value)}/>
+                    <TextField className="space-top-bottom" type="email" name="email" label="Email" value={email} fullWidth onChange={(e) => setEmail(e.target.value)}/>
                     <TextField className="space-top-bottom" name="firstName" label="First name" value={firstName} fullWidth onChange={(e) => setFirstName(e.target.value)}/>
                     <TextField className="space-top-bottom" name="lastName" label="Last name" value={lastName} fullWidth onChange={(e) => setLastName(e.target.value)}/>
                     

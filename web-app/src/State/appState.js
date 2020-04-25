@@ -8,10 +8,8 @@ const appState = {
         state.userLoggedIn = true;
         state.token = payload.token;
 
-        sessionStorage.setItem("email", payload.email);
-        sessionStorage.setItem("password", payload.password);
-        sessionStorage.setItem("rememberMe", payload.rememberMe);
-        sessionStorage.setItem("token", payload.token);
+        sessionStorage.setItem("appuser_rememberMe", payload.rememberMe);
+        sessionStorage.setItem("appuser_token", payload.token);
     }),
 
     logout: action((state) => {

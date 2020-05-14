@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using WebApp.ApiControllers.Identity;
+using WebApp.ApiControllers._1._0.Identity;
 
-namespace WebApp.ApiControllers.Functionality
+namespace WebApp.ApiControllers._1._0.Functionality
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
     public class ItemsController : ControllerBase
     {
         private readonly IConfiguration _configuration;

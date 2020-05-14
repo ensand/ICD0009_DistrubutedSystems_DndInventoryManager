@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Contracts.DAL.Base;
 
 namespace DAL.Base
 {
-    public class BaseUnitOfWork
+    public abstract class BaseUnitOfWork : IBaseUnitOfWork
     {
         private readonly Dictionary<Type, object> _repoCache = new Dictionary<Type, object>();
 
@@ -18,5 +20,9 @@ namespace DAL.Base
             _repoCache.Add(typeof(TRepository), repo);
             return (TRepository) repo;
         }
+
+        public abstract int SaveChanges();
+
+        public abstract Task<int> SaveChangesAsync();
     }
 }

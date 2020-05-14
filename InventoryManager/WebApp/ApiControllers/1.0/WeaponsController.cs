@@ -2,61 +2,62 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
 using Domain;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace WebApp.ApiControllers
+namespace WebApp.ApiControllers._1._0
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class ArmorController : ControllerBase
+    public class WeaponsController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public ArmorController(AppDbContext context)
+        public WeaponsController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Armor
+        // GET: api/Weapons
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Armor>>> GetArmors()
+        public async Task<ActionResult<IEnumerable<Weapon>>> GetWeapons()
         {
-            return await _context.Armors.Where(a => a.AppUserId == User.UserGuidId()).ToListAsync();
+            return await _context.Weapons.Where(w => w.AppUserId == User.UserGuidId()).ToListAsync();
         }
 
-        // GET: api/Armor/5
+        // GET: api/Weapons/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Armor>> GetArmor(Guid id)
+        public async Task<ActionResult<Weapon>> GetWeapon(Guid id)
         {
-            var armor = await _context.Armors.FirstOrDefaultAsync(a => a.Id == id && a.AppUserId == User.UserGuidId());
+            var weapon = await _context.Weapons.FirstOrDefaultAsync(w => w.Id == id && w.AppUserId == User.UserGuidId());
 
-            if (armor == null)
+            if (weapon == null)
             {
                 return NotFound();
             }
 
-            return armor;
+            return weapon;
         }
 
-        // PUT: api/Armor/5
+        // PUT: api/Weapons/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArmor(Guid id, Armor armor)
+        public async Task<IActionResult> PutWeapon(Guid id, Weapon weapon)
         {
-            if (id != armor.Id)
+            if (id != weapon.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(armor).State = EntityState.Modified;
+            _context.Entry(weapon).State = EntityState.Modified;
 
             try
             {
@@ -64,7 +65,7 @@ namespace WebApp.ApiControllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ArmorExists(id))
+                if (!WeaponExists(id))
                 {
                     return NotFound();
                 }
@@ -77,38 +78,37 @@ namespace WebApp.ApiControllers
             return NoContent();
         }
 
-        // POST: api/Armor
+        // POST: api/Weapons
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Armor>> PostArmor(Armor armor)
+        public async Task<ActionResult<Weapon>> PostWeapon(Weapon weapon)
         {
-            _context.Armors.Add(armor);
+            _context.Weapons.Add(weapon);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetArmor", new { id = armor.Id }, armor);
+            return CreatedAtAction("GetWeapon", new { id = weapon.Id }, weapon);
         }
 
-        // DELETE: api/Armor/5
+        // DELETE: api/Weapons/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Armor>> DeleteArmor(Guid id)
+        public async Task<ActionResult<Weapon>> DeleteWeapon(Guid id)
         {
-            var armor = await _context.Armors.FindAsync(id);
-            
-            if (armor == null)
+            var weapon = await _context.Weapons.FindAsync(id);
+            if (weapon == null)
             {
                 return NotFound();
             }
 
-            _context.Armors.Remove(armor);
+            _context.Weapons.Remove(weapon);
             await _context.SaveChangesAsync();
 
-            return armor;
+            return weapon;
         }
 
-        private bool ArmorExists(Guid id)
+        private bool WeaponExists(Guid id)
         {
-            return _context.Armors.Any(e => e.Id == id);
+            return _context.Weapons.Any(e => e.Id == id);
         }
     }
 }

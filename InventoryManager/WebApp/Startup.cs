@@ -7,11 +7,15 @@ using Domain.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using WebApp.Helpers;
 
 namespace WebApp
 {
@@ -72,13 +76,13 @@ namespace WebApp
             
             services.AddApiVersioning(options => { options.ReportApiVersions = true; });
             
-            // services.AddVersionedApiExplorer( options => options.GroupNameFormat = "'v'VVV" );
-            // services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-            // services.AddSwaggerGen();
+            services.AddVersionedApiExplorer( options => options.GroupNameFormat = "'v'VVV" );
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             UpdateDatabase(app, env, Configuration);
 
@@ -100,6 +104,18 @@ namespace WebApp
             app.UseStaticFiles();
 
             app.UseRouting();
+            
+            app.UseSwagger();
+            app.UseSwaggerUI(
+                options =>
+                {
+                    foreach ( var description in provider.ApiVersionDescriptions )
+                    {
+                        options.SwaggerEndpoint(
+                            $"/swagger/{description.GroupName}/swagger.json",
+                            description.GroupName.ToUpperInvariant() );
+                    }
+                } );
 
             app.UseAuthentication();
             app.UseAuthorization();

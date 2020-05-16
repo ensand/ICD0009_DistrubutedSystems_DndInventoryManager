@@ -4,26 +4,26 @@ using System.Threading.Tasks;
 
 namespace Contracts.DAL.Base.Repositories
 {
-    public interface IBaseRepository<TEntity> : IBaseRepository<TEntity, Guid>
-        where TEntity : class, IDomainEntity<Guid>, new()
+    public interface IBaseRepository<TDALEntity> : IBaseRepository<Guid, TDALEntity>
+        where TDALEntity : class, IDomainEntity<Guid>, new()
     {
     }
 
-    public interface IBaseRepository<TEntity, TKey>
-        where TEntity : class, IDomainEntity<TKey>, new()
-        where TKey : struct, IEquatable<TKey>
+    public interface IBaseRepository<TKey, TDALEntity>
+        where TDALEntity : class, IDomainEntity<TKey>, new()
+        where TKey : IEquatable<TKey>
     {
-        IEnumerable<TEntity> All();
-        Task<IEnumerable<TEntity>> AllAsync();
+        IEnumerable<TDALEntity> All();
+        Task<IEnumerable<TDALEntity>> AllAsync();
 
-        TEntity Find(params object[] id);
-        Task<TEntity> FindAsync(params object[] id);
+        TDALEntity Find(params object[] id);
+        Task<TDALEntity> FindAsync(params object[] id);
 
-        TEntity Add(TEntity entity);
+        TDALEntity Add(TDALEntity entity);
 
-        TEntity Update(TEntity entity);
+        TDALEntity Update(TDALEntity entity);
 
-        TEntity Remove(TEntity entity);
-        TEntity Remove(params object[] id);
+        TDALEntity Remove(TDALEntity entity);
+        TDALEntity Remove(params object[] id);
     }
 }

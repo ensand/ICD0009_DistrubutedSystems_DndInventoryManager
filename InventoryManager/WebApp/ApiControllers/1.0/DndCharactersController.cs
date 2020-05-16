@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DAL.App.EF;
-using Domain;
+using Contracts.BLL.App;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PublicApi.DTO.V1;
 
 namespace WebApp.ApiControllers._1._0
 {
@@ -18,25 +18,41 @@ namespace WebApp.ApiControllers._1._0
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class DndCharactersController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppBLL _bll;
 
-        public DndCharactersController(AppDbContext context)
+        public DndCharactersController(IAppBLL bll)
         {
-            _context = context;
+            _bll = bll;
         }
 
         // GET: api/DndCharacters
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DndCharacter>>> GetDndCharacters()
         {
-            return await _context.DndCharacters.Where(d => d.AppUserId == User.UserGuidId()).ToListAsync();
+            var dndCharacters = (await _bll.DndCharacters.AllAsync(User.UserGuidId()))
+                .Select(bllEntity => new DndCharacter()
+                {
+                    Id = bllEntity.Id,
+                    Name = bllEntity.Name,
+                    OtherEquipment = bllEntity.OtherEquipment.Select(e => new OtherEquipment()
+                    {
+                        Id = e.Id,
+                        Name = e.Name,
+                        Comment = e.Comment,
+                        Weight = e.Weight,
+                        ValueInGp = e.ValueInGp,
+                        Quantity = e.Quantity
+                    }).ToArray()
+                });
+
+            return Ok(dndCharacters);
         }
 
         // GET: api/DndCharacters/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DndCharacter>> GetDndCharacter(Guid id)
         {
-            var dndCharacter = await _context.DndCharacters.FirstOrDefaultAsync(d => d.Id == id && d.AppUserId == User.UserGuidId());
+            var dndCharacter = await _bll.DndCharacters.FirstOrDefaultAsync(id, User.UserGuidId());
 
             if (dndCharacter == null)
             {

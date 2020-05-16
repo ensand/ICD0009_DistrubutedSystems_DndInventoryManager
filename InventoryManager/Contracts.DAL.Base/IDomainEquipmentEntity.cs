@@ -7,7 +7,7 @@ namespace Contracts.DAL.Base
     }
     
     public interface IDomainEquipmentEntity<TKey> : IDomainEntity<TKey>, IDomainEquipmentBaseEntity
-        where TKey : struct, IEquatable<TKey>
+        where TKey : IEquatable<TKey>
     {
     }
 }

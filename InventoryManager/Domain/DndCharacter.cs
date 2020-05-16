@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using DAL.Base;
 using Domain.Identity;
 
@@ -17,8 +16,6 @@ namespace Domain
         public int SilverPieces { get; set; }
         public int CopperPieces { get; set; }
 
-        public double TotalTreasureInGp => PlatinumPieces * 10 + GoldPieces + ElectrumPieces / 2 + SilverPieces / 10 + CopperPieces / 100;
-        
         public ICollection<MagicalItem>? MagicalItems { get; set; }
         public ICollection<OtherEquipment>? OtherEquipment { get; set; }
         public ICollection<Armor>? Armor { get; set; }

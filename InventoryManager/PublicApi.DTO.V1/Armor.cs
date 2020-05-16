@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PublicApi.DTO.V1
 {
-    public class ArmorDto
+    public class Armor
     {
         public Guid Id { get; set; }
         

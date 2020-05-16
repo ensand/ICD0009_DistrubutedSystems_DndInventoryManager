@@ -9,7 +9,7 @@ namespace DAL.Base
     }
     
     public abstract class DomainEquipmentEntity<TKey> : IDomainEquipmentEntity<TKey>
-        where TKey : struct, IEquatable<TKey>
+        where TKey : IEquatable<TKey>
     {
         public virtual TKey Id { get; set; }
         

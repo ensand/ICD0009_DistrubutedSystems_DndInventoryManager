@@ -1,8 +1,7 @@
 using Contracts.DAL.App;
-using Contracts.DAL.Base.Repositories;
+using Contracts.DAL.App.Repositories;
+using DAL.App.EF.Repositories;
 using DAL.Base.EF;
-using DAL.Base.EF.Repositories;
-using Domain;
 
 namespace DAL.App.EF
 {
@@ -12,20 +11,19 @@ namespace DAL.App.EF
         {
         }
 
-
-        public IBaseRepository<Armor> Armors =>
-            GetRepository<IBaseRepository<Armor>>(() => new EFBaseRepository<Armor, AppDbContext>(UowDbContext));
+        public IArmorRepository Armors =>
+            GetRepository<IArmorRepository>(() => new ArmorRepository(UowDbContext));
         
-        public IBaseRepository<DndCharacter> DndCharacters =>
-            GetRepository<IBaseRepository<DndCharacter>>(() => new EFBaseRepository<DndCharacter, AppDbContext>(UowDbContext));
+        public IDndCharacterRepository DndCharacters =>
+            GetRepository<IDndCharacterRepository>(() => new DndCharacterRepository(UowDbContext));
         
-        public IBaseRepository<MagicalItem> MagicalItems  =>
-            GetRepository<IBaseRepository<MagicalItem>>(() => new EFBaseRepository<MagicalItem, AppDbContext>(UowDbContext));
+        public IMagicalItemRepository MagicalItems =>
+            GetRepository<IMagicalItemRepository>(() => new MagicalItemRepository(UowDbContext));
         
-        public IBaseRepository<OtherEquipment> OtherEquipments  =>
-            GetRepository<IBaseRepository<OtherEquipment>>(() => new EFBaseRepository<OtherEquipment, AppDbContext>(UowDbContext));
+        public IOtherEquipmentRepository OtherEquipments =>
+            GetRepository<IOtherEquipmentRepository>(() => new OtherEquipmentRepository(UowDbContext));
         
-        public IBaseRepository<Weapon> Weapons  =>
-            GetRepository<IBaseRepository<Weapon>>(() => new EFBaseRepository<Weapon, AppDbContext>(UowDbContext));
+        public IWeaponRepository Weapons =>
+            GetRepository<IWeaponRepository>(() => new WeaponRepository(UowDbContext));
     }
 }

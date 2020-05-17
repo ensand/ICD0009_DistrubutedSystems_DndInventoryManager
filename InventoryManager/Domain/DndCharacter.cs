@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using DAL.Base;
 using Domain.Identity;
 
@@ -8,6 +9,8 @@ namespace Domain
     public class DndCharacter : DomainEntity
     {
         public Guid AppUserId { get; set; }
+        
+        [JsonIgnore]
         public AppUser? AppUser { get; set; }
         
         public int PlatinumPieces { get; set; }

@@ -48,7 +48,7 @@ namespace WebApp.ApiControllers._1._0
                     WeaponCount = bllEntity.WeaponCount,
                     TreasureInGp = bllEntity.TreasureInGp
                 });
-
+        
             return Ok(dndCharacters);
         }
 
@@ -58,19 +58,41 @@ namespace WebApp.ApiControllers._1._0
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Character by ID</returns>
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<DndCharacter>> GetDndCharacter(Guid id)
-        // {
-        //     var dndCharacter = await _bll.DndCharacters.FirstOrDefaultAsync(id, User.UserGuidId());
-        //
-        //     if (dndCharacter == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     return dndCharacter;
-        // }
-        //
+        [HttpGet("{id}")]
+        public async Task<ActionResult<DndCharacterDetails>> GetDndCharacter(Guid id)
+        {
+            var dndCharacter = await _bll.DndCharacters.FirstOrDefaultAsync(id, User.UserGuidId());
+
+            if (dndCharacter == null)
+            {
+                return NotFound(id);
+            }
+            
+            var characterDetails = new DndCharacterDetails()
+            {
+                Id = dndCharacter.Id,
+                Name = dndCharacter.Name,
+                Comment = dndCharacter.Comment,
+                PlatinumPieces = dndCharacter.PlatinumPieces,
+                GoldPieces = dndCharacter.GoldPieces,
+                ElectrumPieces = dndCharacter.ElectrumPieces,
+                SilverPieces = dndCharacter.SilverPieces,
+                CopperPieces = dndCharacter.CopperPieces,
+                MagicalItemCount = dndCharacter.MagicalItemCount,
+                OtherEquipmentCount = dndCharacter.OtherEquipmentCount,
+                WeaponCount = dndCharacter.WeaponCount,
+                TreasureInGp = dndCharacter.TreasureInGp,
+                AllItemsValueInGp = dndCharacter.AllItemsValueInGp,
+                AllItemsWeight =  dndCharacter.AllItemsWeight,
+                // Armor = dndCharacter.Armor,
+                // MagicalItems = dndCharacter.MagicalItems,
+                // Weapons = dndCharacter.Weapons,
+                // OtherEquipment = dndCharacter.OtherEquipment
+            };
+            
+            return Ok(characterDetails);
+        }
+        
         // // PUT: api/DndCharacters/5
         // // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

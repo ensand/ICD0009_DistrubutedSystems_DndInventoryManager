@@ -29,11 +29,11 @@ dotnet ef database update --project DAL.App.EF --startup-project WebApp
  - needs Microsoft.EntityFrameworkCore.Design;
  - needs Microsoft.EntityFrameworkCore.SqlServer;
 ~~~
-dotnet aspnet-codegenerator controller -name DndCharactersController     -actions -m DndCharacter    -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
-dotnet aspnet-codegenerator controller -name WeaponsController           -actions -m Weapon          -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
-dotnet aspnet-codegenerator controller -name ArmorController             -actions -m Armor           -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
-dotnet aspnet-codegenerator controller -name MagicalItemsController      -actions -m MagicalItem     -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
-dotnet aspnet-codegenerator controller -name OtherEquipmentsController   -actions -m OtherEquipment  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name DndCharactersController     -actions -m Domain.DndCharacter    -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name WeaponsController           -actions -m Domain.Weapon          -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name ArmorController             -actions -m Domain.Armor           -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name MagicalItemsController      -actions -m Domain.MagicalItem     -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name OtherEquipmentsController   -actions -m Domain.OtherEquipment  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 ~~~
 
 6. REST API controllers: 

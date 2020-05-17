@@ -36,7 +36,7 @@ namespace PublicApi.DTO.V1
         public int SilverPieces { get; set; }
         public int CopperPieces { get; set; }
         
-        public float AllItemsValueInGp => 0;
-        public float AllItemsWeight => 0;
+        public float AllItemsValueInGp { get; set; }
+        public float AllItemsWeight { get; set; }
     }
 }

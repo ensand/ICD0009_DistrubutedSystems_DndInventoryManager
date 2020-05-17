@@ -6,10 +6,12 @@ namespace PublicApi.DTO.V1
     public class Armor
     {
         public Guid Id { get; set; }
+
+        public Guid DndCharacterId { get; set; }
         
         [MinLength(1)]
         [MaxLength(512)] 
-        public virtual string Name { get; set; } = default!;
+        public string Name { get; set; } = default!;
         
         [MaxLength(128)]
         public string? ArmorType { get; set; } // light/medium/heavy

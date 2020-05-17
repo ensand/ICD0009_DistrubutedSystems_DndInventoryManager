@@ -1,12 +1,12 @@
 using System;
 using BLL.App.DTO.Identity;
-using DAL.Base;
+using Contracts.DAL.Base;
 
 namespace BLL.App.DTO
 {
-    public class MagicalItem : DomainEquipmentEntity
+    public class MagicalItem : IDomainEquipmentEntity
     {
-        public Guid Id { get; set; } = default!;
+        public virtual Guid Id { get; set; } = default!;
         
         public virtual string? Comment { get; set; }
 
@@ -18,15 +18,15 @@ namespace BLL.App.DTO
         
         public virtual int Quantity { get; set; }
         
-        public Guid AppUserId { get; set; }
-        public AppUser<Guid>? AppUser { get; set; }
+        public virtual Guid AppUserId { get; set; }
+        public virtual AppUser<Guid>? AppUser { get; set; }
         
-        public Guid DndCharacterId { get; set; }
-        public DndCharacter? DndCharacter { get; set; }
+        public virtual Guid DndCharacterId { get; set; }
+        public virtual DndCharacter? DndCharacter { get; set; }
         
-        public string? Spell { get; set; }
+        public virtual string? Spell { get; set; }
 
-        public int MaxCharges { get; set; }
-        public int CurrentCharges { get; set; }
+        public virtual int MaxCharges { get; set; }
+        public virtual int CurrentCharges { get; set; }
     }
 }

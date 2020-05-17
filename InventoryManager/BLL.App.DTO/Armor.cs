@@ -1,12 +1,12 @@
 using System;
 using BLL.App.DTO.Identity;
-using DAL.Base;
+using Contracts.DAL.Base;
 
 namespace BLL.App.DTO
 {
-    public class Armor : DomainEquipmentEntity
+    public class Armor : IDomainEquipmentEntity
     {
-        public Guid Id { get; set; } = default!;
+        public virtual Guid Id { get; set; } = default!;
         
         public virtual string? Comment { get; set; }
 
@@ -18,17 +18,17 @@ namespace BLL.App.DTO
         
         public virtual int Quantity { get; set; }
         
-        public Guid AppUserId { get; set; }
-        public AppUser<Guid>? AppUser { get; set; }
+        public virtual Guid AppUserId { get; set; }
+        public virtual AppUser<Guid>? AppUser { get; set; }
         
-        public Guid DndCharacterId { get; set; }
-        public DndCharacter? DndCharacter { get; set; }
+        public virtual Guid DndCharacterId { get; set; }
+        public virtual DndCharacter? DndCharacter { get; set; }
         
-        public string? ArmorType { get; set; }
+        public virtual string? ArmorType { get; set; }
 
-        public string Ac { get; set; } = default!;
+        public virtual string Ac { get; set; } = default!;
         
-        public bool StealthDisadvantage { get; set; }
-        public int? StrengthRequirement { get; set; }
+        public virtual bool StealthDisadvantage { get; set; }
+        public virtual int? StrengthRequirement { get; set; }
     }
 }

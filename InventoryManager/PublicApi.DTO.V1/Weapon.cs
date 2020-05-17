@@ -6,10 +6,12 @@ namespace PublicApi.DTO.V1
     public class Weapon
     {
         public Guid Id { get; set; }
+        
+        public Guid DndCharacterId { get; set; }
 
         [MinLength(1)] 
         [MaxLength(512)] 
-        public virtual string Name { get; set; } = default!;
+        public string Name { get; set; } = default!;
         
         [MinLength(1)]
         [MaxLength(128)]

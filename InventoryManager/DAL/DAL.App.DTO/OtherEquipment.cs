@@ -1,12 +1,12 @@
 using System;
-using DAL.Base;
+using Contracts.DAL.Base;
 using Domain.Identity;
 
 namespace DAL.App.DTO
 {
-    public class OtherEquipment : DomainEquipmentEntity
+    public class OtherEquipment : IDomainEquipmentEntity
     {
-        public Guid Id { get; set; } = default!;
+        public virtual Guid Id { get; set; } = default!;
         
         public virtual string? Comment { get; set; }
 
@@ -18,10 +18,10 @@ namespace DAL.App.DTO
         
         public virtual int Quantity { get; set; }
         
-        public Guid AppUserId { get; set; }
-        public AppUser<Guid>? AppUser { get; set; }
+        public virtual Guid AppUserId { get; set; }
+        public virtual AppUser<Guid>? AppUser { get; set; }
         
-        public Guid DndCharacterId { get; set; }
-        public DndCharacter? DndCharacter { get; set; }
+        public virtual Guid DndCharacterId { get; set; }
+        public virtual DndCharacter? DndCharacter { get; set; }
     }
 }

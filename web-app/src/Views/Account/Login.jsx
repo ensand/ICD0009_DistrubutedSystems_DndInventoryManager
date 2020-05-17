@@ -23,16 +23,14 @@ function Login() {
 
     const login = async () => {
         if (email === "" || password === "") {
-            console.log("No.");
             return;
         }
 
         const res = await loginReq({email, password});
 
-
         if (res !== undefined && res.status === "Login successful") {
             setError(false);
-            loginAction({token: res.token, rememberMe});
+            loginAction({token: res.token, rememberMe, email, password, userFirstName: res.userFirstName});
             history.push("/");
         } else {
             if (res === undefined) {

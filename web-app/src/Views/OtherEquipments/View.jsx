@@ -20,7 +20,7 @@ function View() {
     const [comment, setComment] = React.useState("");
 
     const fetchItems = async () => {
-        const apiCall = await fetch("https://localhost:5001/api/OtherEquipments");
+        const apiCall = await fetch("https://localhost:5001/api/v1.0/OtherEquipments");
         let data;
         try {
             data = await apiCall.json();
@@ -33,7 +33,7 @@ function View() {
     }
 
     const deleteItem = async (id) => {
-        await fetch(`https://localhost:5001/api/OtherEquipments/${id}`, {method: 'DELETE'});
+        await fetch(`https://localhost:5001/api/v1.0/OtherEquipments/${id}`, {method: 'DELETE'});
         fetchItems();
     }
 
@@ -50,7 +50,7 @@ function View() {
             newObj["id"] = itemId;
         }
         
-        await fetch(`https://localhost:5001/api/OtherEquipments/${uploadType === 'PUT' && itemId ? itemId : ""}`, 
+        await fetch(`https://localhost:5001/api/v1.0/OtherEquipments/${uploadType === 'PUT' && itemId ? itemId : ""}`, 
             {
                 method: uploadType, 
                 headers: {
@@ -62,7 +62,7 @@ function View() {
     }
 
     const editItem = async (id) => {
-        const item = await fetch(`https://localhost:5001/api/OtherEquipments/${id}`, {method: 'GET', headers: {"Content-Type": "application/json"}})
+        const item = await fetch(`https://localhost:5001/api/v1.0/OtherEquipments/${id}`, {method: 'GET', headers: {"Content-Type": "application/json"}})
             .then(response => response.json())
             .catch(error => console.log('error', error));
         

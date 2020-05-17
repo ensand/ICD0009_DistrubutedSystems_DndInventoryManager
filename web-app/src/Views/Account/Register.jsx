@@ -26,7 +26,7 @@ function Register() {
         }
 
         const res = await fetch(
-            'https://localhost:5001/api/account/register', 
+            'https://localhost:5001/api/v1.0/account/register', 
             {
                 method: 'POST', 
                 headers: {"Content-Type": "application/json"},

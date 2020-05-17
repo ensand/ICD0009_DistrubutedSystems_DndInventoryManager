@@ -5,7 +5,7 @@ function View() {
     const [items, setItems] = React.useState([]);
 
     const fetchItems = async () => {
-        const apiCall = await fetch("https://localhost:5001/api/Weapons");
+        const apiCall = await fetch("https://localhost:5001/api/v1.0/Weapons");
         let data;
         try {
             data = await apiCall.json();

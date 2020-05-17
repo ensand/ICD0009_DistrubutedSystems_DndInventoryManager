@@ -30,18 +30,16 @@ function App() {
 
     React.useEffect(() => {
         async function doLogin() {
-            const res = await loginReq({token: sessionStorage.getItem("token")}, true); 
+            const res = await loginReq({email: localStorage.getItem("appuser_email"), password: localStorage.getItem("appuser_password"), token: localStorage.getItem("appuser_token"), refresh: true}); 
             if (res !== undefined && res.status === "Login successful") {
-                loginAction({token: res.token});
+                loginAction({token: res.token, rememberMe: true, email: localStorage.getItem("appuser_email"), password: localStorage.getItem("appuser_password"), userFirstName: res.userFirstName});
                 history.push("/");
             }
         } 
 
-        console.log(sessionStorage.getItem("appuser_rememberMe") )
-
-        if ((sessionStorage.getItem("appuser_rememberMe") === 'true' || sessionStorage.getItem("appuser_rememberMe") === true)
-            && sessionStorage.getItem("appuser_token") !== undefined) {
-                console.log('login!!');
+        if ((localStorage.getItem("appuser_rememberMe") === 'true' || localStorage.getItem("appuser_rememberMe") === true)
+            && localStorage.getItem("appuser_token") !== undefined && localStorage.getItem("appuser_email") !== undefined
+            && localStorage.getItem("appuser_password") !== undefined) {
                 doLogin();                
         }
 

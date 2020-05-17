@@ -1,11 +1,15 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using System.Threading.Tasks;
 using Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WebApp.ApiControllers._1._0.Identity
 {
@@ -41,6 +45,12 @@ namespace WebApp.ApiControllers._1._0.Identity
 
             if (result.Succeeded)
             {
+                if (model.Refresh)
+                {
+                    _logger.LogInformation("Web-Api refresh login. User: " + model.Email);
+                    return Ok(new {token = model.Token, status = "Login successful", userFirstName = appUser.FirstName});
+                }
+                
                 var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser); // Get the user analog
                 var jwt = Extensions.IdentityExtensions.GenerateJwt(
                     claimsPrincipal.Claims, 
@@ -49,7 +59,7 @@ namespace WebApp.ApiControllers._1._0.Identity
                     _configuration.GetValue<int>("JWT:expirationInDays"));
                 
                 _logger.LogInformation("Token generated for user: " + model.Email);
-                return Ok(new {token = jwt, status = "Login successful"});
+                return Ok(new {token = jwt, status = "Login successful", userFirstName = appUser.FirstName});
             }
             
             _logger.LogInformation("Web-Api login. User attempted login with bad password: " + model.Email);
@@ -57,7 +67,7 @@ namespace WebApp.ApiControllers._1._0.Identity
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> LoginWithToken([FromBody] string token)
+        public async Task<ActionResult<string>> LoginWithToken([FromBody] TokenLoginDTO model)
         {
             throw new NotImplementedException();
         }
@@ -86,7 +96,7 @@ namespace WebApp.ApiControllers._1._0.Identity
             return Ok(new {status = "Registration successful"});
         }
 
-        public class LoginDTO // add required, min/max length
+        public class LoginDTO
         {
             [MinLength(5)] 
             [MaxLength(1024)] 
@@ -94,20 +104,23 @@ namespace WebApp.ApiControllers._1._0.Identity
             
             [MaxLength(1024)]
             public string Password { get; set; } = default!;
+
+            public bool Refresh { get; set; }
+
+            public string? Token { get; set; }
         }
 
         public class TokenLoginDTO
         {
-            [MinLength(5)] 
-            [MaxLength(1024)] 
+            [MinLength(5)]
+            [MaxLength(1024)]
             public string Email { get; set; } = default!;
-            
-            [MinLength(5)] 
-            [MaxLength(4096)] 
+
+            [Required] 
             public string Token { get; set; } = default!;
         }
 
-        public class RegisterDTO // add required, min/max length
+        public class RegisterDTO
         {
             [MinLength(5)]
             [MaxLength(1024)]

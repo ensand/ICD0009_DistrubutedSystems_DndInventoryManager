@@ -27,13 +27,13 @@ function App() {
 
     const userIsLoggedIn = useStoreState(state => state.appState.userLoggedIn);
     const loginAction = useStoreActions(state => state.appState.login);
-
+    const logoutAction = useStoreActions(state => state.appState.logout);
+    
     React.useEffect(() => {
         async function doLogin() {
             const res = await loginReq({email: localStorage.getItem("appuser_email"), password: localStorage.getItem("appuser_password"), token: localStorage.getItem("appuser_token"), refresh: true}); 
             if (res !== undefined && res.status === "Login successful") {
                 loginAction({token: res.token, rememberMe: true, email: localStorage.getItem("appuser_email"), password: localStorage.getItem("appuser_password"), userFirstName: res.userFirstName});
-                history.push("/");
             }
         } 
 
@@ -43,6 +43,12 @@ function App() {
                 doLogin();                
         }
 
+        return () => {
+            if (!(localStorage.getItem("appuser_rememberMe") === 'true' || localStorage.getItem("appuser_rememberMe") === true)) {
+                logoutAction();
+                history.push("/");
+            }
+        };
     }, []);
 
     return (

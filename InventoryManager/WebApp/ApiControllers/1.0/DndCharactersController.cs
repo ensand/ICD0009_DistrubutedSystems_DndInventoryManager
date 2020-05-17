@@ -12,6 +12,9 @@ using PublicApi.DTO.V1;
 
 namespace WebApp.ApiControllers._1._0
 {
+    /// <summary>
+    /// DndCharacters API
+    /// </summary>
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
@@ -26,6 +29,10 @@ namespace WebApp.ApiControllers._1._0
         }
 
         // GET: api/DndCharacters
+        /// <summary>
+        /// Get all DnDCharacters with no details
+        /// </summary>
+        /// <returns>All the characters</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DndCharacter>>> GetDndCharacters()
         {
@@ -34,98 +41,100 @@ namespace WebApp.ApiControllers._1._0
                 {
                     Id = bllEntity.Id,
                     Name = bllEntity.Name,
-                    OtherEquipment = bllEntity.OtherEquipment.Select(e => new OtherEquipment()
-                    {
-                        Id = e.Id,
-                        Name = e.Name,
-                        Comment = e.Comment,
-                        Weight = e.Weight,
-                        ValueInGp = e.ValueInGp,
-                        Quantity = e.Quantity
-                    }).ToArray()
+                    Comment = bllEntity.Comment,
+                    ArmorCount = bllEntity.ArmorCount,
+                    MagicalItemCount = bllEntity.MagicalItemCount,
+                    OtherEquipmentCount = bllEntity.OtherEquipmentCount,
+                    WeaponCount = bllEntity.WeaponCount,
+                    TreasureInGp = bllEntity.TreasureInGp
                 });
 
             return Ok(dndCharacters);
         }
 
         // GET: api/DndCharacters/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<DndCharacter>> GetDndCharacter(Guid id)
-        {
-            var dndCharacter = await _bll.DndCharacters.FirstOrDefaultAsync(id, User.UserGuidId());
-
-            if (dndCharacter == null)
-            {
-                return NotFound();
-            }
-
-            return dndCharacter;
-        }
-
-        // PUT: api/DndCharacters/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDndCharacter(Guid id, DndCharacter dndCharacter)
-        {
-            if (id != dndCharacter.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(dndCharacter).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DndCharacterExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/DndCharacters
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<DndCharacter>> PostDndCharacter(DndCharacter dndCharacter)
-        {
-            _context.DndCharacters.Add(dndCharacter);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetDndCharacter", new { id = dndCharacter.Id }, dndCharacter);
-        }
-
-        // DELETE: api/DndCharacters/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<DndCharacter>> DeleteDndCharacter(Guid id)
-        {
-            var dndCharacter = await _context.DndCharacters.FindAsync(id);
-            
-            if (dndCharacter == null)
-            {
-                return NotFound();
-            }
-
-            _context.DndCharacters.Remove(dndCharacter);
-            await _context.SaveChangesAsync();
-
-            return dndCharacter;
-        }
-
-        private bool DndCharacterExists(Guid id)
-        {
-            return _context.DndCharacters.Any(e => e.Id == id);
-        }
+        /// <summary>
+        /// Get the specific DnDCharacter with all the details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Character by ID</returns>
+        // [HttpGet("{id}")]
+        // public async Task<ActionResult<DndCharacter>> GetDndCharacter(Guid id)
+        // {
+        //     var dndCharacter = await _bll.DndCharacters.FirstOrDefaultAsync(id, User.UserGuidId());
+        //
+        //     if (dndCharacter == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //
+        //     return dndCharacter;
+        // }
+        //
+        // // PUT: api/DndCharacters/5
+        // // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> PutDndCharacter(Guid id, DndCharacter dndCharacter)
+        // {
+        //     if (id != dndCharacter.Id)
+        //     {
+        //         return BadRequest();
+        //     }
+        //
+        //     _context.Entry(dndCharacter).State = EntityState.Modified;
+        //
+        //     try
+        //     {
+        //         await _context.SaveChangesAsync();
+        //     }
+        //     catch (DbUpdateConcurrencyException)
+        //     {
+        //         if (!DndCharacterExists(id))
+        //         {
+        //             return NotFound();
+        //         }
+        //         else
+        //         {
+        //             throw;
+        //         }
+        //     }
+        //
+        //     return NoContent();
+        // }
+        //
+        // // POST: api/DndCharacters
+        // // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        // [HttpPost]
+        // public async Task<ActionResult<DndCharacter>> PostDndCharacter(DndCharacter dndCharacter)
+        // {
+        //     _context.DndCharacters.Add(dndCharacter);
+        //     await _context.SaveChangesAsync();
+        //
+        //     return CreatedAtAction("GetDndCharacter", new { id = dndCharacter.Id }, dndCharacter);
+        // }
+        //
+        // // DELETE: api/DndCharacters/5
+        // [HttpDelete("{id}")]
+        // public async Task<ActionResult<DndCharacter>> DeleteDndCharacter(Guid id)
+        // {
+        //     var dndCharacter = await _context.DndCharacters.FindAsync(id);
+        //     
+        //     if (dndCharacter == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //
+        //     _context.DndCharacters.Remove(dndCharacter);
+        //     await _context.SaveChangesAsync();
+        //
+        //     return dndCharacter;
+        // }
+        //
+        // private bool DndCharacterExists(Guid id)
+        // {
+        //     return _context.DndCharacters.Any(e => e.Id == id);
+        // }
     }
 }

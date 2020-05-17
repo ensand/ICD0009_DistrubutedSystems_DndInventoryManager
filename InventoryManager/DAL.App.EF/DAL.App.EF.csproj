@@ -12,6 +12,7 @@
     <ItemGroup>
       <ProjectReference Include="..\DAL.Base.EF\DAL.Base.EF.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\PublicApi.DTO.V1\PublicApi.DTO.V1.csproj" />
     </ItemGroup>
 
 </Project>

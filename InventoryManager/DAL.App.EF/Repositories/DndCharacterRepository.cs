@@ -6,6 +6,7 @@ using Contracts.DAL.App.Repositories;
 using DAL.Base.EF.Mappers;
 using DAL.Base.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
+using PublicApi.DTO.V1;
 
 namespace DAL.App.EF.Repositories
 {
@@ -16,26 +17,32 @@ namespace DAL.App.EF.Repositories
         {
         }
 
-        public Task<IEnumerable<DAL.App.DTO.DndCharacter>> AllAsync(Guid? userId = null)
+        public async Task<IEnumerable<DAL.App.DTO.DndCharacter>> AllAsync(Guid? userId = null)
         {
-            // if (userId == null)
-            // {
-            //     return await base.AllAsync(); // base is not actually needed, using it for clarity
-            // }
-            //
-            // return (await RepoDbSet
-            //         .Where(o => o.AppUserId == userId)
-            //         .Select(dbEntity => new OwnerDisplay()
-            //         {
-            //             Id = dbEntity.Id,
-            //             FirstName = dbEntity.FirstName, 
-            //             LastName = dbEntity.LastName,
-            //             AnimalCount =  dbEntity.Animals!.Count
-            //         })
-            //         .ToListAsync())
-            //     .Select(dbEntity => Mapper.Map<OwnerDisplay,DAL.App.DTO.Owner>(dbEntity));
+            if (userId == null)
+            {
+                return await base.AllAsync();
+            }
             
-            throw new NotImplementedException();
+            return (await RepoDbSet
+                    .Where(d => d.AppUserId == userId)
+                    .Select(dbEntity => new DAL.App.DTO.DndCharacterSummary()
+                    {
+                        Id = dbEntity.Id,
+                        Name = dbEntity.Name,
+                        Comment = dbEntity.Comment,
+                        ArmorCount = dbEntity.Armor!.Count,
+                        MagicalItemCount = dbEntity.MagicalItems!.Count,
+                        OtherEquipmentCount = dbEntity.OtherEquipment!.Count,
+                        WeaponCount = dbEntity.Weapons!.Count,
+                        TreasureInGp = (float) dbEntity.PlatinumPieces * 10 + 
+                                       (float) dbEntity.GoldPieces + 
+                                       (float) dbEntity.ElectrumPieces / 2 + 
+                                       (float) dbEntity.SilverPieces / 10 + 
+                                       (float) dbEntity.CopperPieces / 100
+                    })
+                    .ToListAsync())
+                .Select(dbEntity => Mapper.Map<DAL.App.DTO.DndCharacterSummary, DAL.App.DTO.DndCharacter>(dbEntity));
         }
 
         public async Task<DAL.App.DTO.DndCharacter> FirstOrDefaultAsync(Guid id, Guid? userId = null)

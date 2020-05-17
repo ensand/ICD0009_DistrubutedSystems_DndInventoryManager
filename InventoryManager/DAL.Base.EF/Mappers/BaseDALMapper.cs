@@ -26,8 +26,7 @@ namespace DAL.Base.EF.Mappers
             return _mapper.Map<TInObject, TOutObject>(inObject);
         }
 
-        public TMapOutObject Map<TMapInObject, TMapOutObject>(TMapInObject inObject) 
-            where TMapInObject : class
+        public TMapOutObject Map<TMapInObject, TMapOutObject>(TMapInObject inObject) where TMapInObject : class
             where TMapOutObject : class, new()
         {
             var inProperties = inObject

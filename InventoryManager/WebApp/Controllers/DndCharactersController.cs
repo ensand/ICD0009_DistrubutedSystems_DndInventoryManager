@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
@@ -14,6 +15,7 @@ namespace WebApp.Controllers
     public class DndCharactersController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IAppBLL _bll;
 
         public DndCharactersController(AppDbContext context)
         {

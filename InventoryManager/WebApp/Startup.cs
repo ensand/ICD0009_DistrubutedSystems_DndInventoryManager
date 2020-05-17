@@ -1,6 +1,8 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using BLL.App;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using DAL.App.EF;
 using Domain.Identity;
@@ -37,6 +39,7 @@ namespace WebApp
 
             // Add as scoped dependency, interface gets tied to the implementation.
             services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
+            services.AddScoped<IAppBLL, AppBLL>();
             
             services.AddIdentity<AppUser, AppRole>()
                 .AddDefaultUI()

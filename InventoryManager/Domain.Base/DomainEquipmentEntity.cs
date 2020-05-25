@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Contracts.DAL.Base;
 
-namespace DAL.Base
+namespace Domain.Base
 {
     public abstract class DomainEquipmentEntity : DomainEquipmentEntity<Guid>
     {

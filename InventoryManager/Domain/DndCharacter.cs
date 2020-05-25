@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using DAL.Base;
+using Domain.Base;
 using Domain.Identity;
 
 namespace Domain

@@ -12,7 +12,7 @@ namespace Domain.Base
     public abstract class DomainEntity<TKey> : IDomainEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        public virtual TKey Id { get; set; }
+        public virtual TKey Id { get; set; } = default!;
         
         [MaxLength(2048)]
         public virtual string? Comment { get; set; }

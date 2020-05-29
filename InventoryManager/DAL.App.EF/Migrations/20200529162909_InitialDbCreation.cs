@@ -159,9 +159,9 @@ namespace DAL.App.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    AppUserId = table.Column<Guid>(nullable: false),
                     Comment = table.Column<string>(maxLength: 2048, nullable: true),
                     Name = table.Column<string>(maxLength: 512, nullable: false),
-                    AppUserId = table.Column<Guid>(nullable: false),
                     PlatinumPieces = table.Column<int>(nullable: false),
                     GoldPieces = table.Column<int>(nullable: false),
                     ElectrumPieces = table.Column<int>(nullable: false),
@@ -184,13 +184,13 @@ namespace DAL.App.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    AppUserId = table.Column<Guid>(nullable: false),
+                    DndCharacterId = table.Column<Guid>(nullable: false),
                     Comment = table.Column<string>(maxLength: 2048, nullable: true),
                     Name = table.Column<string>(maxLength: 512, nullable: false),
                     Weight = table.Column<float>(nullable: false),
                     ValueInGp = table.Column<float>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
-                    AppUserId = table.Column<Guid>(nullable: false),
-                    DndCharacterId = table.Column<Guid>(nullable: false),
                     ArmorType = table.Column<string>(maxLength: 128, nullable: true),
                     Ac = table.Column<string>(maxLength: 128, nullable: false),
                     StealthDisadvantage = table.Column<bool>(nullable: false),
@@ -210,7 +210,7 @@ namespace DAL.App.EF.Migrations
                         column: x => x.DndCharacterId,
                         principalTable: "DndCharacters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -218,13 +218,13 @@ namespace DAL.App.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    AppUserId = table.Column<Guid>(nullable: false),
+                    DndCharacterId = table.Column<Guid>(nullable: false),
                     Comment = table.Column<string>(maxLength: 2048, nullable: true),
                     Name = table.Column<string>(maxLength: 512, nullable: false),
                     Weight = table.Column<float>(nullable: false),
                     ValueInGp = table.Column<float>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
-                    AppUserId = table.Column<Guid>(nullable: false),
-                    DndCharacterId = table.Column<Guid>(nullable: false),
                     Spell = table.Column<string>(maxLength: 256, nullable: true),
                     MaxCharges = table.Column<int>(nullable: false),
                     CurrentCharges = table.Column<int>(nullable: false)
@@ -243,7 +243,7 @@ namespace DAL.App.EF.Migrations
                         column: x => x.DndCharacterId,
                         principalTable: "DndCharacters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -251,13 +251,13 @@ namespace DAL.App.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    AppUserId = table.Column<Guid>(nullable: false),
+                    DndCharacterId = table.Column<Guid>(nullable: false),
                     Comment = table.Column<string>(maxLength: 2048, nullable: true),
                     Name = table.Column<string>(maxLength: 512, nullable: false),
                     Weight = table.Column<float>(nullable: false),
                     ValueInGp = table.Column<float>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false),
-                    AppUserId = table.Column<Guid>(nullable: false),
-                    DndCharacterId = table.Column<Guid>(nullable: false)
+                    Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -273,7 +273,7 @@ namespace DAL.App.EF.Migrations
                         column: x => x.DndCharacterId,
                         principalTable: "DndCharacters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -281,13 +281,13 @@ namespace DAL.App.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    AppUserId = table.Column<Guid>(nullable: false),
+                    DndCharacterId = table.Column<Guid>(nullable: false),
                     Comment = table.Column<string>(maxLength: 2048, nullable: true),
                     Name = table.Column<string>(maxLength: 512, nullable: false),
                     Weight = table.Column<float>(nullable: false),
                     ValueInGp = table.Column<float>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
-                    AppUserId = table.Column<Guid>(nullable: false),
-                    DndCharacterId = table.Column<Guid>(nullable: false),
                     DamageDice = table.Column<string>(maxLength: 128, nullable: false),
                     DamageType = table.Column<string>(maxLength: 128, nullable: false),
                     WeaponType = table.Column<string>(maxLength: 128, nullable: false),
@@ -309,7 +309,7 @@ namespace DAL.App.EF.Migrations
                         column: x => x.DndCharacterId,
                         principalTable: "DndCharacters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

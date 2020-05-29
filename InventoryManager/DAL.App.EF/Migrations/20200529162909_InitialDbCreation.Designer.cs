@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200423085512_InitialDbCreation")]
+    [Migration("20200529162909_InitialDbCreation")]
     partial class InitialDbCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -485,7 +485,7 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.DndCharacter", "DndCharacter")
                         .WithMany("Armor")
                         .HasForeignKey("DndCharacterId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -509,7 +509,7 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.DndCharacter", "DndCharacter")
                         .WithMany("MagicalItems")
                         .HasForeignKey("DndCharacterId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -524,7 +524,7 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.DndCharacter", "DndCharacter")
                         .WithMany("OtherEquipment")
                         .HasForeignKey("DndCharacterId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -539,7 +539,7 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.DndCharacter", "DndCharacter")
                         .WithMany("Weapons")
                         .HasForeignKey("DndCharacterId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

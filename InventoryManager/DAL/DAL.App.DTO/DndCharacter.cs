@@ -18,13 +18,8 @@ namespace DAL.App.DTO
         public int SilverPieces { get; set; }
         public int CopperPieces { get; set; }
         
-        public int MagicalItemCount { get; set; }
-        public int OtherEquipmentCount { get; set; }
-        public int ArmorCount { get; set; }
-        public int WeaponCount { get; set; }
-        
         public ICollection<MagicalItem>? MagicalItems { get; set; }
-        public ICollection<OtherEquipment>? OtherEquipment { get; set; }
+        public ICollection<OtherEquipmentSummary>? OtherEquipment { get; set; }
         public ICollection<Armor>? Armor { get; set; }
         public ICollection<Weapon>? Weapons { get; set; }
     }
@@ -32,7 +27,7 @@ namespace DAL.App.DTO
     public class DndCharacterSummary
     {
         public Guid Id { get; set; } = default!;
-        
+
         public string? Comment { get; set; }
         public string Name { get; set; } = default!;
         public float TreasureInGp { get; set; }

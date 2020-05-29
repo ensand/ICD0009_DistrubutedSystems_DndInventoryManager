@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.DAL.App.Repositories;
+using DAL.App.DTO;
 using DAL.Base.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,87 +18,145 @@ namespace DAL.App.EF.Repositories
         {
         }
 
-        public async Task<IEnumerable<DAL.App.DTO.DndCharacter>> AllAsync(Guid? userId = null)
-        {
-            throw new NotImplementedException();
 
-            // if (userId == null)
-            //     return await base.GetAllAsync();
-            //
-            // var dndCharacters = (await RepoDbSet
-            //         .Where(d => d.AppUserId == userId)
-            //         .Select(dbEntity => new DAL.App.DTO.DndCharacterSummary()
-            //         {
-            //             Id = dbEntity.Id,
-            //             Name = dbEntity.Name,
-            //             Comment = dbEntity.Comment,
-            //             ArmorCount = dbEntity.Armor!.Count,
-            //             MagicalItemCount = dbEntity.MagicalItems!.Count,
-            //             OtherEquipmentCount = dbEntity.OtherEquipment!.Count,
-            //             WeaponCount = dbEntity.Weapons!.Count,
-            //             TreasureInGp = (float) dbEntity.PlatinumPieces * 10 + 
-            //                            (float) dbEntity.GoldPieces + 
-            //                            (float) dbEntity.ElectrumPieces / 2 + 
-            //                            (float) dbEntity.SilverPieces / 10 + 
-            //                            (float) dbEntity.CopperPieces / 100
-            //         })
-            //         .ToListAsync())
-            //     .Select(dbEntity => Mapper.Map<DAL.App.DTO.DndCharacterSummary, DAL.App.DTO.DndCharacter>(dbEntity));
-            //
-            // return dndCharacters;
+        public async Task<IEnumerable<DndCharacterSummary>> GetAllAsync(Guid? userId = default, bool noTracking = true)
+        {
+            var query = PrepareQuery(userId, noTracking);
+            
+            var dndCharacters = query
+                .Include(e => e.Armor)
+                .Include(e => e.Weapons)
+                .Include(e => e.MagicalItems)
+                .Include(e => e.OtherEquipment)
+                .Select(e => new DndCharacterSummary
+            {
+                Id = e.Id,
+                Comment = e.Comment,
+                Name = e.Name,
+                ArmorCount = e.Armor!.Count,
+                MagicalItemCount = e.MagicalItems!.Count,
+                OtherEquipmentCount = e.OtherEquipment!.Count,
+                WeaponCount = e.Weapons!.Count,
+                TreasureInGp = (float) e.PlatinumPieces * 10 + 
+                               (float) e.GoldPieces + 
+                               (float) e.ElectrumPieces / 2 + 
+                               (float) e.SilverPieces / 10 + 
+                               (float) e.CopperPieces / 100
+
+            });
+
+            var result = await dndCharacters.ToListAsync();
+
+            return result;
         }
 
-        public async Task<DAL.App.DTO.DndCharacter> FirstOrDefaultAsync(Guid id, Guid? userId = null)
+        public async Task<DndCharacter> FirstOrDefaultAsync(Guid? id, Guid? userId = default, bool noTracking = true)
         {
-            throw new NotImplementedException();
-
-            var query = RepoDbSet.Where(d => d.Id == id).AsQueryable();
-            
-            if (userId != null)
-                query = query.Where(a => a.AppUserId == userId);
-            
-            // var dndCharacter = await query.Select(dbEntity => new DAL.App.DTO.DndCharacter()
-            // {
-            //     Id = dbEntity.Id,
-            //     Name = dbEntity.Name,
-            //     Comment = dbEntity.Comment,
-            //     ArmorCount = dbEntity.Armor!.Count,
-            //     MagicalItemCount = dbEntity.MagicalItems!.Count,
-            //     OtherEquipmentCount = dbEntity.OtherEquipment!.Count,
-            //     WeaponCount = dbEntity.Weapons!.Count,
-            //     PlatinumPieces = dbEntity.PlatinumPieces,
-            //     GoldPieces = dbEntity.GoldPieces,
-            //     ElectrumPieces = dbEntity.ElectrumPieces,
-            //     SilverPieces = dbEntity.SilverPieces,
-            //     CopperPieces = dbEntity.CopperPieces,
-            //     AllItemsValueInGp = 0, // do some math
-            //     AllItemsWeight = 0, // do some math here too
-            //     TreasureInGp = (float) dbEntity.PlatinumPieces * 10 +
-            //                    (float) dbEntity.GoldPieces +
-            //                    (float) dbEntity.ElectrumPieces / 2 +
-            //                    (float) dbEntity.SilverPieces / 10 +
-            //                    (float) dbEntity.CopperPieces / 100
-            // })
-            //     .Select(dbEntity => Mapper.Map<DAL.App.DTO.DndCharacter, DAL.App.DTO.DndCharacter>(dbEntity))
-            //     .FirstOrDefaultAsync();
-            
-            var dndCharacter = await query.FirstOrDefaultAsync();
-
-            return Mapper.Map(dndCharacter);
+            var query = PrepareQuery(userId, noTracking);
+            var domainEntity = await query
+                .Include(e => e.Armor)
+                .Include(e => e.Weapons)
+                .Include(e => e.MagicalItems)
+                .Include(e => e.OtherEquipment)
+                .FirstOrDefaultAsync(e => e.Id.Equals(id));
+        
+            var result = MapCharacterWithEquipment(domainEntity);
+        
+            return result;
         }
 
-        public async Task DeleteAsync(Guid id, Guid? userId = null) // Cascade delete all items too.
+        private DndCharacter MapCharacterWithEquipment(Domain.DndCharacter entity)
         {
-            throw new NotImplementedException();
+            var itemValues = CalculateAllItemsWeightAndValue(entity.Armor, entity.Weapons, entity.MagicalItems, entity.OtherEquipment);
+            
+            var dalEntity = new DndCharacter()
+            {
+                AppUserId = entity.AppUserId,
+                Id = entity.Id,
+                Name = entity.Name,
+                Comment = entity.Comment,
+                PlatinumPieces = entity.PlatinumPieces,
+                GoldPieces = entity.GoldPieces,
+                ElectrumPieces = entity.ElectrumPieces,
+                SilverPieces = entity.SilverPieces,
+                CopperPieces = entity.CopperPieces,
+                OtherEquipment = MapOtherEquipments(entity.OtherEquipment),
+                AllItemsWeight = itemValues.totalWeight,
+                AllItemsValueInGp = itemValues.totalValue,
+                TreasureInGp = (float) entity.PlatinumPieces * 10 + 
+                               (float) entity.GoldPieces + 
+                               (float) entity.ElectrumPieces / 2 + 
+                               (float) entity.SilverPieces / 10 + 
+                               (float) entity.CopperPieces / 100
+            };
 
-            // var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
-            // if (userId != null)
-            // {
-            //     query = query.Where(a => a.AppUserId == userId);
-            // }
-            //
-            // var owner = await query.AsNoTracking().FirstOrDefaultAsync();
-            // base.DeleteAsync(owner.Id);
+
+            return dalEntity;
+        }
+
+        private ICollection<OtherEquipmentSummary> MapOtherEquipments(ICollection<Domain.OtherEquipment>? equipments)
+        {
+            if (equipments == null || equipments.Count == 0)
+            {
+                return new List<OtherEquipmentSummary>();
+            }
+            ICollection<OtherEquipmentSummary> result = equipments.Select(oe => new OtherEquipmentSummary()
+            {
+                Id = oe.Id,
+                Name = oe.Name,
+                Comment = oe.Comment,
+                ValueInGp = oe.ValueInGp,
+                Weight = oe.Weight,
+                Quantity = oe.Quantity
+            }).ToList();
+
+            return result;
+        }
+        
+        private (float totalValue, float totalWeight) CalculateAllItemsWeightAndValue(ICollection<Domain.Armor>? armors,
+            ICollection<Domain.Weapon>? weapons, ICollection<Domain.MagicalItem>? magicalItems,
+            ICollection<Domain.OtherEquipment>? equipments)
+        {
+            float totalValue = 0;
+            float totalWeight = 0;
+            
+            if (armors != null && armors.Count > 0)
+            {
+                foreach (var armor in armors)
+                {
+                    totalValue = totalValue + (armor.ValueInGp * armor.Quantity);
+                    totalWeight = totalWeight + (armor.Weight * armor.Quantity);
+                }
+            }
+            
+            if (weapons != null && weapons.Count > 0)
+            {
+                foreach (var weapon in weapons)
+                {
+                    totalValue = totalValue + (weapon.ValueInGp * weapon.Quantity);
+                    totalWeight = totalWeight + (weapon.Weight * weapon.Quantity);
+                }
+            }
+            
+            if (magicalItems != null && magicalItems.Count > 0)
+            {
+                foreach (var magicalItem in magicalItems)
+                {
+                    totalValue = totalValue + (magicalItem.ValueInGp * magicalItem.Quantity);
+                    totalWeight = totalWeight + (magicalItem.Weight * magicalItem.Quantity);
+                }
+            }
+
+            if (equipments != null && equipments.Count > 0)
+            {
+                foreach (var equipment in equipments)
+                {
+                    totalValue = totalValue + (equipment.ValueInGp * equipment.Quantity);
+                    totalWeight = totalWeight + (equipment.Weight * equipment.Quantity);
+                }
+            }
+
+            return (totalValue, totalWeight);
         }
     }
 }

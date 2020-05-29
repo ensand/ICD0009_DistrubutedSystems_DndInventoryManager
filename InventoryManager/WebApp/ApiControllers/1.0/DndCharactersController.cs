@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PublicApi.DTO.V1;
 
 namespace WebApp.ApiControllers._1._0
@@ -36,7 +33,7 @@ namespace WebApp.ApiControllers._1._0
 
         // GET: api/DndCharacters
         /// <summary>
-        /// Get all DnDCharacters with no details
+        /// Get all DnDCharacters, does not include the details of the equipment.
         /// </summary>
         /// <returns>All the characters</returns>
         [HttpGet]
@@ -48,7 +45,7 @@ namespace WebApp.ApiControllers._1._0
 
         // GET: api/DndCharacters/5
         /// <summary>
-        /// Get the specific DnDCharacter with all the details
+        /// Get the specific DnDCharacter with all the details of the equipment.
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Character by ID</returns>
@@ -66,23 +63,21 @@ namespace WebApp.ApiControllers._1._0
         // PUT: api/DndCharacters/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Update the character details (not for the equipment details)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dndCharacter"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDndCharacter(Guid id, DAL.App.DTO.DndCharacter dndCharacter)
         {
             if (id != dndCharacter.Id)
-            {
-                return BadRequest("Id and dndCharacter.id do not match");
-            }
+                return BadRequest();
 
-            if (!await _uow.DndCharacters.ExistsAsync(dndCharacter.Id, User.UserGuidId()))
-            {
-                return NotFound("Current user does not have a character with this id: "+ dndCharacter.Id);
-            }
-
-            dndCharacter.AppUserId = User.UserGuidId();
-            await _uow.DndCharacters.UpdateAsync(dndCharacter);
+            await _uow.DndCharacters.UpdateAsync(dndCharacter, User.UserGuidId());
             await _uow.SaveChangesAsync();
-            
+
             return NoContent();
 
         }
@@ -90,6 +85,11 @@ namespace WebApp.ApiControllers._1._0
         // POST: api/DndCharacters
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Create a new character
+        /// </summary>
+        /// <param name="dndCharacter"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<DndCharacter>> PostDndCharacter(DAL.App.DTO.DndCharacter dndCharacter)
         // public async void PostDndCharacter(DAL.App.DTO.DndCharacter dndCharacter)
@@ -101,20 +101,24 @@ namespace WebApp.ApiControllers._1._0
         }
         
         // DELETE: api/DndCharacters/5
-        // [HttpDelete("{id}")]
-        // public async Task<ActionResult<DndCharacter>> DeleteDndCharacter(Guid id)
-        // {
-        //     var dndCharacter = await _context.DndCharacters.FindAsync(id);
-        //     
-        //     if (dndCharacter == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     _context.DndCharacters.Remove(dndCharacter);
-        //     await _context.SaveChangesAsync();
-        //
-        //     return dndCharacter;
-        // }
+        /// <summary>
+        /// Delete a character, uses cascade delete to delete the items as well.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Domain.DndCharacter>> DeleteDndCharacter(Guid id)
+        {
+            var dndCharacter = await _uow.DndCharacters.FirstOrDefaultAsync(id, User.UserGuidId());
+            if (dndCharacter == null)
+            {
+                return NotFound();
+            }
+
+            await _uow.DndCharacters.RemoveAsync(id, User.UserGuidId());
+            await _uow.SaveChangesAsync();
+
+            return Ok(id);
+        }
     }
 }

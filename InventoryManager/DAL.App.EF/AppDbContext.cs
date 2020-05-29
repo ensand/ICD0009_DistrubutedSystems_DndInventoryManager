@@ -32,11 +32,36 @@ namespace DAL.App.EF
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
+            
             foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
+        
+            
+            builder.Entity<DndCharacter>()
+                .HasMany(c => c.Armor)
+                .WithOne(c => c.DndCharacter!)
+                .HasForeignKey(oe => oe.DndCharacterId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            builder.Entity<DndCharacter>()
+                .HasMany(c => c.Weapons)
+                .WithOne(c => c.DndCharacter!)
+                .HasForeignKey(oe => oe.DndCharacterId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            builder.Entity<DndCharacter>()
+                .HasMany(c => c.MagicalItems)
+                .WithOne(c => c.DndCharacter!)
+                .HasForeignKey(oe => oe.DndCharacterId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            builder.Entity<DndCharacter>()
+                .HasMany(c => c.OtherEquipment)
+                .WithOne(oe => oe.DndCharacter!)
+                .HasForeignKey(oe => oe.DndCharacterId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public override int SaveChanges()

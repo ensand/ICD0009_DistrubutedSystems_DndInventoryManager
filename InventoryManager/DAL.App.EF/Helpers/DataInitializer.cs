@@ -24,33 +24,19 @@ namespace DAL.App.EF.Helpers
             var userName = "enola1998@gmail.com";
             
             var dndCharacter = new DndCharacter()
-            {
-                AppUserId = userManager.FindByNameAsync(userName).Result.Id,
-                Name = "Dingdong",
-                Comment = "___TEST",
-                PlatinumPieces = 0,
-                GoldPieces = 0,
-                ElectrumPieces =  0,
-                SilverPieces = 0,
-                CopperPieces = 100000
+                {
+                    Id = new Guid("00000000-0000-0000-0000-000000000002"),
+                    AppUserId = userManager.FindByNameAsync(userName).Result.Id,
+                    Name = "Dingdong Pingpong",
+                    Comment = "Default character",
+                    PlatinumPieces = 0,
+                    GoldPieces = 420,
+                    ElectrumPieces =  0,
+                    SilverPieces = 0,
+                    CopperPieces = 6372
             };
 
-            var defaultExists = false;
-            
-            if (context.DndCharacters.Any())
-            {
-                foreach (var character in context.DndCharacters)
-                {
-                    if (character.Comment.Equals("___TEST") && character.Name.Equals("Dingdong"))
-                    {
-                        defaultExists = true;
-                        break;
-                    }
-                    
-                }
-            }
-
-            if (!defaultExists)
+            if (!context.DndCharacters.Any(c => c.Id == dndCharacter.Id))
             {
                 context.DndCharacters.Add(dndCharacter);
                 context.SaveChanges();
@@ -86,7 +72,14 @@ namespace DAL.App.EF.Helpers
             
             if (user == null)
             {
-                user = new AppUser {Email = userName, UserName = userName, FirstName = firstName, LastName = lastName};
+                user = new AppUser
+                {
+                    Id = new Guid("00000000-0000-0000-0000-000000000001"), 
+                    Email = userName, 
+                    UserName = userName, 
+                    FirstName = firstName, 
+                    LastName = lastName
+                };
                 var result = userManager.CreateAsync(user, password).Result;
 
                 if (!result.Succeeded)

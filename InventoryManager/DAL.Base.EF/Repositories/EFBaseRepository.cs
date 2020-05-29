@@ -48,7 +48,7 @@ namespace DAL.Base.EF.Repositories
                 throw new ArgumentNullException(typeof(TDALEntity).Name + "was not found as DbSet.");
         }
 
-        public virtual async Task<IEnumerable<TDALEntity>> GetAllAsync(TKey userId = default, bool noTracking = true)
+        public virtual async Task<IEnumerable<TDALEntity>> GetAllAsync(object? userId = null, bool noTracking = true)
         {
             var query = PrepareQuery(userId, noTracking);
             var domainEntities = await query.ToListAsync();
@@ -58,7 +58,7 @@ namespace DAL.Base.EF.Repositories
 
         }
 
-        public virtual async Task<TDALEntity> FirstOrDefaultAsync(TKey id, TKey userId = default, bool noTracking = true)
+        public virtual async Task<TDALEntity> FirstOrDefaultAsync(TKey id, object? userId = null, bool noTracking = true)
         {
             var query = PrepareQuery(userId, noTracking);
             var domainEntity = await query.FirstOrDefaultAsync(e => e.Id.Equals(id));
@@ -79,7 +79,7 @@ namespace DAL.Base.EF.Repositories
             return result;
         }
 
-        public virtual async Task<TDALEntity> UpdateAsync(TDALEntity entity, TKey userId = default)
+        public virtual async Task<TDALEntity> UpdateAsync(TDALEntity entity, object? userId = null)
         {
             var domainEntity = Mapper.Map(entity);
             
@@ -91,7 +91,7 @@ namespace DAL.Base.EF.Repositories
             return result;
         }
 
-        public virtual async Task<TDALEntity> RemoveAsync(TDALEntity entity, TKey userId = default)
+        public virtual async Task<TDALEntity> RemoveAsync(TDALEntity entity, object? userId = null)
         {
             var domainEntity = Mapper.Map(entity);
             await CheckDomainEntityOwnership(domainEntity, userId);
@@ -101,7 +101,7 @@ namespace DAL.Base.EF.Repositories
             return result;
         }
 
-        public virtual async Task<TDALEntity> RemoveAsync(TKey id, TKey userId = default)
+        public virtual async Task<TDALEntity> RemoveAsync(TKey id, object? userId = null)
         {
             var query = PrepareQuery(userId, true);
             var domainEntity = await query.FirstOrDefaultAsync(e => e.Id.Equals(id));
@@ -116,7 +116,7 @@ namespace DAL.Base.EF.Repositories
 
         // TODO: figure out why 'ExistsAsync' closes the db connection
         // What I have tried: just calling this out, saving the result to a variable.
-        public virtual async Task<bool> ExistsAsync(TKey id, TKey userId = default)
+        public virtual async Task<bool> ExistsAsync(TKey id, object? userId = null)
         {
             var query = PrepareQuery(userId, true);
             var recordExists = await query.AnyAsync(e => e.Id.Equals(id));
@@ -124,7 +124,7 @@ namespace DAL.Base.EF.Repositories
             return recordExists;
         }
 
-        private IQueryable<TDomainEntity> PrepareQuery(TKey userId = default, bool noTracking = true)
+        protected IQueryable<TDomainEntity> PrepareQuery(object? userId = null, bool noTracking = true)
         {
             var query = RepoDbSet.AsQueryable();
             
@@ -141,12 +141,12 @@ namespace DAL.Base.EF.Repositories
                         .Equals((TKey) userId));
             }
 
-            Console.WriteLine("Repo: " + query.ToArray().ToString() + " - " + query.ToArray().Count());
+            Console.WriteLine("Repo: " + query.ToArray() + " - " + query.ToArray().Length);
 
             return query;
         }
 
-        private async Task CheckDomainEntityOwnership(TDomainEntity entity, TKey userId = default)
+        protected async Task CheckDomainEntityOwnership(TDomainEntity entity, object? userId = null)
         {
             var recordExists = await ExistsAsync(entity.Id, userId);
             

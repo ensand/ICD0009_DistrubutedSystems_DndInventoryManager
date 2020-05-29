@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>, IBaseDbContext
+    public class AppEntityTracker : IdentityDbContext<AppUser, AppRole, Guid>, IBaseEntityTracker
     {
         public DbSet<DndCharacter> DndCharacters { get; set; } = default!;
         public DbSet<Weapon> Weapons { get; set; } = default!;
@@ -24,7 +24,7 @@ namespace DAL.App.EF
             new Dictionary<IDomainEntityId<Guid>, IDomainEntityId<Guid>>();
         
 
-        public AppDbContext(DbContextOptions<AppDbContext> options)
+        public AppEntityTracker(DbContextOptions<AppEntityTracker> options)
             : base(options)
         {
         }

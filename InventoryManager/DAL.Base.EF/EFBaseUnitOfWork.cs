@@ -6,16 +6,16 @@ namespace DAL.Base.EF
     public class EFBaseUnitOfWork<TDbContext> : BaseUnitOfWork
         where TDbContext : DbContext
     {
-        protected readonly TDbContext UowDbContext;
+        protected readonly TDbContext UowEntityTracker;
         
-        public EFBaseUnitOfWork(TDbContext uowDbContext)
+        public EFBaseUnitOfWork(TDbContext uowEntityTracker)
         {
-            UowDbContext = uowDbContext;
+            UowEntityTracker = uowEntityTracker;
         }
 
         public override async Task<int> SaveChangesAsync()
         {
-            return await UowDbContext.SaveChangesAsync();
+            return await UowEntityTracker.SaveChangesAsync();
         }
     }
 }

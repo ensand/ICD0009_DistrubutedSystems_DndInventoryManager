@@ -10,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 namespace DAL.App.EF.Repositories
 {
     public class DndCharacterRepository : 
-        EFBaseRepository<AppDbContext, Domain.Identity.AppUser, Domain.DndCharacter, DAL.App.DTO.DndCharacter>, 
+        EFBaseRepository<AppEntityTracker, Domain.Identity.AppUser, Domain.DndCharacter, DAL.App.DTO.DndCharacter>, 
         IDndCharacterRepository
     {
-        public DndCharacterRepository(AppDbContext repoDbContext) 
-            : base(repoDbContext, new DAL.Base.Mappers.BaseMapper<Domain.DndCharacter, DAL.App.DTO.DndCharacter>())
+        public DndCharacterRepository(AppEntityTracker repoEntityTracker) 
+            : base(repoEntityTracker, new DAL.Base.Mappers.BaseMapper<Domain.DndCharacter, DAL.App.DTO.DndCharacter>())
         {
         }
 
@@ -94,13 +94,13 @@ namespace DAL.App.EF.Repositories
             return dalEntity;
         }
 
-        private ICollection<OtherEquipmentSummary> MapOtherEquipments(ICollection<Domain.OtherEquipment>? equipments)
+        private ICollection<OtherEquipment> MapOtherEquipments(ICollection<Domain.OtherEquipment>? equipments)
         {
             if (equipments == null || equipments.Count == 0)
             {
-                return new List<OtherEquipmentSummary>();
+                return new List<OtherEquipment>();
             }
-            ICollection<OtherEquipmentSummary> result = equipments.Select(oe => new OtherEquipmentSummary()
+            ICollection<OtherEquipment> result = equipments.Select(oe => new OtherEquipment()
             {
                 Id = oe.Id,
                 Name = oe.Name,

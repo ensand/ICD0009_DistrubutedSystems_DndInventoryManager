@@ -34,7 +34,7 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(options =>
+            services.AddDbContext<AppEntityTracker>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("MsSqlConnection")));
 
@@ -44,7 +44,7 @@ namespace WebApp
             
             services.AddIdentity<AppUser, AppRole>()
                 .AddDefaultUI()
-                .AddEntityFrameworkStores<AppDbContext>()
+                .AddEntityFrameworkStores<AppEntityTracker>()
                 .AddDefaultTokenProviders();
             
             services.AddControllersWithViews();
@@ -136,7 +136,7 @@ namespace WebApp
         private static void UpdateDatabase(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration Configuration)
         {
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
-            using var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
+            using var context = serviceScope.ServiceProvider.GetService<AppEntityTracker>();
             using var userManager = serviceScope.ServiceProvider.GetService<UserManager<AppUser>>();
             using var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<AppRole>>();
             var logger = serviceScope.ServiceProvider.GetService<ILogger<Startup>>();

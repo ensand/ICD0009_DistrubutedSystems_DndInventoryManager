@@ -4,11 +4,11 @@ using DAL.Base.EF.Repositories;
 namespace DAL.App.EF.Repositories
 {
     public class ArmorRepository : 
-        EFBaseRepository<AppDbContext, Domain.Identity.AppUser, Domain.Armor, DAL.App.DTO.Armor>, 
+        EFBaseRepository<AppEntityTracker, Domain.Identity.AppUser, Domain.Armor, DAL.App.DTO.Armor>, 
         IArmorRepository
     {
-        public ArmorRepository(AppDbContext repoDbContext) 
-            : base(repoDbContext, new DAL.Base.Mappers.BaseMapper<Domain.Armor, DAL.App.DTO.Armor>())
+        public ArmorRepository(AppEntityTracker repoEntityTracker) 
+            : base(repoEntityTracker, new DAL.Base.Mappers.BaseMapper<Domain.Armor, DAL.App.DTO.Armor>())
         {
         }
     }

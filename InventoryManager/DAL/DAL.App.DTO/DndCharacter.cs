@@ -1,12 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using Domain.Base;
-using Domain.Identity;
+using System.Text.Json.Serialization;
+using Contracts.DAL.Base;
+using DAL.App.DTO.Identity;
 
 namespace DAL.App.DTO
 {
-    public class DndCharacter : DomainEntity<AppUser>
+    public class DndCharacter : IDomainEntityId
     {
+        public Guid Id { get; set; }
+
+        public Guid AppUserId { get; set; }
+        
+        [JsonIgnore] 
+        public AppUser? AppUser { get; set; }
+        
+        public string Name { get; set; } = default!;
+
+        public string? Comment { get; set; }
+        
         public float TreasureInGp { get; set; }
         
         public float AllItemsValueInGp { get; set; }
@@ -19,7 +31,7 @@ namespace DAL.App.DTO
         public int CopperPieces { get; set; }
         
         public ICollection<MagicalItem>? MagicalItems { get; set; }
-        public ICollection<OtherEquipmentSummary>? OtherEquipment { get; set; }
+        public ICollection<OtherEquipment>? OtherEquipment { get; set; }
         public ICollection<Armor>? Armor { get; set; }
         public ICollection<Weapon>? Weapons { get; set; }
     }

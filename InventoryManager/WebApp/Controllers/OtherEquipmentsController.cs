@@ -14,9 +14,9 @@ namespace WebApp.Controllers
     [Authorize(Roles = "user")]
     public class OtherEquipmentsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly AppEntityTracker _context;
 
-        public OtherEquipmentsController(AppDbContext context)
+        public OtherEquipmentsController(AppEntityTracker context)
         {
             _context = context;
         }

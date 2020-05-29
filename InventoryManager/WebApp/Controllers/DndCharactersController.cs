@@ -14,10 +14,10 @@ namespace WebApp.Controllers
     [Authorize(Roles = "user")]
     public class DndCharactersController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly AppEntityTracker _context;
         private readonly IAppBLL _bll;
 
-        public DndCharactersController(AppDbContext context)
+        public DndCharactersController(AppEntityTracker context)
         {
             _context = context;
         }

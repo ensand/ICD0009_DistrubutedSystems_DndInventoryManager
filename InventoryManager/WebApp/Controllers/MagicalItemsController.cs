@@ -14,9 +14,9 @@ namespace WebApp.Controllers
     [Authorize(Roles = "user")]
     public class MagicalItemsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly AppEntityTracker _context;
 
-        public MagicalItemsController(AppDbContext context)
+        public MagicalItemsController(AppEntityTracker context)
         {
             _context = context;
         }

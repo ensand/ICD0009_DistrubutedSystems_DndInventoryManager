@@ -14,9 +14,9 @@ namespace WebApp.Controllers
     [Authorize(Roles = "user")]
     public class WeaponsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly AppEntityTracker _context;
 
-        public WeaponsController(AppDbContext context)
+        public WeaponsController(AppEntityTracker context)
         {
             _context = context;
         }

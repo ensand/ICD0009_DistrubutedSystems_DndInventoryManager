@@ -14,9 +14,9 @@ namespace WebApp.Controllers
     [Authorize(Roles = "user")]
     public class ArmorController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly AppEntityTracker _context;
 
-        public ArmorController(AppDbContext context)
+        public ArmorController(AppEntityTracker context)
         {
             _context = context;
         }

@@ -9,17 +9,17 @@ namespace DAL.App.EF.Helpers
 {
     public class DataInitializer
     {
-        public static void MigrateDatabase(AppEntityTracker context)
+        public static void MigrateDatabase(AppDbContext context)
         {
             context.Database.Migrate();
         }
         
-        public static bool DeleteDatabase(AppEntityTracker context)
+        public static bool DeleteDatabase(AppDbContext context)
         {
             return context.Database.EnsureDeleted();
         }
 
-        public static void SeedData(AppEntityTracker context, UserManager<AppUser> userManager)
+        public static void SeedData(AppDbContext context, UserManager<AppUser> userManager)
         {
             var userName = "enola1998@gmail.com";
             

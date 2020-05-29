@@ -19,7 +19,7 @@ namespace Contracts.DAL.Base.Repositories
         /// <param name="userId">Limit the result to this users data.</param>
         /// <param name="noTracking">Use AsNoTracking if data source supports it.</param>
         /// <returns></returns>
-        Task<IEnumerable<TEntity>> GetAllAsync(TKey userId = default, bool noTracking = true);
+        Task<IEnumerable<TEntity>> GetAllAsync(object? userId = null, bool noTracking = true);
 
         /// <summary>
         /// Find the entity by given ID or return the default result.
@@ -28,15 +28,15 @@ namespace Contracts.DAL.Base.Repositories
         /// <param name="userId">Limit the result to this users data.</param>
         /// <param name="noTracking">Use AsNoTracking if data source supports it.</param>
         /// <returns></returns>
-        Task<TEntity> FirstOrDefaultAsync(TKey id, TKey userId = default, bool noTracking = true);
+        Task<TEntity> FirstOrDefaultAsync(TKey id, object? userId = null, bool noTracking = true);
         
         TEntity Add(TEntity entity);
 
-        Task<TEntity> UpdateAsync(TEntity entity, TKey userId = default);
+        Task<TEntity> UpdateAsync(TEntity entity, object? userId = null);
 
-        Task<TEntity> RemoveAsync(TEntity entity, TKey userId = default);
-        Task<TEntity> RemoveAsync(TKey id, TKey userId = default);
+        Task<TEntity> RemoveAsync(TEntity entity, object? userId = null);
+        Task<TEntity> RemoveAsync(TKey id, object? userId = null);
 
-        Task<bool> ExistsAsync(TKey id, TKey userId = default);
+        Task<bool> ExistsAsync(TKey id, object? userId = null);
     }
 }

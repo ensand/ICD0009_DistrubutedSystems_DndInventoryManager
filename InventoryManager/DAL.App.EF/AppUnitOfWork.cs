@@ -5,25 +5,25 @@ using DAL.Base.EF;
 
 namespace DAL.App.EF
 {
-    public class AppUnitOfWork : EFBaseUnitOfWork<AppEntityTracker>, IAppUnitOfWork
+    public class AppUnitOfWork : EFBaseUnitOfWork<AppDbContext>, IAppUnitOfWork
     {
-        public AppUnitOfWork(AppEntityTracker uowEntityTracker) : base(uowEntityTracker)
+        public AppUnitOfWork(AppDbContext uowDbContext) : base(uowDbContext)
         {
         }
 
         public IArmorRepository Armors =>
-            GetRepository<IArmorRepository>(() => new ArmorRepository(UowEntityTracker));
+            GetRepository<IArmorRepository>(() => new ArmorRepository(UowDbContext));
         
         public IDndCharacterRepository DndCharacters =>
-            GetRepository<IDndCharacterRepository>(() => new DndCharacterRepository(UowEntityTracker));
+            GetRepository<IDndCharacterRepository>(() => new DndCharacterRepository(UowDbContext));
         
         public IMagicalItemRepository MagicalItems =>
-            GetRepository<IMagicalItemRepository>(() => new MagicalItemRepository(UowEntityTracker));
+            GetRepository<IMagicalItemRepository>(() => new MagicalItemRepository(UowDbContext));
         
         public IOtherEquipmentRepository OtherEquipments =>
-            GetRepository<IOtherEquipmentRepository>(() => new OtherEquipmentRepository(UowEntityTracker));
+            GetRepository<IOtherEquipmentRepository>(() => new OtherEquipmentRepository(UowDbContext));
         
         public IWeaponRepository Weapons =>
-            GetRepository<IWeaponRepository>(() => new WeaponRepository(UowEntityTracker));
+            GetRepository<IWeaponRepository>(() => new WeaponRepository(UowDbContext));
     }
 }

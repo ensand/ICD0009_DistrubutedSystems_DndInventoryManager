@@ -3,7 +3,12 @@ using DAL.App.DTO;
 
 namespace Contracts.DAL.App.Repositories
 {
-    public interface IArmorRepository : IBaseRepository<Armor>
+    public interface IArmorRepository : IBaseRepository<Armor>, IArmorRepositoryCustom
+    {
+        
+    }
+
+    public interface IArmorRepositoryCustom
     {
         
     }

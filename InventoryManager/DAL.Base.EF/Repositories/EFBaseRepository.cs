@@ -19,7 +19,7 @@ namespace DAL.Base.EF.Repositories
         where TDomainEntity : class, IDomainEntityId<Guid>, new()
         where TDALEntity : class, IDomainEntityId<Guid>, new()
     {
-        public EFBaseRepository(TDbContext repoEntityTracker, IBaseMapper<TDomainEntity, TDALEntity> mapper) : base(repoEntityTracker, mapper)
+        public EFBaseRepository(TDbContext repoDbContext, IBaseMapper<TDomainEntity, TDALEntity> mapper) : base(repoDbContext, mapper)
         {
         }
     }
@@ -32,16 +32,16 @@ namespace DAL.Base.EF.Repositories
         where TDALEntity : class, IDomainEntityId<TKey>, new()
     {
         // ReSharper disable MemberCanBePrivate.Global
-        protected readonly TDbContext RepoEntityTracker;
+        protected readonly TDbContext RepoDbContext;
         protected readonly DbSet<TDomainEntity> RepoDbSet;
         protected readonly IBaseMapper<TDomainEntity, TDALEntity> Mapper;
         // ReSharper enable MemberCanBePrivate.Global
 
 
-        public EFBaseRepository(TDbContext repoEntityTracker, IBaseMapper<TDomainEntity, TDALEntity> mapper)
+        public EFBaseRepository(TDbContext repoDbContext, IBaseMapper<TDomainEntity, TDALEntity> mapper)
         {
-            RepoEntityTracker = repoEntityTracker;
-            RepoDbSet = RepoEntityTracker.Set<TDomainEntity>();
+            RepoDbContext = repoDbContext;
+            RepoDbSet = RepoDbContext.Set<TDomainEntity>();
             Mapper = mapper;
 
             if (RepoDbSet == null)
@@ -72,7 +72,7 @@ namespace DAL.Base.EF.Repositories
             var domainEntity = Mapper.Map(entity);
             var trackedDomainEntity = RepoDbSet.Add(domainEntity).Entity;
             
-            RepoEntityTracker.EntityTracker.Add(trackedDomainEntity, entity);
+            RepoDbContext.EntityTracker.Add(trackedDomainEntity, entity);
             
             var result = Mapper.Map(trackedDomainEntity);
             

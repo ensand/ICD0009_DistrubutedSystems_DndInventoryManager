@@ -39,7 +39,7 @@ namespace WebApp.ApiControllers._1._0
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DndCharacter>>> GetDndCharacters()
         {
-            var dndCharacters = await _uow.DndCharacters.GetAllAsync(User.UserGuidId());
+            var dndCharacters = await _uow.DndCharacters.CustomGetAllAsync(User.UserGuidId());
             return Ok(dndCharacters);
         }
 
@@ -52,7 +52,7 @@ namespace WebApp.ApiControllers._1._0
         [HttpGet("{id}")]
         public async Task<ActionResult<DndCharacterDetails>> GetDndCharacter(Guid id)
         {
-            var characterDetails = await _uow.DndCharacters.FirstOrDefaultAsync(id, User.UserGuidId());
+            var characterDetails = await _uow.DndCharacters.CustomFirstOrDefaultAsync(id, User.UserGuidId());
 
             if (characterDetails == null)
                 return NotFound("Character with id '" + id + "' was not found.");
@@ -109,7 +109,7 @@ namespace WebApp.ApiControllers._1._0
         [HttpDelete("{id}")]
         public async Task<ActionResult<Domain.DndCharacter>> DeleteDndCharacter(Guid id)
         {
-            var dndCharacter = await _uow.DndCharacters.FirstOrDefaultAsync(id, User.UserGuidId());
+            var dndCharacter = await _uow.DndCharacters.CustomFirstOrDefaultAsync(id, User.UserGuidId());
             if (dndCharacter == null)
             {
                 return NotFound();

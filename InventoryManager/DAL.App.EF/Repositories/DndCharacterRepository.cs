@@ -10,16 +10,16 @@ using Microsoft.EntityFrameworkCore;
 namespace DAL.App.EF.Repositories
 {
     public class DndCharacterRepository : 
-        EFBaseRepository<AppEntityTracker, Domain.Identity.AppUser, Domain.DndCharacter, DAL.App.DTO.DndCharacter>, 
+        EFBaseRepository<AppDbContext, Domain.Identity.AppUser, Domain.DndCharacter, DAL.App.DTO.DndCharacter>, 
         IDndCharacterRepository
     {
-        public DndCharacterRepository(AppEntityTracker repoEntityTracker) 
-            : base(repoEntityTracker, new DAL.Base.Mappers.BaseMapper<Domain.DndCharacter, DAL.App.DTO.DndCharacter>())
+        public DndCharacterRepository(AppDbContext repoDbContext) 
+            : base(repoDbContext, new DAL.Base.Mappers.BaseMapper<Domain.DndCharacter, DAL.App.DTO.DndCharacter>())
         {
         }
 
 
-        public async Task<IEnumerable<DndCharacterSummary>> GetAllAsync(Guid? userId = default, bool noTracking = true)
+        public async Task<IEnumerable<DndCharacterSummary>> CustomGetAllAsync(Guid? userId = default, bool noTracking = true)
         {
             var query = PrepareQuery(userId, noTracking);
             
@@ -50,7 +50,7 @@ namespace DAL.App.EF.Repositories
             return result;
         }
 
-        public async Task<DndCharacter> FirstOrDefaultAsync(Guid? id, Guid? userId = default, bool noTracking = true)
+        public async Task<DndCharacter> CustomFirstOrDefaultAsync(Guid? id, Guid? userId = default, bool noTracking = true)
         {
             var query = PrepareQuery(userId, noTracking);
             var domainEntity = await query

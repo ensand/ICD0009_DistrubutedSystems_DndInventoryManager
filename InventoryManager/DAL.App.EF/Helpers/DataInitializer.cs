@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using Domain;
 using Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +18,45 @@ namespace DAL.App.EF.Helpers
         {
             return context.Database.EnsureDeleted();
         }
-        
+
+        public static void SeedData(AppDbContext context, UserManager<AppUser> userManager)
+        {
+            var userName = "enola1998@gmail.com";
+            
+            var dndCharacter = new DndCharacter()
+            {
+                AppUserId = userManager.FindByNameAsync(userName).Result.Id,
+                Name = "Dingdong",
+                Comment = "___TEST",
+                PlatinumPieces = 0,
+                GoldPieces = 0,
+                ElectrumPieces =  0,
+                SilverPieces = 0,
+                CopperPieces = 100000
+            };
+
+            var defaultExists = false;
+            
+            if (context.DndCharacters.Any())
+            {
+                foreach (var character in context.DndCharacters)
+                {
+                    if (character.Comment.Equals("___TEST") && character.Name.Equals("Dingdong"))
+                    {
+                        defaultExists = true;
+                        break;
+                    }
+                    
+                }
+            }
+
+            if (!defaultExists)
+            {
+                context.DndCharacters.Add(dndCharacter);
+                context.SaveChanges();
+            }
+        }
+
         public static void SeedIdentity(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             var roleNames = new string[] {"user", "admin"};
@@ -57,11 +97,6 @@ namespace DAL.App.EF.Helpers
 
             var roleResult = userManager.AddToRoleAsync(user, "admin").Result;
             roleResult = userManager.AddToRoleAsync(user, "user").Result;
-        }
-        
-        public static void SeedData(AppDbContext context)
-        {
-            
         }
     }
 }

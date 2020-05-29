@@ -3,56 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.DAL.App.Repositories;
-using DAL.App.DTO;
-using DAL.Base.EF.Mappers;
 using DAL.Base.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
-using PublicApi.DTO.V1;
-using Armor = DAL.App.DTO.Armor;
-using DndCharacter = Domain.DndCharacter;
-using MagicalItem = DAL.App.DTO.MagicalItem;
-using OtherEquipment = DAL.App.DTO.OtherEquipment;
-using Weapon = DAL.App.DTO.Weapon;
 
 namespace DAL.App.EF.Repositories
 {
-    public class DndCharacterRepository : EFBaseRepository<AppDbContext, Domain.DndCharacter, DAL.App.DTO.DndCharacter>, IDndCharacterRepository
+    public class DndCharacterRepository : 
+        EFBaseRepository<AppDbContext, Domain.Identity.AppUser, Domain.DndCharacter, DAL.App.DTO.DndCharacter>, 
+        IDndCharacterRepository
     {
-        public DndCharacterRepository(AppDbContext dbContext) 
-            : base(dbContext, new BaseDALMapper<Domain.DndCharacter, DAL.App.DTO.DndCharacter>())
+        public DndCharacterRepository(AppDbContext repoDbContext) 
+            : base(repoDbContext, new DAL.Base.Mappers.BaseMapper<Domain.DndCharacter, DAL.App.DTO.DndCharacter>())
         {
         }
 
         public async Task<IEnumerable<DAL.App.DTO.DndCharacter>> AllAsync(Guid? userId = null)
         {
-            if (userId == null)
-                return await base.AllAsync();
-            
-            var dndCharacters = (await RepoDbSet
-                    .Where(d => d.AppUserId == userId)
-                    .Select(dbEntity => new DAL.App.DTO.DndCharacterSummary()
-                    {
-                        Id = dbEntity.Id,
-                        Name = dbEntity.Name,
-                        Comment = dbEntity.Comment,
-                        ArmorCount = dbEntity.Armor!.Count,
-                        MagicalItemCount = dbEntity.MagicalItems!.Count,
-                        OtherEquipmentCount = dbEntity.OtherEquipment!.Count,
-                        WeaponCount = dbEntity.Weapons!.Count,
-                        TreasureInGp = (float) dbEntity.PlatinumPieces * 10 + 
-                                       (float) dbEntity.GoldPieces + 
-                                       (float) dbEntity.ElectrumPieces / 2 + 
-                                       (float) dbEntity.SilverPieces / 10 + 
-                                       (float) dbEntity.CopperPieces / 100
-                    })
-                    .ToListAsync())
-                .Select(dbEntity => Mapper.Map<DAL.App.DTO.DndCharacterSummary, DAL.App.DTO.DndCharacter>(dbEntity));
+            throw new NotImplementedException();
 
-            return dndCharacters;
+            // if (userId == null)
+            //     return await base.GetAllAsync();
+            //
+            // var dndCharacters = (await RepoDbSet
+            //         .Where(d => d.AppUserId == userId)
+            //         .Select(dbEntity => new DAL.App.DTO.DndCharacterSummary()
+            //         {
+            //             Id = dbEntity.Id,
+            //             Name = dbEntity.Name,
+            //             Comment = dbEntity.Comment,
+            //             ArmorCount = dbEntity.Armor!.Count,
+            //             MagicalItemCount = dbEntity.MagicalItems!.Count,
+            //             OtherEquipmentCount = dbEntity.OtherEquipment!.Count,
+            //             WeaponCount = dbEntity.Weapons!.Count,
+            //             TreasureInGp = (float) dbEntity.PlatinumPieces * 10 + 
+            //                            (float) dbEntity.GoldPieces + 
+            //                            (float) dbEntity.ElectrumPieces / 2 + 
+            //                            (float) dbEntity.SilverPieces / 10 + 
+            //                            (float) dbEntity.CopperPieces / 100
+            //         })
+            //         .ToListAsync())
+            //     .Select(dbEntity => Mapper.Map<DAL.App.DTO.DndCharacterSummary, DAL.App.DTO.DndCharacter>(dbEntity));
+            //
+            // return dndCharacters;
         }
 
         public async Task<DAL.App.DTO.DndCharacter> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
+            throw new NotImplementedException();
+
             var query = RepoDbSet.Where(d => d.Id == id).AsQueryable();
             
             if (userId != null)
@@ -88,24 +86,18 @@ namespace DAL.App.EF.Repositories
             return Mapper.Map(dndCharacter);
         }
 
-        public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)
+        public async Task DeleteAsync(Guid id, Guid? userId = null) // Cascade delete all items too.
         {
-            if (userId == null)
-                return await RepoDbSet.AnyAsync(a => a.Id == id);
+            throw new NotImplementedException();
 
-            return await RepoDbSet.AnyAsync(a => a.Id == id && a.AppUserId == userId);
-        }
-
-        public async Task DeleteAsync(Guid id, Guid? userId = null)
-        {
-            var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
-            if (userId != null)
-            {
-                query = query.Where(a => a.AppUserId == userId);
-            }
-
-            var owner = await query.AsNoTracking().FirstOrDefaultAsync();
-            base.Remove(owner.Id);
+            // var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
+            // if (userId != null)
+            // {
+            //     query = query.Where(a => a.AppUserId == userId);
+            // }
+            //
+            // var owner = await query.AsNoTracking().FirstOrDefaultAsync();
+            // base.DeleteAsync(owner.Id);
         }
     }
 }

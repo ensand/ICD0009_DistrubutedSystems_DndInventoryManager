@@ -13,11 +13,13 @@ namespace Domain.Identity
         where TKey : IEquatable<TKey>
     {
         [MinLength(1)] 
-        [MaxLength(64)] 
+        [MaxLength(64)]
+        [Required]
         public string FirstName { get; set; } = default!;
         
         [MinLength(1)]
         [MaxLength(64)]
+        [Required]
         public string LastName { get; set; } = default!;
     }
 }

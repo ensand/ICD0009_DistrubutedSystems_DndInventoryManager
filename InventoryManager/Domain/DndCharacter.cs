@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
 using Domain.Base;
 using Domain.Identity;
 
 namespace Domain
 {
-    public class DndCharacter : DomainEntity
+    public class DndCharacter : DomainEntity<AppUser>
     {
-        public Guid AppUserId { get; set; }
-        
-        [JsonIgnore]
-        public AppUser? AppUser { get; set; }
-        
         public int PlatinumPieces { get; set; }
         public int GoldPieces { get; set; }
         public int ElectrumPieces { get; set; }

@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -37,9 +38,9 @@ namespace WebApp
                 options.UseSqlServer(
                     Configuration.GetConnectionString("MsSqlConnection")));
 
-            // Add as scoped dependency, interface gets tied to the implementation.
+            // DEPENDENCY INJECTION. Add as scoped dependency, interface gets tied to the implementation.
             services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
-            services.AddScoped<IAppBLL, AppBLL>();
+            // services.AddScoped<IAppBLL, AppBLL>();
             
             services.AddIdentity<AppUser, AppRole>()
                 .AddDefaultUI()
@@ -89,8 +90,6 @@ namespace WebApp
         {
             UpdateDatabase(app, env, Configuration);
 
-            app.UseCors("CorsAllowAll");
-            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -106,7 +105,12 @@ namespace WebApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseCors("CorsAllowAll");
+
             app.UseRouting();
+            
+            app.UseAuthentication();
+            app.UseAuthorization();
             
             app.UseSwagger();
             app.UseSwaggerUI(
@@ -120,9 +124,6 @@ namespace WebApp
                     }
                 } );
 
-            app.UseAuthentication();
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -132,39 +133,37 @@ namespace WebApp
             });
         }
 
-        private static void UpdateDatabase(IApplicationBuilder app, IWebHostEnvironment env,
-            IConfiguration Configuration)
+        private static void UpdateDatabase(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration Configuration)
         {
-            using var serviceScope = app.ApplicationServices
-                .GetRequiredService<IServiceScopeFactory>()
-                .CreateScope();
-
-            using var ctx = serviceScope.ServiceProvider.GetService<AppDbContext>();
+            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            using var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
             using var userManager = serviceScope.ServiceProvider.GetService<UserManager<AppUser>>();
             using var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<AppRole>>();
+            var logger = serviceScope.ServiceProvider.GetService<ILogger<Startup>>();
+
 
             if (Configuration["AppDataInitialization:DropDataBase"] == "True")
             {
-                Console.WriteLine("AppDataInitialization:DropDataBase");
-                DAL.App.EF.Helpers.DataInitializer.DeleteDatabase(ctx);
+                logger.LogInformation("AppDataInitialization:DropDataBase");
+                DAL.App.EF.Helpers.DataInitializer.DeleteDatabase(context);
             }
 
             if (Configuration["AppDataInitialization:MigrateDataBase"] == "True")
             {
-                Console.WriteLine("AppDataInitialization:MigrateDataBase");
-                DAL.App.EF.Helpers.DataInitializer.MigrateDatabase(ctx);
+                logger.LogInformation("AppDataInitialization:MigrateDataBase");
+                DAL.App.EF.Helpers.DataInitializer.MigrateDatabase(context);
             }
 
             if (Configuration["AppDataInitialization:SeedIdentity"] == "True")
             {
-                Console.WriteLine("AppDataInitialization:SeedIdentity");
+                logger.LogInformation("AppDataInitialization:SeedIdentity");
                 DAL.App.EF.Helpers.DataInitializer.SeedIdentity(userManager, roleManager);
             }
 
             if (Configuration.GetValue<bool>("AppDataInitialization:SeedData"))
             {
-                Console.WriteLine("AppDataInitialization:SeedData");
-                DAL.App.EF.Helpers.DataInitializer.SeedData(ctx);
+                logger.LogInformation("AppDataInitialization:SeedData");
+                DAL.App.EF.Helpers.DataInitializer.SeedData(context, userManager);
             }
         }
     }

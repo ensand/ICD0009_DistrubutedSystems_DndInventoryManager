@@ -12,13 +12,13 @@ namespace Contracts.DAL.App.Repositories
     }
     
     public interface IDndCharacterRepository<TKey, TDALEntity> : IBaseRepository<TKey, TDALEntity>
-        where TDALEntity : class, IDomainEntity<TKey>, new() 
+        where TDALEntity : class, IDomainEntityId<TKey>, new() 
         where TKey : IEquatable<TKey>
     {
-        Task<IEnumerable<TDALEntity>> AllAsync(Guid? userId = null);
-        Task<TDALEntity> FirstOrDefaultAsync(Guid id, Guid? userId = null);
-
-        Task<bool> ExistsAsync(Guid id, Guid? userId = null);
-        Task DeleteAsync(Guid id, Guid? userId = null);
+        // Task<IEnumerable<TDALEntity>> AllAsync(TKey userId = default, bool noTracking = true);
+        // Task<TDALEntity> FirstOrDefaultAsync(TKey id, TKey userId = default, bool noTracking = true);
+        //
+        // Task<TDALEntity> RemoveAsync(TDALEntity entity, TKey userId = default);
+        // Task<TDALEntity> RemoveAsync(TKey id, TKey userId = default);
     }
 }

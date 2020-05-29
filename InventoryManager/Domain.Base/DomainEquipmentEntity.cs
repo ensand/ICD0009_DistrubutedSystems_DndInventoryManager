@@ -1,16 +1,37 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using Contracts.DAL.Base;
+using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Base
 {
-    public abstract class DomainEquipmentEntity : DomainEquipmentEntity<Guid>
+    public class DomainEquipmentEntity<TUser, TOwnerEntity> : DomainEquipmentEntity<Guid, TUser, TOwnerEntity>
+        where TUser : IdentityUser<Guid>
+        where TOwnerEntity : class, IDomainEntityUser<Guid, TUser>
     {
     }
     
-    public abstract class DomainEquipmentEntity<TKey> : IDomainEquipmentEntity<TKey>
+    public class DomainEquipmentEntity<TKey, TUser, TOwnerEntity> : 
+        IDomainEntityUser<TKey, TUser>,
+        IDomainEntityId<TKey>, 
+        IDomainEntity, 
+        IDomainEquipmentEntity<TKey, TUser, TOwnerEntity>
+    
         where TKey : IEquatable<TKey>
+        where TUser : IdentityUser<TKey>
+        where TOwnerEntity : class, IDomainEntityUser<TKey, TUser>
     {
+        public virtual TKey AppUserId { get; set; } = default!;
+        
+        [JsonIgnore]
+        public virtual TUser? AppUser { get; set; }
+        
+        public virtual TKey DndCharacterId { get; set; } = default!;
+        
+        [JsonIgnore]
+        public virtual TOwnerEntity? DndCharacter { get; set; }
+        
         public virtual TKey Id { get; set; } = default!;
         
         [MaxLength(2048)]

@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using DAL.App.EF;
+using Contracts.DAL.App;
 using Domain;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers._1._0
 {
@@ -18,62 +16,46 @@ namespace WebApp.ApiControllers._1._0
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MagicalItemsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public MagicalItemsController(AppDbContext context)
+        public MagicalItemsController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/MagicalItems
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MagicalItem>>> GetMagicalItems()
         {
-            return await _context.MagicalItems.Where(m => m.AppUserId == User.UserGuidId()).ToListAsync();
+            var result = await _uow.MagicalItems.GetAllAsync(User.UserGuidId());
+            return Ok(result);
         }
 
         // GET: api/MagicalItems/5
         [HttpGet("{id}")]
         public async Task<ActionResult<MagicalItem>> GetMagicalItem(Guid id)
         {
-            var magicalItem = await _context.MagicalItems.FirstOrDefaultAsync(m => m.Id == id && m.AppUserId == User.UserGuidId());
+            var magicalItem = await _uow.MagicalItems.FirstOrDefaultAsync(id, User.UserGuidId());
 
             if (magicalItem == null)
             {
                 return NotFound();
             }
 
-            return magicalItem;
+            return Ok(magicalItem);
         }
 
         // PUT: api/MagicalItems/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMagicalItem(Guid id, MagicalItem magicalItem)
+        public async Task<IActionResult> PutMagicalItem(Guid id, DAL.App.DTO.MagicalItem magicalItem)
         {
             if (id != magicalItem.Id)
-            {
                 return BadRequest();
-            }
 
-            _context.Entry(magicalItem).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MagicalItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _uow.MagicalItems.UpdateAsync(magicalItem, User.UserGuidId());
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
@@ -82,10 +64,10 @@ namespace WebApp.ApiControllers._1._0
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<MagicalItem>> PostMagicalItem(MagicalItem magicalItem)
+        public async Task<ActionResult<MagicalItem>> PostMagicalItem(DAL.App.DTO.MagicalItem magicalItem)
         {
-            _context.MagicalItems.Add(magicalItem);
-            await _context.SaveChangesAsync();
+            _uow.MagicalItems.Add(magicalItem);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetMagicalItem", new { id = magicalItem.Id }, magicalItem);
         }
@@ -94,21 +76,16 @@ namespace WebApp.ApiControllers._1._0
         [HttpDelete("{id}")]
         public async Task<ActionResult<MagicalItem>> DeleteMagicalItem(Guid id)
         {
-            var magicalItem = await _context.MagicalItems.FindAsync(id);
+            var magicalItem = await _uow.MagicalItems.FirstOrDefaultAsync(id, User.UserGuidId());
             if (magicalItem == null)
             {
                 return NotFound();
             }
 
-            _context.MagicalItems.Remove(magicalItem);
-            await _context.SaveChangesAsync();
+            await _uow.MagicalItems.RemoveAsync(magicalItem, User.UserGuidId());
+            await _uow.SaveChangesAsync();
 
-            return magicalItem;
-        }
-
-        private bool MagicalItemExists(Guid id)
-        {
-            return _context.MagicalItems.Any(e => e.Id == id);
+            return Ok(magicalItem);
         }
     }
 }

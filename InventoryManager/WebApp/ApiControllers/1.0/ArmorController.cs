@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using DAL.App.EF;
+using Contracts.DAL.App;
 using Domain;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers._1._0
 {
@@ -18,62 +16,46 @@ namespace WebApp.ApiControllers._1._0
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ArmorController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public ArmorController(AppDbContext context)
+        public ArmorController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/Armor
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Armor>>> GetArmors()
         {
-            return await _context.Armors.Where(a => a.AppUserId == User.UserGuidId()).ToListAsync();
+            var result = await _uow.Armors.GetAllAsync(User.UserGuidId());
+            return Ok(result);
         }
 
         // GET: api/Armor/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Armor>> GetArmor(Guid id)
         {
-            var armor = await _context.Armors.FirstOrDefaultAsync(a => a.Id == id && a.AppUserId == User.UserGuidId());
+            var armor = await _uow.Armors.FirstOrDefaultAsync(id, User.UserGuidId());
 
             if (armor == null)
             {
                 return NotFound();
             }
 
-            return armor;
+            return Ok(armor);
         }
 
         // PUT: api/Armor/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArmor(Guid id, Armor armor)
+        public async Task<IActionResult> PutArmor(Guid id, DAL.App.DTO.Armor armor)
         {
             if (id != armor.Id)
-            {
                 return BadRequest();
-            }
 
-            _context.Entry(armor).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ArmorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _uow.Armors.UpdateAsync(armor, User.UserGuidId());
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
@@ -82,10 +64,10 @@ namespace WebApp.ApiControllers._1._0
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Armor>> PostArmor(Armor armor)
+        public async Task<ActionResult<Armor>> PostArmor(DAL.App.DTO.Armor armor)
         {
-            _context.Armors.Add(armor);
-            await _context.SaveChangesAsync();
+            _uow.Armors.Add(armor);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetArmor", new { id = armor.Id }, armor);
         }
@@ -94,22 +76,16 @@ namespace WebApp.ApiControllers._1._0
         [HttpDelete("{id}")]
         public async Task<ActionResult<Armor>> DeleteArmor(Guid id)
         {
-            var armor = await _context.Armors.FindAsync(id);
-            
+            var armor = await _uow.Armors.FirstOrDefaultAsync(id, User.UserGuidId());
             if (armor == null)
             {
                 return NotFound();
             }
 
-            _context.Armors.Remove(armor);
-            await _context.SaveChangesAsync();
+            await _uow.Armors.RemoveAsync(armor, User.UserGuidId());
+            await _uow.SaveChangesAsync();
 
-            return armor;
-        }
-
-        private bool ArmorExists(Guid id)
-        {
-            return _context.Armors.Any(e => e.Id == id);
+            return Ok(armor);
         }
     }
 }

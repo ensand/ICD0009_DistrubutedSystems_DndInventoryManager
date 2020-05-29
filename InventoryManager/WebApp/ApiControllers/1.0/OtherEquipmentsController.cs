@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DAL.App.EF;
+using Contracts.DAL.App;
 using Domain;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers._1._0
 {
@@ -18,62 +17,48 @@ namespace WebApp.ApiControllers._1._0
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class OtherEquipmentsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public OtherEquipmentsController(AppDbContext context)
+        public OtherEquipmentsController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
+
 
         // GET: api/OtherEquipments
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OtherEquipment>>> GetOtherEquipments()
         {
-            return await _context.OtherEquipments.Where(o => o.AppUserId == User.UserGuidId()).ToListAsync();
+            var result = await _uow.OtherEquipments.GetAllAsync(User.UserGuidId());
+            Console.WriteLine("Api: " + result.Count());
+            return Ok(result);
         }
 
         // GET: api/OtherEquipments/5
         [HttpGet("{id}")]
         public async Task<ActionResult<OtherEquipment>> GetOtherEquipment(Guid id)
         {
-            var otherEquipment = await _context.OtherEquipments.FirstOrDefaultAsync(o => o.Id == id && o.AppUserId == User.UserGuidId());
+            var otherEquipment = await _uow.OtherEquipments.FirstOrDefaultAsync(id, User.UserGuidId());
 
             if (otherEquipment == null)
             {
                 return NotFound();
             }
 
-            return otherEquipment;
+            return Ok(otherEquipment);
         }
 
         // PUT: api/OtherEquipments/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOtherEquipment(Guid id, OtherEquipment otherEquipment)
+        public async Task<IActionResult> PutOtherEquipment(Guid id, DAL.App.DTO.OtherEquipment otherEquipment)
         {
             if (id != otherEquipment.Id)
-            {
                 return BadRequest();
-            }
 
-            _context.Entry(otherEquipment).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OtherEquipmentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _uow.OtherEquipments.UpdateAsync(otherEquipment, User.UserGuidId());
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
@@ -82,10 +67,10 @@ namespace WebApp.ApiControllers._1._0
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<OtherEquipment>> PostOtherEquipment(OtherEquipment otherEquipment)
+        public async Task<ActionResult<OtherEquipment>> PostOtherEquipment(DAL.App.DTO.OtherEquipment otherEquipment)
         {
-            _context.OtherEquipments.Add(otherEquipment);
-            await _context.SaveChangesAsync();
+            _uow.OtherEquipments.Add(otherEquipment);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetOtherEquipment", new { id = otherEquipment.Id }, otherEquipment);
         }
@@ -94,21 +79,16 @@ namespace WebApp.ApiControllers._1._0
         [HttpDelete("{id}")]
         public async Task<ActionResult<OtherEquipment>> DeleteOtherEquipment(Guid id)
         {
-            var otherEquipment = await _context.OtherEquipments.FindAsync(id);
+            var otherEquipment = await _uow.OtherEquipments.FirstOrDefaultAsync(id, User.UserGuidId());
             if (otherEquipment == null)
             {
                 return NotFound();
             }
 
-            _context.OtherEquipments.Remove(otherEquipment);
-            await _context.SaveChangesAsync();
+            await _uow.OtherEquipments.RemoveAsync(otherEquipment, User.UserGuidId());
+            await _uow.SaveChangesAsync();
 
-            return otherEquipment;
-        }
-
-        private bool OtherEquipmentExists(Guid id)
-        {
-            return _context.OtherEquipments.Any(e => e.Id == id);
+            return Ok(otherEquipment);
         }
     }
 }

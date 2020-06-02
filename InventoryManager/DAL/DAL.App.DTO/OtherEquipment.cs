@@ -27,14 +27,4 @@ namespace DAL.App.DTO
         public float ValueInGp { get; set; }
         public int Quantity { get; set; }
     }
-
-    public class OtherEquipmentSummary
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; } = default!;
-        public string? Comment { get; set; }
-        public float ValueInGp { get; set; }
-        public float Weight { get; set; }
-        public int Quantity { get; set; }
-    }
 }

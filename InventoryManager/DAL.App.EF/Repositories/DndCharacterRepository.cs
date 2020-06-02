@@ -53,14 +53,14 @@ namespace DAL.App.EF.Repositories
         public async Task<DndCharacter> CustomFirstOrDefaultAsync(Guid? id, Guid? userId = default, bool noTracking = true)
         {
             var query = PrepareQuery(userId, noTracking);
-            var domainEntity = await query
+            var domainEntityQuery = await query
                 .Include(e => e.Armor)
                 .Include(e => e.Weapons)
                 .Include(e => e.MagicalItems)
                 .Include(e => e.OtherEquipment)
                 .FirstOrDefaultAsync(e => e.Id.Equals(id));
         
-            var result = MapCharacterWithEquipment(domainEntity);
+            var result = MapCharacterWithEquipment(domainEntityQuery);
         
             return result;
         }
@@ -80,6 +80,9 @@ namespace DAL.App.EF.Repositories
                 ElectrumPieces = entity.ElectrumPieces,
                 SilverPieces = entity.SilverPieces,
                 CopperPieces = entity.CopperPieces,
+                Armor = MapArmor(entity.Armor),
+                Weapons = MapWeapons(entity.Weapons),
+                MagicalItems = MapMagicalItems(entity.MagicalItems),
                 OtherEquipment = MapOtherEquipments(entity.OtherEquipment),
                 AllItemsWeight = itemValues.totalWeight,
                 AllItemsValueInGp = itemValues.totalValue,
@@ -93,15 +96,89 @@ namespace DAL.App.EF.Repositories
 
             return dalEntity;
         }
+        
+        private ICollection<Armor> MapArmor(ICollection<Domain.Armor>? armors)
+        {
+            if (armors == null || armors.Count == 0)
+                return new List<Armor>();
+
+            ICollection<Armor> result = armors.Select(a => new Armor()
+            {
+                AppUserId = a.AppUserId,
+                DndCharacterId = a.DndCharacterId,
+                Id = a.Id,
+                Name = a.Name,
+                Comment = a.Comment,
+                ArmorType = a.ArmorType,
+                Ac = a.Ac,
+                StealthDisadvantage = a.StealthDisadvantage,
+                StrengthRequirement = a.StrengthRequirement,
+                ValueInGp = a.ValueInGp,
+                Weight = a.Weight,
+                Quantity = a.Quantity
+            }).ToList();
+
+            return result;
+        }
+        
+        private ICollection<Weapon> MapWeapons(ICollection<Domain.Weapon>? weapons)
+        {
+            if (weapons == null || weapons.Count == 0)
+                return new List<Weapon>();
+
+            ICollection<Weapon> result = weapons.Select(w => new Weapon()
+            {
+                AppUserId = w.AppUserId,
+                DndCharacterId = w.DndCharacterId,
+                Id = w.Id,
+                Name = w.Name,
+                Comment = w.Comment,
+                DamageDice = w.DamageDice,
+                DamageType = w.DamageType,
+                WeaponType = w.WeaponType,
+                WeaponRange = w.WeaponRange,
+                Properties = w.Properties,
+                Silvered = w.Silvered,
+                ValueInGp = w.ValueInGp,
+                Weight = w.Weight,
+                Quantity = w.Quantity
+            }).ToList();
+
+            return result;
+        }
+        
+        private ICollection<MagicalItem> MapMagicalItems(ICollection<Domain.MagicalItem>? magicalItems)
+        {
+            if (magicalItems == null || magicalItems.Count == 0)
+                return new List<MagicalItem>();
+
+            ICollection<MagicalItem> result = magicalItems.Select(mi => new MagicalItem()
+            {
+                AppUserId = mi.AppUserId,
+                DndCharacterId = mi.DndCharacterId,
+                Id = mi.Id,
+                Name = mi.Name,
+                Comment = mi.Comment,
+                Spell = mi.Spell,
+                MaxCharges = mi.MaxCharges,
+                CurrentCharges = mi.CurrentCharges,
+                ValueInGp = mi.ValueInGp,
+                Weight = mi.Weight,
+                Quantity = mi.Quantity
+            }).ToList();
+
+            return result;
+        }
 
         private ICollection<OtherEquipment> MapOtherEquipments(ICollection<Domain.OtherEquipment>? equipments)
         {
             if (equipments == null || equipments.Count == 0)
-            {
                 return new List<OtherEquipment>();
-            }
+
             ICollection<OtherEquipment> result = equipments.Select(oe => new OtherEquipment()
             {
+                AppUserId = oe.AppUserId,
+                DndCharacterId = oe.DndCharacterId,
                 Id = oe.Id,
                 Name = oe.Name,
                 Comment = oe.Comment,

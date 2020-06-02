@@ -8,10 +8,10 @@ namespace BLL.App
 {
     public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
     {
-        public AppBLL(IAppUnitOfWork unitOfWork) : base(unitOfWork)
+        public AppBLL(IAppUnitOfWork uow) : base(uow)
         {
         }
-        
+
         public IArmorService Armors =>
             GetService<IArmorService>(() => new ArmorService(UnitOfWork));
         

@@ -5,7 +5,8 @@ using Contracts.DAL.Base;
 
 namespace DAL.Base
 {
-    public abstract class BaseUnitOfWork : IBaseUnitOfWork
+    public abstract class BaseUnitOfWork<TKey> : IBaseUnitOfWork, IBaseEntityTracker<TKey> 
+        where TKey : IEquatable<TKey>
     {
         private readonly Dictionary<Type, object> _repoCache = new Dictionary<Type, object>();
         public TRepository GetRepository<TRepository>(Func<TRepository> repoCreationMethod)
@@ -20,5 +21,21 @@ namespace DAL.Base
         }
 
         public abstract Task<int> SaveChangesAsync();
+        
+        private readonly Dictionary<IDomainEntityId<TKey>, IDomainEntityId<TKey>> _entityTracker =
+            new Dictionary<IDomainEntityId<TKey>, IDomainEntityId<TKey>>();
+        
+        public void AddToEntityTracker(IDomainEntityId<TKey> internalEntity, IDomainEntityId<TKey> externalEntity)
+        {
+            _entityTracker.Add(internalEntity, externalEntity);
+        }
+        
+        protected void UpdateTrackedEntities()
+        {
+            foreach (var (key, value) in _entityTracker)
+            {
+                value.Id = key.Id;
+            }
+        }
     }
 }

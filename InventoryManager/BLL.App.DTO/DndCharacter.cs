@@ -1,40 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using BLL.App.DTO.Identity;
 using Contracts.DAL.Base;
 
 namespace BLL.App.DTO
 {
-    public class DndCharacter : IDomainEntity
+    public class DndCharacter : IDomainEntityId
     {
-        public virtual Guid Id { get; set; } = default!;
+        public Guid Id { get; set; }
+
+        public Guid AppUserId { get; set; }
         
-        public virtual string? Comment { get; set; }
+        [JsonIgnore] 
+        public AppUser? AppUser { get; set; }
         
-        public virtual string Name { get; set; } = default!;
+        public string Name { get; set; } = default!;
+
+        public string? Comment { get; set; }
         
-        public virtual Guid AppUserId { get; set; }
-        public virtual AppUser<Guid>? AppUser { get; set; }
+        public float TreasureInGp { get; set; }
         
-        public virtual float TreasureInGp { get; set; }
+        public float AllItemsValueInGp { get; set; }
+        public float AllItemsWeight { get; set; }
         
-        public virtual float AllItemsValueInGp { get; set; }
-        public virtual float AllItemsWeight { get; set; }
+        public int PlatinumPieces { get; set; }
+        public int GoldPieces { get; set; }
+        public int ElectrumPieces { get; set; }
+        public int SilverPieces { get; set; }
+        public int CopperPieces { get; set; }
         
-        public virtual int PlatinumPieces { get; set; }
-        public virtual int GoldPieces { get; set; }
-        public virtual int ElectrumPieces { get; set; }
-        public virtual int SilverPieces { get; set; }
-        public virtual int CopperPieces { get; set; }
-        
-        public virtual int MagicalItemCount { get; set; }
-        public virtual int OtherEquipmentCount { get; set; }
-        public virtual int ArmorCount { get; set; }
-        public virtual int WeaponCount { get; set; }
-        
-        public virtual ICollection<MagicalItem>? MagicalItems { get; set; }
-        public virtual ICollection<OtherEquipment>? OtherEquipment { get; set; }
-        public virtual ICollection<Armor>? Armor { get; set; }
-        public virtual ICollection<Weapon>? Weapons { get; set; }
+        public ICollection<MagicalItem>? MagicalItems { get; set; }
+        public ICollection<OtherEquipment>? OtherEquipment { get; set; }
+        public ICollection<Armor>? Armor { get; set; }
+        public ICollection<Weapon>? Weapons { get; set; }
+    }
+    
+    public class DndCharacterSummary
+    {
+        public Guid Id { get; set; } = default!;
+
+        public string? Comment { get; set; }
+        public string Name { get; set; } = default!;
+        public float TreasureInGp { get; set; }
+
+        public int MagicalItemCount { get; set; }
+        public int OtherEquipmentCount { get; set; }
+        public int ArmorCount { get; set; }
+        public int WeaponCount { get; set; }
     }
 }

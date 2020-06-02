@@ -40,7 +40,7 @@ namespace WebApp
 
             // DEPENDENCY INJECTION. Add as scoped dependency, interface gets tied to the implementation.
             services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
-            // services.AddScoped<IAppBLL, AppBLL>();
+            services.AddScoped<IAppBLL, AppBLL>();
             
             services.AddIdentity<AppUser, AppRole>()
                 .AddDefaultUI()

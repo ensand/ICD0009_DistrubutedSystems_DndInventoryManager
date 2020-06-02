@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Contracts.DAL.Base;
@@ -80,6 +79,10 @@ namespace DAL.App.EF
             return result;
         }
 
+        public void AddToEntityTracker(IDomainEntityId<Guid> internalEntity, IDomainEntityId<Guid> externalEntity)
+        {
+            EntityTracker.Add(internalEntity, externalEntity);
+        }
 
         private void UpdateTrackedEntities()
         {

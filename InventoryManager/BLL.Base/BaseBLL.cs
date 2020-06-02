@@ -6,39 +6,33 @@ using Contracts.DAL.Base;
 
 namespace BLL.Base
 {
-    public class BaseBLL<TUnitOfWork> : IBaseBLL
-        where TUnitOfWork: IBaseUnitOfWork
+    public abstract class BaseBLL<TUnitOfWork> : IBaseBLL
+        where TUnitOfWork : IBaseUnitOfWork
     {
-
         protected readonly TUnitOfWork UnitOfWork;
-        
-        public BaseBLL(TUnitOfWork unitOfWork)
+
+        private readonly Dictionary<Type, object> _serviceCache = new Dictionary<Type, object>();
+
+        protected BaseBLL(TUnitOfWork uow)
         {
-            UnitOfWork = unitOfWork;
+            UnitOfWork = uow;
         }
         
-        public async Task<int> SaveChangesAsync()
+        public Task<int> SaveChangesAsync()
         {
-            return await UnitOfWork.SaveChangesAsync();
+            return UnitOfWork.SaveChangesAsync();
         }
 
-        public int SaveChanges()
+        public TService GetService<TService>(Func<TService> serviceCreationMethod) where TService : class
         {
-            return UnitOfWork.SaveChanges();
-        }
-        
-        private readonly Dictionary<Type, object> _repoCache = new Dictionary<Type, object>();
-
-        public TService GetService<TService>(Func<TService> serviceCreationMethod)
-        {
-            if (_repoCache.TryGetValue(typeof(TService), out var repo))
+            if (_serviceCache.TryGetValue(typeof(TService), out var repo))
             {
                 return (TService) repo;
             }
 
-            repo = serviceCreationMethod()!;
-            _repoCache.Add(typeof(TService), repo);
-            return (TService) repo;
+            var newRepoInstance = serviceCreationMethod();
+            _serviceCache.Add(typeof(TService), newRepoInstance);
+            return newRepoInstance;
         }
     }
 }

@@ -72,7 +72,7 @@ namespace DAL.Base.EF.Repositories
             var domainEntity = Mapper.Map(entity);
             var trackedDomainEntity = RepoDbSet.Add(domainEntity).Entity;
             
-            RepoDbContext.EntityTracker.Add(trackedDomainEntity, entity);
+            RepoDbContext.AddToEntityTracker(trackedDomainEntity, entity);
             
             var result = Mapper.Map(trackedDomainEntity);
             

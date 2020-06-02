@@ -8,8 +8,7 @@ namespace Contracts.DAL.App.Repositories
         
     }
     
-    public interface IWeaponRepositoryCustom
-    {
-        
-    }
+    public interface IWeaponRepositoryCustom : IWeaponRepositoryCustom<Weapon> { }
+    
+    public interface IWeaponRepositoryCustom<TWeapon> { }
 }

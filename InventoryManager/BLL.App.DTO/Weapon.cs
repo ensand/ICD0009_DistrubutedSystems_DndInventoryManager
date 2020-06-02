@@ -1,39 +1,42 @@
 using System;
+using System.Text.Json.Serialization;
 using BLL.App.DTO.Identity;
 using Contracts.DAL.Base;
 
 namespace BLL.App.DTO
 {
-    public class Weapon : IDomainEquipmentEntity
+    public class Weapon : IDomainEntityId
     {
-        public virtual Guid Id { get; set; } = default!;
-        
-        public virtual string? Comment { get; set; }
+        public Guid Id { get; set; }
 
-        public virtual string Name { get; set; } = default!;
+        public Guid AppUserId { get; set; }
         
-        public virtual float Weight { get; set; }
+        [JsonIgnore] 
+        public AppUser? AppUser { get; set; }
+
+        public Guid DndCharacterId { get; set; }
         
-        public virtual float ValueInGp { get; set; }
+        [JsonIgnore] 
+        public DndCharacter DndCharacter { get; set; }
+
+        public string Name { get; set; } = default!;
+
+        public string? Comment { get; set; }
         
-        public virtual int Quantity { get; set; }
+        public string DamageDice { get; set; } = default!;
         
-        public virtual Guid AppUserId { get; set; }
-        public virtual AppUser<Guid>? AppUser { get; set; }
+        public string DamageType { get; set; } = default!;
         
-        public virtual Guid DndCharacterId { get; set; }
-        public virtual DndCharacter? DndCharacter { get; set; }
-        
-        public virtual string DamageDice { get; set; } = default!;
-        
-        public virtual string DamageType { get; set; } = default!;
-        
-        public virtual string WeaponType { get; set; } = default!;
+        public string WeaponType { get; set; } = default!;
        
-        public virtual string WeaponRange { get; set; } = default!;
+        public string WeaponRange { get; set; } = default!;
         
-        public virtual string? Properties { get; set; }
+        public string? Properties { get; set; }
 
-        public virtual bool Silvered { get; set; }
+        public bool Silvered { get; set; }
+        
+        public float Weight { get; set; }
+        public float ValueInGp { get; set; }
+        public int Quantity { get; set; }
     }
 }

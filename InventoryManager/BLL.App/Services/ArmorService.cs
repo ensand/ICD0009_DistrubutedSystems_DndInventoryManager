@@ -1,15 +1,15 @@
-using BLL.Base.Mappers;
+using BLL.App.Mappers;
 using BLL.Base.Services;
+using Contracts.BLL.App.Mappers;
 using Contracts.BLL.App.Services;
 using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
 
 namespace BLL.App.Services
 {
-    public class ArmorService : BaseEntityService<IArmorRepository, IAppUnitOfWork, DAL.App.DTO.Armor, BLL.App.DTO.Armor>, IArmorService
+    public class ArmorService : BaseEntityService<IAppUnitOfWork, IArmorRepository, IArmorMapper, DAL.App.DTO.Armor, BLL.App.DTO.Armor>, IArmorService
     {
-        public ArmorService(IAppUnitOfWork unitOfWork) 
-            : base(unitOfWork, new BaseBLLMapper<DAL.App.DTO.Armor, BLL.App.DTO.Armor>(), unitOfWork.Armors)
+        public ArmorService(IAppUnitOfWork uow) : base(uow, uow.Armors, new ArmorMapper())
         {
         }
     }

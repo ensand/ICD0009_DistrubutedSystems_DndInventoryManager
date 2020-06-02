@@ -1,10 +1,12 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Base.EF
 {
-    public class EFBaseUnitOfWork<TDbContext> : BaseUnitOfWork
-        where TDbContext : DbContext
+    public class EFBaseUnitOfWork<TKey, TDbContext> : BaseUnitOfWork<TKey>
+        where TDbContext : DbContext 
+        where TKey : IEquatable<TKey>
     {
         protected readonly TDbContext UowDbContext;
         
@@ -15,7 +17,11 @@ namespace DAL.Base.EF
 
         public override async Task<int> SaveChangesAsync()
         {
-            return await UowDbContext.SaveChangesAsync();
+            var result = await UowDbContext.SaveChangesAsync();
+             
+            UpdateTrackedEntities();
+             
+            return result;
         }
     }
 }

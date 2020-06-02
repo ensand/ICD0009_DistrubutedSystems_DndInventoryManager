@@ -2,18 +2,18 @@ using Contracts.DAL.Base.Mappers;
 
 namespace DAL.Base.Mappers
 {
-    public class IdentityMapper<TInObject, TOutObject> : IBaseMapper<TInObject, TOutObject> 
-        where TInObject : class?, new() 
-        where TOutObject : class?, new()
+    public class IdentityMapper<TLeftObject, TRightObject> : IBaseMapper<TLeftObject, TRightObject> 
+        where TRightObject : class?, new() 
+        where TLeftObject : class?, new()
     {
-        public TOutObject Map(TInObject inObject)
+        public TRightObject Map(TLeftObject inObject)
         {
-            return inObject as TOutObject ?? default!;
+            return inObject as TRightObject ?? default!;
         }
 
-        public TInObject Map(TOutObject outObject)
+        public TLeftObject Map(TRightObject inObject)
         {
-            return outObject as TInObject ?? default!;
+            return inObject as TLeftObject ?? default!;
         }
     }
 }

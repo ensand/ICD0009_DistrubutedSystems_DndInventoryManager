@@ -8,8 +8,7 @@ namespace Contracts.DAL.App.Repositories
         
     }
 
-    public interface IArmorRepositoryCustom
-    {
-        
-    }
+    public interface IArmorRepositoryCustom : IArmorRepositoryCustom<Armor> { }
+    
+    public interface IArmorRepositoryCustom<TArmor> { }
 }

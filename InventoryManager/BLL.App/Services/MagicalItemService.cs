@@ -1,15 +1,15 @@
-using BLL.Base.Mappers;
+using BLL.App.Mappers;
 using BLL.Base.Services;
+using Contracts.BLL.App.Mappers;
 using Contracts.BLL.App.Services;
 using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
 
 namespace BLL.App.Services
 {
-    public class MagicalItemService : BaseEntityService<IMagicalItemRepository, IAppUnitOfWork, DAL.App.DTO.MagicalItem, BLL.App.DTO.MagicalItem>, IMagicalItemService
+    public class MagicalItemService : BaseEntityService<IAppUnitOfWork, IMagicalItemRepository, IMagicalItemMapper, DAL.App.DTO.MagicalItem, BLL.App.DTO.MagicalItem>, IMagicalItemService
     {
-        public MagicalItemService(IAppUnitOfWork unitOfWork) 
-            : base(unitOfWork, new BaseBLLMapper<DAL.App.DTO.MagicalItem, BLL.App.DTO.MagicalItem>(), unitOfWork.MagicalItems)
+        public MagicalItemService(IAppUnitOfWork uow) : base(uow, uow.MagicalItems, new MagicalItemMapper())
         {
         }
     }

@@ -1,13 +1,9 @@
 namespace Contracts.BLL.Base.Mappers
 {
-    public interface IBaseBLLMapper<TInObject, TOutObject>
-        where TInObject : class, new()
-        where TOutObject : class, new()
+    public interface IBaseMapper<TLeftObject, TRightObject> : Contracts.DAL.Base.Mappers.IBaseMapper<TLeftObject, TRightObject>
+        where TLeftObject: class?, new()
+        where TRightObject: class?, new()
     {
-        TOutObject Map(TInObject inObject);
-
-        TMapOutObject Map<TMapInObject, TMapOutObject>(TMapInObject inObject)
-            where TMapInObject : class, new()
-            where TMapOutObject : class, new();
+        
     }
 }

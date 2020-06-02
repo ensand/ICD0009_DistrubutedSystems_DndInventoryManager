@@ -8,8 +8,7 @@ namespace Contracts.DAL.App.Repositories
         
     }
     
-    public interface IMagicalItemRepositoryCustom
-    {
-        
-    }
+    public interface IMagicalItemRepositoryCustom : IMagicalItemRepositoryCustom<MagicalItem> { }
+    
+    public interface IMagicalItemRepositoryCustom<TMagicalItem> { }
 }

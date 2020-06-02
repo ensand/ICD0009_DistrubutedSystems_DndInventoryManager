@@ -8,8 +8,7 @@ namespace Contracts.DAL.App.Repositories
         
     }
     
-    public interface IOtherEquipmentRepositoryCustom
-    {
-        
-    }
+    public interface IOtherEquipmentRepositoryCustom : IOtherEquipmentRepositoryCustom<OtherEquipment> { }
+    
+    public interface IOtherEquipmentRepositoryCustom<TOtherEquipment> { }
 }

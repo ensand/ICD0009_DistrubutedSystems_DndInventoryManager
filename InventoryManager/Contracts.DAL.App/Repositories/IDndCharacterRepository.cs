@@ -11,9 +11,11 @@ namespace Contracts.DAL.App.Repositories
         
     }
 
-    public interface IDndCharacterRepositoryCustom
+    public interface IDndCharacterRepositoryCustom : IDndCharacterRepositoryCustom<DndCharacterSummary> { }
+    
+    public interface IDndCharacterRepositoryCustom<TDndCharacterSummary>
     {
-        Task<IEnumerable<DndCharacterSummary>> CustomGetAllAsync(Guid? userId = default, bool noTracking = true);
+        Task<IEnumerable<TDndCharacterSummary>> CustomGetAllAsync(Guid? userId = default, bool noTracking = true);
         Task<DndCharacter> CustomFirstOrDefaultAsync(Guid? id, Guid? userId = default, bool noTracking = true);
     }
 }

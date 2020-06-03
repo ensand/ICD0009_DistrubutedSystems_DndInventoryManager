@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Contracts.BLL.App;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PublicApi.DTO.V1;
+using V1DTO = PublicApi.DTO.V1;
+using PublicApi.DTO.V1.Mappers;
 
 namespace WebApp.ApiControllers._1._0
 {
@@ -20,7 +22,7 @@ namespace WebApp.ApiControllers._1._0
     public class DndCharactersController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        // private readonly IAppUnitOfWork _uow;
+        private readonly DndCharacterMapper _mapper = new DndCharacterMapper();
         
         /// <summary>
         /// API controller constructor for initializing data source.
@@ -29,7 +31,6 @@ namespace WebApp.ApiControllers._1._0
         public DndCharactersController(IAppBLL bll)
         {
             _bll = bll;
-            // _uow = uow;
         }
 
         // GET: api/DndCharacters
@@ -38,10 +39,12 @@ namespace WebApp.ApiControllers._1._0
         /// </summary>
         /// <returns>All the characters</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DndCharacter>>> GetDndCharacters()
+        public async Task<ActionResult<IEnumerable<V1DTO.DndCharacterSummary>>> GetDndCharacters()
         {
             var dndCharacters = await _bll.DndCharacters.CustomGetAllAsync(User.UserGuidId());
-            return Ok(dndCharacters);
+            var mappedCharacters = dndCharacters.Select(c => _mapper.MapDndCharacterSummary(c));
+            
+            return Ok(mappedCharacters);
         }
 
         // GET: api/DndCharacters/5
@@ -51,14 +54,16 @@ namespace WebApp.ApiControllers._1._0
         /// <param name="id"></param>
         /// <returns>Character by ID</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<DndCharacterDetails>> GetDndCharacter(Guid id)
+        public async Task<ActionResult<V1DTO.DndCharacter>> GetDndCharacter(Guid id)
         {
-            var characterDetails = await _bll.DndCharacters.CustomFirstOrDefaultAsync(id, User.UserGuidId());
+            var character = await _bll.DndCharacters.CustomFirstOrDefaultAsync(id, User.UserGuidId());
 
-            if (characterDetails == null)
+            if (character == null)
                 return NotFound("Character with id '" + id + "' was not found.");
+
+            var mappedCharacter = _mapper.MapDndCharacter(character);
             
-            return Ok(characterDetails);
+            return Ok(mappedCharacter);
         }
         
         // PUT: api/DndCharacters/5
@@ -71,15 +76,21 @@ namespace WebApp.ApiControllers._1._0
         /// <param name="dndCharacter"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDndCharacter(Guid id, BLL.App.DTO.DndCharacter dndCharacter)
+        public async Task<IActionResult> PutDndCharacter(Guid id, V1DTO.DndCharacterUpdate dndCharacter)
         {
             if (id != dndCharacter.Id)
                 return BadRequest();
 
-            await _bll.DndCharacters.UpdateAsync(dndCharacter, User.UserGuidId());
+            if (!await _bll.DndCharacters.ExistsAsync(dndCharacter.Id, User.UserGuidId()))
+                return NotFound();
+
+            dndCharacter.AppUserId = User.UserGuidId();
+            var mappedCharacter = _mapper.MapDndCharacterUpdateToBll(dndCharacter);
+
+            await _bll.DndCharacters.UpdateAsync(mappedCharacter, User.UserGuidId());
             await _bll.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
 
         }
         
@@ -92,12 +103,13 @@ namespace WebApp.ApiControllers._1._0
         /// <param name="dndCharacter"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<DndCharacter>> PostDndCharacter(BLL.App.DTO.DndCharacter dndCharacter)
+        public async Task<IActionResult> PostDndCharacter(V1DTO.NewDndCharacter dndCharacter)
         {
-            _bll.DndCharacters.Add(dndCharacter);
+            var bllChar = _mapper.MapDndCharacterNewToBll(dndCharacter);
+            _bll.DndCharacters.Add(bllChar);
             await _bll.SaveChangesAsync();
         
-            return CreatedAtAction("GetDndCharacter", new { id = dndCharacter.Id }, dndCharacter);
+            return Ok(bllChar.Id);
         }
         
         // DELETE: api/DndCharacters/5
@@ -107,13 +119,11 @@ namespace WebApp.ApiControllers._1._0
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Domain.DndCharacter>> DeleteDndCharacter(Guid id)
+        public async Task<ActionResult<V1DTO.DndCharacter>> DeleteDndCharacter(Guid id)
         {
             var dndCharacter = await _bll.DndCharacters.CustomFirstOrDefaultAsync(id, User.UserGuidId());
             if (dndCharacter == null)
-            {
                 return NotFound();
-            }
 
             await _bll.DndCharacters.RemoveAsync(id, User.UserGuidId());
             await _bll.SaveChangesAsync();

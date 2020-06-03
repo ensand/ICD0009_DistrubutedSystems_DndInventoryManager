@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200529162909_InitialDbCreation")]
+    [Migration("20200603161429_InitialDbCreation")]
     partial class InitialDbCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -344,9 +344,6 @@ namespace DAL.App.EF.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Silvered")
-                        .HasColumnType("bit");
 
                     b.Property<float>("ValueInGp")
                         .HasColumnType("real");

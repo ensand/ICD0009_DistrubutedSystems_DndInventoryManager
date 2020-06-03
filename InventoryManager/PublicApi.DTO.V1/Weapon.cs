@@ -21,8 +21,6 @@ namespace PublicApi.DTO.V1
         
         public string? Properties { get; set; }
 
-        public bool Silvered { get; set; }
-        
         public float Weight { get; set; }
         public float ValueInGp { get; set; }
         public int Quantity { get; set; }
@@ -64,8 +62,6 @@ namespace PublicApi.DTO.V1
         [MaxLength(1024)] 
         public string? Properties { get; set; }
 
-        public bool Silvered { get; set; }
-        
         public float Weight { get; set; }
         public float ValueInGp { get; set; }
         public int Quantity { get; set; }

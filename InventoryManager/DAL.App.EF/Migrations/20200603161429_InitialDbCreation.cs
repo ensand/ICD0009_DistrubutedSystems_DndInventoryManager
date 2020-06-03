@@ -292,8 +292,7 @@ namespace DAL.App.EF.Migrations
                     DamageType = table.Column<string>(maxLength: 128, nullable: false),
                     WeaponType = table.Column<string>(maxLength: 128, nullable: false),
                     WeaponRange = table.Column<string>(maxLength: 128, nullable: false),
-                    Properties = table.Column<string>(maxLength: 1024, nullable: true),
-                    Silvered = table.Column<bool>(nullable: false)
+                    Properties = table.Column<string>(maxLength: 1024, nullable: true)
                 },
                 constraints: table =>
                 {

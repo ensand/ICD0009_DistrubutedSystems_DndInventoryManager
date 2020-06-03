@@ -24,7 +24,5 @@ namespace Domain
         
         [MaxLength(1024)] 
         public string? Properties { get; set; }
-
-        public bool Silvered { get; set; }
     }
 }

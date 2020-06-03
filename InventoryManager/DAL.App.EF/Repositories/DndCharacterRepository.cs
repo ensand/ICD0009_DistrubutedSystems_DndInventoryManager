@@ -138,7 +138,6 @@ namespace DAL.App.EF.Repositories
                 WeaponType = w.WeaponType,
                 WeaponRange = w.WeaponRange,
                 Properties = w.Properties,
-                Silvered = w.Silvered,
                 ValueInGp = w.ValueInGp,
                 Weight = w.Weight,
                 Quantity = w.Quantity

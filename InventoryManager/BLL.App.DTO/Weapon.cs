@@ -33,8 +33,6 @@ namespace BLL.App.DTO
         
         public string? Properties { get; set; }
 
-        public bool Silvered { get; set; }
-        
         public float Weight { get; set; }
         public float ValueInGp { get; set; }
         public int Quantity { get; set; }

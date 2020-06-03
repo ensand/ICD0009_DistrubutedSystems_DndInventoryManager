@@ -343,9 +343,6 @@ namespace DAL.App.EF.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Silvered")
-                        .HasColumnType("bit");
-
                     b.Property<float>("ValueInGp")
                         .HasColumnType("real");
 

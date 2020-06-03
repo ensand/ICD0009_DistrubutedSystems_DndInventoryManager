@@ -24,7 +24,6 @@ namespace PublicApi.DTO.V1.Mappers
                 WeaponType = inObject.WeaponType,
                 WeaponRange = inObject.WeaponRange,
                 Properties = inObject.Properties,
-                Silvered = inObject.Silvered,
                 Weight = inObject.Weight,
                 ValueInGp = inObject.ValueInGp,
                 Quantity = inObject.Quantity
@@ -46,7 +45,6 @@ namespace PublicApi.DTO.V1.Mappers
                 WeaponType = inObject.WeaponType,
                 WeaponRange = inObject.WeaponRange,
                 Properties = inObject.Properties,
-                Silvered = inObject.Silvered,
                 Weight = inObject.Weight,
                 ValueInGp = inObject.ValueInGp,
                 Quantity = inObject.Quantity

@@ -1,91 +1,97 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Contracts.DAL.App;
-using Domain;
+using Contracts.BLL.App;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PublicApi.DTO.V1.Mappers;
+using V1DTO = PublicApi.DTO.V1;
 
 namespace WebApp.ApiControllers._1._0
 {
+    /// <summary>
+    /// Magical items API
+    /// </summary>
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MagicalItemsController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBLL _bll;
+        private readonly MagicalItemMapper _mapper = new MagicalItemMapper();
 
-        public MagicalItemsController(IAppUnitOfWork uow)
+        /// <summary>
+        /// API controller constructor for initializing data source.
+        /// </summary>
+        /// <param name="bll"></param>
+        public MagicalItemsController(IAppBLL bll)
         {
-            _uow = uow;
-        }
-
-        // GET: api/MagicalItems
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<MagicalItem>>> GetMagicalItems()
-        {
-            var result = await _uow.MagicalItems.GetAllAsync(User.UserGuidId());
-            return Ok(result);
-        }
-
-        // GET: api/MagicalItems/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MagicalItem>> GetMagicalItem(Guid id)
-        {
-            var magicalItem = await _uow.MagicalItems.FirstOrDefaultAsync(id, User.UserGuidId());
-
-            if (magicalItem == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(magicalItem);
+            _bll = bll;
         }
 
         // PUT: api/MagicalItems/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Update the items details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="magicalItem"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMagicalItem(Guid id, DAL.App.DTO.MagicalItem magicalItem)
+        public async Task<IActionResult> PutMagicalItem(Guid id, V1DTO.MagicalItemUpdate magicalItem)
         {
             if (id != magicalItem.Id)
                 return BadRequest();
+            
+            if (!await _bll.MagicalItems.ExistsAsync(magicalItem.Id, User.UserGuidId()))
+                return NotFound();
 
-            await _uow.MagicalItems.UpdateAsync(magicalItem, User.UserGuidId());
-            await _uow.SaveChangesAsync();
+            var mappedItem = _mapper.MapMagicalItemUpdateToBll(magicalItem);
 
-            return NoContent();
+            await _bll.MagicalItems.UpdateAsync(mappedItem, User.UserGuidId());
+            await _bll.SaveChangesAsync();
+
+            return Ok();
         }
 
         // POST: api/MagicalItems
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Create a new item
+        /// </summary>
+        /// <param name="magicalItem"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<MagicalItem>> PostMagicalItem(DAL.App.DTO.MagicalItem magicalItem)
+        public async Task<ActionResult> PostMagicalItem(V1DTO.NewMagicalItem magicalItem)
         {
-            _uow.MagicalItems.Add(magicalItem);
-            await _uow.SaveChangesAsync();
-
-            return CreatedAtAction("GetMagicalItem", new { id = magicalItem.Id }, magicalItem);
+            var bllEntity = _mapper.MapNewMagicalItemToBll(magicalItem);
+            _bll.MagicalItems.Add(bllEntity);
+            await _bll.SaveChangesAsync();
+        
+            return Ok(bllEntity.Id);
         }
 
         // DELETE: api/MagicalItems/5
+        /// <summary>
+        /// Delete item
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<ActionResult<MagicalItem>> DeleteMagicalItem(Guid id)
+        public async Task<ActionResult> DeleteMagicalItem(Guid id)
         {
-            var magicalItem = await _uow.MagicalItems.FirstOrDefaultAsync(id, User.UserGuidId());
-            if (magicalItem == null)
-            {
+            var item = await _bll.MagicalItems.FirstOrDefaultAsync(id, User.UserGuidId());
+            if (item == null)
                 return NotFound();
-            }
 
-            await _uow.MagicalItems.RemoveAsync(magicalItem, User.UserGuidId());
-            await _uow.SaveChangesAsync();
+            await _bll.MagicalItems.RemoveAsync(item, User.UserGuidId());
+            await _bll.SaveChangesAsync();
 
-            return Ok(magicalItem);
+            return Ok(item.Id);
         }
     }
 }

@@ -1,91 +1,98 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Contracts.DAL.App;
+using Contracts.BLL.App;
 using Domain;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PublicApi.DTO.V1.Mappers;
+using V1DTO = PublicApi.DTO.V1;
 
 namespace WebApp.ApiControllers._1._0
 {
+    /// <summary>
+    /// Armor API
+    /// </summary>
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ArmorController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBLL _bll;
+        private readonly ArmorMapper _mapper = new ArmorMapper();
 
-        public ArmorController(IAppUnitOfWork uow)
+        /// <summary>
+        /// API controller constructor for initializing data source.
+        /// </summary>
+        /// <param name="bll"></param>
+        public ArmorController(IAppBLL bll)
         {
-            _uow = uow;
-        }
-
-        // GET: api/Armor
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Armor>>> GetArmors()
-        {
-            var result = await _uow.Armors.GetAllAsync(User.UserGuidId());
-            return Ok(result);
-        }
-
-        // GET: api/Armor/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Armor>> GetArmor(Guid id)
-        {
-            var armor = await _uow.Armors.FirstOrDefaultAsync(id, User.UserGuidId());
-
-            if (armor == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(armor);
+            _bll = bll;
         }
 
         // PUT: api/Armor/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Update the armor details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="armor"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArmor(Guid id, DAL.App.DTO.Armor armor)
+        public async Task<IActionResult> PutArmor(Guid id, V1DTO.ArmorUpdate armor)
         {
             if (id != armor.Id)
                 return BadRequest();
+            
+            if (!await _bll.Armors.ExistsAsync(armor.Id, User.UserGuidId()))
+                return NotFound();
 
-            await _uow.Armors.UpdateAsync(armor, User.UserGuidId());
-            await _uow.SaveChangesAsync();
+            var mappedArmor = _mapper.MapArmorUpdateToBll(armor);
 
-            return NoContent();
+            await _bll.Armors.UpdateAsync(mappedArmor, User.UserGuidId());
+            await _bll.SaveChangesAsync();
+
+            return Ok();
         }
 
         // POST: api/Armor
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Create a new armor
+        /// </summary>
+        /// <param name="armor"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Armor>> PostArmor(DAL.App.DTO.Armor armor)
+        public async Task<ActionResult> PostArmor(V1DTO.NewArmor armor)
         {
-            _uow.Armors.Add(armor);
-            await _uow.SaveChangesAsync();
-
-            return CreatedAtAction("GetArmor", new { id = armor.Id }, armor);
+            var bllEntity = _mapper.MapNewArmorToBll(armor);
+            _bll.Armors.Add(bllEntity);
+            await _bll.SaveChangesAsync();
+        
+            return Ok(bllEntity.Id);
         }
 
         // DELETE: api/Armor/5
+        /// <summary>
+        /// Delete an armor
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Armor>> DeleteArmor(Guid id)
+        public async Task<ActionResult> DeleteArmor(Guid id)
         {
-            var armor = await _uow.Armors.FirstOrDefaultAsync(id, User.UserGuidId());
+            var armor = await _bll.Armors.FirstOrDefaultAsync(id, User.UserGuidId());
             if (armor == null)
-            {
                 return NotFound();
-            }
 
-            await _uow.Armors.RemoveAsync(armor, User.UserGuidId());
-            await _uow.SaveChangesAsync();
+            await _bll.Armors.RemoveAsync(armor, User.UserGuidId());
+            await _bll.SaveChangesAsync();
 
-            return Ok(armor);
+            return Ok(armor.Id);
         }
     }
 }

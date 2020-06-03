@@ -24,7 +24,7 @@ namespace PublicApi.DTO.V1.Mappers
 
         public BLL.App.DTO.DndCharacter MapDndCharacterUpdateToBll(DndCharacterUpdate inObject)
         {
-            var bllCharacter = new BLL.App.DTO.DndCharacter()
+            var bllEntity = new BLL.App.DTO.DndCharacter()
             {
                 Id = inObject.Id,
                 AppUserId = inObject.AppUserId,
@@ -37,12 +37,12 @@ namespace PublicApi.DTO.V1.Mappers
                 CopperPieces = inObject.CopperPieces
             };
             
-            return bllCharacter;
+            return bllEntity;
         }
         
-        public BLL.App.DTO.DndCharacter MapDndCharacterNewToBll(NewDndCharacter inObject)
+        public BLL.App.DTO.DndCharacter MapNewDndCharacterToBll(NewDndCharacter inObject)
         {
-            var bllCharacter = new BLL.App.DTO.DndCharacter()
+            var bllEntity = new BLL.App.DTO.DndCharacter()
             {
                 AppUserId = inObject.AppUserId,
                 Name = inObject.Name,
@@ -54,7 +54,7 @@ namespace PublicApi.DTO.V1.Mappers
                 CopperPieces = inObject.CopperPieces
             };
             
-            return bllCharacter;
+            return bllEntity;
         }
     }
 }

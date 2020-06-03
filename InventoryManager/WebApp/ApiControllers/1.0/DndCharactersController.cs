@@ -91,7 +91,6 @@ namespace WebApp.ApiControllers._1._0
             await _bll.SaveChangesAsync();
 
             return Ok();
-
         }
         
         // POST: api/DndCharacters
@@ -105,11 +104,11 @@ namespace WebApp.ApiControllers._1._0
         [HttpPost]
         public async Task<IActionResult> PostDndCharacter(V1DTO.NewDndCharacter dndCharacter)
         {
-            var bllChar = _mapper.MapDndCharacterNewToBll(dndCharacter);
-            _bll.DndCharacters.Add(bllChar);
+            var bllEntity = _mapper.MapNewDndCharacterToBll(dndCharacter);
+            _bll.DndCharacters.Add(bllEntity);
             await _bll.SaveChangesAsync();
         
-            return Ok(bllChar.Id);
+            return Ok(bllEntity.Id);
         }
         
         // DELETE: api/DndCharacters/5
@@ -119,7 +118,7 @@ namespace WebApp.ApiControllers._1._0
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<ActionResult<V1DTO.DndCharacter>> DeleteDndCharacter(Guid id)
+        public async Task<ActionResult> DeleteDndCharacter(Guid id)
         {
             var dndCharacter = await _bll.DndCharacters.CustomFirstOrDefaultAsync(id, User.UserGuidId());
             if (dndCharacter == null)

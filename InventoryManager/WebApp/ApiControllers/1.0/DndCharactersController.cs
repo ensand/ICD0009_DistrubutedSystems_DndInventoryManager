@@ -105,6 +105,7 @@ namespace WebApp.ApiControllers._1._0
         public async Task<IActionResult> PostDndCharacter(V1DTO.NewDndCharacter dndCharacter)
         {
             var bllEntity = _mapper.MapNewDndCharacterToBll(dndCharacter);
+            bllEntity.AppUserId = User.UserGuidId();
             _bll.DndCharacters.Add(bllEntity);
             await _bll.SaveChangesAsync();
         

@@ -9,6 +9,11 @@ namespace PublicApi.DTO.V1.Mappers
             MapperConfigurationExpression.CreateMap<BLL.App.DTO.DndCharacter, DndCharacter>();
             MapperConfigurationExpression.CreateMap<BLL.App.DTO.DndCharacterSummary, DndCharacterSummary>();
             
+            MapperConfigurationExpression.CreateMap<BLL.App.DTO.Armor, Armor>();
+            MapperConfigurationExpression.CreateMap<BLL.App.DTO.Weapon, Weapon>();
+            MapperConfigurationExpression.CreateMap<BLL.App.DTO.MagicalItem, MagicalItem>();
+            MapperConfigurationExpression.CreateMap<BLL.App.DTO.OtherEquipment, OtherEquipment>();
+            
             Mapper = new Mapper(new MapperConfiguration(MapperConfigurationExpression));
         }
         

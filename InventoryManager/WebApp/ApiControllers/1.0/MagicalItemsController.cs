@@ -69,6 +69,7 @@ namespace WebApp.ApiControllers._1._0
         public async Task<ActionResult> PostMagicalItem(V1DTO.NewMagicalItem magicalItem)
         {
             var bllEntity = _mapper.MapNewMagicalItemToBll(magicalItem);
+            bllEntity.AppUserId = User.UserGuidId();
             _bll.MagicalItems.Add(bllEntity);
             await _bll.SaveChangesAsync();
         

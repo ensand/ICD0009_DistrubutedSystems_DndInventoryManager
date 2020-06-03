@@ -70,6 +70,7 @@ namespace WebApp.ApiControllers._1._0
         public async Task<ActionResult> PostWeapon(V1DTO.NewWeapon weapon)
         {
             var bllEntity = _mapper.MapNewWeaponToBll(weapon);
+            bllEntity.AppUserId = User.UserGuidId();
             _bll.Weapons.Add(bllEntity);
             await _bll.SaveChangesAsync();
         

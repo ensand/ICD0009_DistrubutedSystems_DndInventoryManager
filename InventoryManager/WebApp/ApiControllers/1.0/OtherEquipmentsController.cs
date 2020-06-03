@@ -69,6 +69,7 @@ namespace WebApp.ApiControllers._1._0
         public async Task<ActionResult> PostOtherEquipment(V1DTO.NewOtherEquipment otherEquipment)
         {
             var bllEntity = _mapper.MapNewOtherEquipmentToBll(otherEquipment);
+            bllEntity.AppUserId = User.UserGuidId();
             _bll.OtherEquipments.Add(bllEntity);
             await _bll.SaveChangesAsync();
         

@@ -13,6 +13,11 @@ namespace BLL.App.Mappers
             MapperConfigurationExpression.CreateMap<DALAppDTO.DndCharacter, BLLAppDTO.DndCharacter>();
             MapperConfigurationExpression.CreateMap<DALAppDTO.DndCharacterSummary, BLLAppDTO.DndCharacterSummary>();
             
+            MapperConfigurationExpression.CreateMap<DALAppDTO.Armor, BLLAppDTO.Armor>();
+            MapperConfigurationExpression.CreateMap<DALAppDTO.Weapon, BLLAppDTO.Weapon>();
+            MapperConfigurationExpression.CreateMap<DALAppDTO.MagicalItem, BLLAppDTO.MagicalItem>();
+            MapperConfigurationExpression.CreateMap<DALAppDTO.OtherEquipment, BLLAppDTO.OtherEquipment>();
+            
             Mapper = new Mapper(new MapperConfiguration(MapperConfigurationExpression));
         }
         

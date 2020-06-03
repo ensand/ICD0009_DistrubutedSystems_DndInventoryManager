@@ -70,6 +70,7 @@ namespace WebApp.ApiControllers._1._0
         public async Task<ActionResult> PostArmor(V1DTO.NewArmor armor)
         {
             var bllEntity = _mapper.MapNewArmorToBll(armor);
+            bllEntity.AppUserId = User.UserGuidId();
             _bll.Armors.Add(bllEntity);
             await _bll.SaveChangesAsync();
         

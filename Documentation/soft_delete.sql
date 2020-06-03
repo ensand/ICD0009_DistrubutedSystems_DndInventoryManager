@@ -231,3 +231,12 @@ SELECT 'Magical items at selected time'
 SELECT * FROM #TempMagicalItem
 SELECT 'Magical items currently'
 SELECT * FROM MagicalItem
+
+USE ensand_dist_courseProj;
+
+SELECT * FROM AspNetUsers;
+SELECT * FROM DndCharacters;
+SELECT * FROM OtherEquipments;
+SELECT * FROM Weapons;
+SELECT * FROM Armors;
+SELECT * FROM MagicalItems;

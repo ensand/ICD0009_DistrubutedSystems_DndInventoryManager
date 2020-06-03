@@ -50,6 +50,7 @@ namespace WebApp.ApiControllers._1._0
                 return NotFound();
 
             var mappedItem = _mapper.MapWeaponUpdateToBll(weapon);
+            mappedItem.AppUserId = User.UserGuidId();
 
             await _bll.Weapons.UpdateAsync(mappedItem, User.UserGuidId());
             await _bll.SaveChangesAsync();

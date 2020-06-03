@@ -51,6 +51,7 @@ namespace WebApp.ApiControllers._1._0
                 return NotFound();
 
             var mappedArmor = _mapper.MapArmorUpdateToBll(armor);
+            mappedArmor.AppUserId = User.UserGuidId();
 
             await _bll.Armors.UpdateAsync(mappedArmor, User.UserGuidId());
             await _bll.SaveChangesAsync();

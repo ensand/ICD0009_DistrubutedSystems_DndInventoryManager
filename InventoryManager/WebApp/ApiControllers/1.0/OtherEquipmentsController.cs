@@ -50,6 +50,7 @@ namespace WebApp.ApiControllers._1._0
                 return NotFound();
 
             var mappedEq = _mapper.MapOtherEquipmentUpdateToBll(otherEquipment);
+            mappedEq.AppUserId = User.UserGuidId();
 
             await _bll.OtherEquipments.UpdateAsync(mappedEq, User.UserGuidId());
             await _bll.SaveChangesAsync();

@@ -50,6 +50,7 @@ namespace WebApp.ApiControllers._1._0
                 return NotFound();
 
             var mappedItem = _mapper.MapMagicalItemUpdateToBll(magicalItem);
+            mappedItem.AppUserId = User.UserGuidId();
 
             await _bll.MagicalItems.UpdateAsync(mappedItem, User.UserGuidId());
             await _bll.SaveChangesAsync();

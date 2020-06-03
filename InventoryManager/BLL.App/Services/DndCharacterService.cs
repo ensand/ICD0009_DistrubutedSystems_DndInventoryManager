@@ -25,7 +25,7 @@ namespace BLL.App.Services
             return (await Repository.CustomGetAllAsync(userId, noTracking)).Select(e => Mapper.MapDndCharacterSummary(e));
         }
 
-        public async Task<DAL.App.DTO.DndCharacter> CustomFirstOrDefaultAsync(Guid? id, Guid? userId = default, bool noTracking = true)
+        public async Task<DndCharacter> CustomFirstOrDefaultAsync(Guid? id, Guid? userId = default, bool noTracking = true)
         {
             var dalEntity = await Repository.CustomFirstOrDefaultAsync(id, userId, noTracking);
             

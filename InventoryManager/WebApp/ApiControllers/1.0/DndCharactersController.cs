@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Contracts.DAL.App;
+using Contracts.BLL.App;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -19,16 +19,17 @@ namespace WebApp.ApiControllers._1._0
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class DndCharactersController : ControllerBase
     {
-        // private readonly IAppBLL _bll;
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBLL _bll;
+        // private readonly IAppUnitOfWork _uow;
         
         /// <summary>
         /// API controller constructor for initializing data source.
         /// </summary>
-        /// <param name="uow"></param>
-        public DndCharactersController(IAppUnitOfWork uow)
+        /// <param name="bll"></param>
+        public DndCharactersController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
+            // _uow = uow;
         }
 
         // GET: api/DndCharacters
@@ -39,7 +40,7 @@ namespace WebApp.ApiControllers._1._0
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DndCharacter>>> GetDndCharacters()
         {
-            var dndCharacters = await _uow.DndCharacters.CustomGetAllAsync(User.UserGuidId());
+            var dndCharacters = await _bll.DndCharacters.CustomGetAllAsync(User.UserGuidId());
             return Ok(dndCharacters);
         }
 
@@ -52,7 +53,7 @@ namespace WebApp.ApiControllers._1._0
         [HttpGet("{id}")]
         public async Task<ActionResult<DndCharacterDetails>> GetDndCharacter(Guid id)
         {
-            var characterDetails = await _uow.DndCharacters.CustomFirstOrDefaultAsync(id, User.UserGuidId());
+            var characterDetails = await _bll.DndCharacters.CustomFirstOrDefaultAsync(id, User.UserGuidId());
 
             if (characterDetails == null)
                 return NotFound("Character with id '" + id + "' was not found.");
@@ -70,13 +71,13 @@ namespace WebApp.ApiControllers._1._0
         /// <param name="dndCharacter"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDndCharacter(Guid id, DAL.App.DTO.DndCharacter dndCharacter)
+        public async Task<IActionResult> PutDndCharacter(Guid id, BLL.App.DTO.DndCharacter dndCharacter)
         {
             if (id != dndCharacter.Id)
                 return BadRequest();
 
-            await _uow.DndCharacters.UpdateAsync(dndCharacter, User.UserGuidId());
-            await _uow.SaveChangesAsync();
+            await _bll.DndCharacters.UpdateAsync(dndCharacter, User.UserGuidId());
+            await _bll.SaveChangesAsync();
 
             return NoContent();
 
@@ -91,11 +92,10 @@ namespace WebApp.ApiControllers._1._0
         /// <param name="dndCharacter"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<DndCharacter>> PostDndCharacter(DAL.App.DTO.DndCharacter dndCharacter)
-        // public async void PostDndCharacter(DAL.App.DTO.DndCharacter dndCharacter)
+        public async Task<ActionResult<DndCharacter>> PostDndCharacter(BLL.App.DTO.DndCharacter dndCharacter)
         {
-            _uow.DndCharacters.Add(dndCharacter);
-            await _uow.SaveChangesAsync();
+            _bll.DndCharacters.Add(dndCharacter);
+            await _bll.SaveChangesAsync();
         
             return CreatedAtAction("GetDndCharacter", new { id = dndCharacter.Id }, dndCharacter);
         }
@@ -109,14 +109,14 @@ namespace WebApp.ApiControllers._1._0
         [HttpDelete("{id}")]
         public async Task<ActionResult<Domain.DndCharacter>> DeleteDndCharacter(Guid id)
         {
-            var dndCharacter = await _uow.DndCharacters.CustomFirstOrDefaultAsync(id, User.UserGuidId());
+            var dndCharacter = await _bll.DndCharacters.CustomFirstOrDefaultAsync(id, User.UserGuidId());
             if (dndCharacter == null)
             {
                 return NotFound();
             }
 
-            await _uow.DndCharacters.RemoveAsync(id, User.UserGuidId());
-            await _uow.SaveChangesAsync();
+            await _bll.DndCharacters.RemoveAsync(id, User.UserGuidId());
+            await _bll.SaveChangesAsync();
 
             return Ok(id);
         }

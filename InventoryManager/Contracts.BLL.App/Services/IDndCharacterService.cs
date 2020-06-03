@@ -4,7 +4,7 @@ using Contracts.DAL.App.Repositories;
 
 namespace Contracts.BLL.App.Services
 {
-    public interface IDndCharacterService : IBaseEntityService<DndCharacter>, IDndCharacterRepositoryCustom<DndCharacterSummary>
+    public interface IDndCharacterService : IBaseEntityService<DndCharacter>, IDndCharacterRepositoryCustom<DndCharacter, DndCharacterSummary>
     {
     }
 }

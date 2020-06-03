@@ -12,11 +12,6 @@ namespace BLL.App.Mappers
         {
             MapperConfigurationExpression.CreateMap<DALAppDTO.DndCharacter, BLLAppDTO.DndCharacter>();
             MapperConfigurationExpression.CreateMap<DALAppDTO.DndCharacterSummary, BLLAppDTO.DndCharacterSummary>();
-            // MapperConfigurationExpression.CreateMap<DALAppDTO.Identity.AppUser, BLLAppDTO.Identity.AppUser>();
-            // MapperConfigurationExpression.CreateMap<DALAppDTO.Armor, BLLAppDTO.Armor>();
-            // MapperConfigurationExpression.CreateMap<DALAppDTO.Weapon, BLLAppDTO.Weapon>();
-            // MapperConfigurationExpression.CreateMap<DALAppDTO.MagicalItem, BLLAppDTO.MagicalItem>();
-            // MapperConfigurationExpression.CreateMap<DALAppDTO.OtherEquipment, BLLAppDTO.OtherEquipment>();
             
             Mapper = new Mapper(new MapperConfiguration(MapperConfigurationExpression));
         }
@@ -28,17 +23,6 @@ namespace BLL.App.Mappers
 
         public BLLAppDTO.DndCharacter MapDndCharacter(DALAppDTO.DndCharacter inObject)
         {
-            // var query = PrepareQuery(userId, noTracking);
-            // var domainEntityQuery = await query
-            //     .Include(e => e.Armor)
-            //     .Include(e => e.Weapons)
-            //     .Include(e => e.MagicalItems)
-            //     .Include(e => e.OtherEquipment)
-            //     .FirstOrDefaultAsync(e => e.Id.Equals(id));
-            //
-            // var result = MapCharacterWithEquipment(domainEntityQuery);
-            //
-            // return result;
             return Mapper.Map<BLLAppDTO.DndCharacter>(inObject);
         }
     }

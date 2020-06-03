@@ -19,6 +19,7 @@ namespace DAL.Base.EF.Repositories
         where TDomainEntity : class, IDomainEntityId<Guid>, new()
         where TDALEntity : class, IDomainEntityId<Guid>, new()
     {
+        // ReSharper disable once MemberCanBeProtected.Global
         public EFBaseRepository(TDbContext repoDbContext, IBaseMapper<TDomainEntity, TDALEntity> mapper) : base(repoDbContext, mapper)
         {
         }
@@ -37,7 +38,7 @@ namespace DAL.Base.EF.Repositories
         protected readonly IBaseMapper<TDomainEntity, TDALEntity> Mapper;
         // ReSharper enable MemberCanBePrivate.Global
 
-
+        // ReSharper disable once MemberCanBeProtected.Global
         public EFBaseRepository(TDbContext repoDbContext, IBaseMapper<TDomainEntity, TDALEntity> mapper)
         {
             RepoDbContext = repoDbContext;
@@ -103,7 +104,7 @@ namespace DAL.Base.EF.Repositories
 
         public virtual async Task<TDALEntity> RemoveAsync(TKey id, object? userId = null)
         {
-            var query = PrepareQuery(userId, true);
+            var query = PrepareQuery(userId);
             var domainEntity = await query.FirstOrDefaultAsync(e => e.Id.Equals(id));
 
             if (domainEntity == null)
@@ -113,12 +114,10 @@ namespace DAL.Base.EF.Repositories
 
             return result;
         }
-
-        // TODO: figure out why 'ExistsAsync' closes the db connection
-        // What I have tried: just calling this out, saving the result to a variable.
+        
         public virtual async Task<bool> ExistsAsync(TKey id, object? userId = null)
         {
-            var query = PrepareQuery(userId, true);
+            var query = PrepareQuery(userId);
             var recordExists = await query.AnyAsync(e => e.Id.Equals(id));
             
             return recordExists;
@@ -140,8 +139,6 @@ namespace DAL.Base.EF.Repositories
                     Microsoft.EntityFrameworkCore.EF.Property<TKey>(e, nameof(IDomainEntityUser<TKey, TUser>.AppUserId))
                         .Equals((TKey) userId));
             }
-
-            Console.WriteLine("Repo: " + query.ToArray() + " - " + query.ToArray().Length);
 
             return query;
         }

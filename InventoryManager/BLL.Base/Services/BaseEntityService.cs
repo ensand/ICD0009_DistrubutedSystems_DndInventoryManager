@@ -19,6 +19,7 @@ namespace BLL.Base.Services
         where TDALEntity : class, IDomainEntityId<Guid>, new()
         where TBLLEntity : class, IDomainEntityId<Guid>, new()
     {
+        // ReSharper disable once MemberCanBeProtected.Global
         public BaseEntityService(TUnitOfWork uow, TRepository repository, TMapper mapper) : base(uow, repository, mapper)
         {
         }
@@ -40,6 +41,7 @@ namespace BLL.Base.Services
         protected readonly TMapper Mapper;
         // ReSharper enable MemberCanBePrivate.Global
 
+        // ReSharper disable once MemberCanBeProtected.Global
         public BaseEntityService(TUnitOfWork uow, TRepository repository, TMapper mapper)
         {
             UnitOfWork = uow;

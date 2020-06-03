@@ -17,7 +17,7 @@ namespace BLL.App.DTO
         public Guid DndCharacterId { get; set; }
         
         [JsonIgnore] 
-        public DndCharacter DndCharacter { get; set; }
+        public DndCharacter? DndCharacter { get; set; }
 
         public string Name { get; set; } = default!;
 

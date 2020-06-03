@@ -62,7 +62,7 @@ namespace WebApp.ApiControllers._1._0
         }
         
         // PUT: api/DndCharacters/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // To protect from over posting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         /// <summary>
         /// Update the character details (not for the equipment details)
@@ -84,7 +84,7 @@ namespace WebApp.ApiControllers._1._0
         }
         
         // POST: api/DndCharacters
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // To protect from over posting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         /// <summary>
         /// Create a new character

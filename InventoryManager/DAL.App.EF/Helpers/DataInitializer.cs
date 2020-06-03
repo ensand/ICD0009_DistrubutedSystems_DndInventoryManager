@@ -23,6 +23,7 @@ namespace DAL.App.EF.Helpers
         {
             var userName = "enola1998@gmail.com";
             
+            // ReSharper disable StringLiteralTypo
             var dndCharacter = new DndCharacter()
                 {
                     Id = new Guid("00000000-0000-0000-0000-000000000002"),
@@ -35,6 +36,7 @@ namespace DAL.App.EF.Helpers
                     SilverPieces = 0,
                     CopperPieces = 6372
             };
+            // ReSharper enable StringLiteralTypo
 
             if (!context.DndCharacters.Any(c => c.Id == dndCharacter.Id))
             {
@@ -45,7 +47,7 @@ namespace DAL.App.EF.Helpers
 
         public static void SeedIdentity(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
-            var roleNames = new string[] {"user", "admin"};
+            var roleNames = new [] {"user", "admin"};
 
             foreach (var roleName in roleNames)
             {
@@ -63,10 +65,12 @@ namespace DAL.App.EF.Helpers
                 }
             }
 
+            // ReSharper disable StringLiteralTypo
             var userName = "enola1998@gmail.com";
             var password = "_Kibuvitsa196";
             var firstName = "Enola";
             var lastName = "Sander";
+            // ReSharper enable StringLiteralTypo
             
             var user = userManager.FindByNameAsync(userName).Result;
             

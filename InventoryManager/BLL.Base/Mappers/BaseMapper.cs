@@ -1,6 +1,3 @@
-using AutoMapper;
-using AutoMapper.Configuration;
-
 namespace BLL.Base.Mappers
 {
     /// <summary>

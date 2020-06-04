@@ -1,13 +1,16 @@
 import React from 'react';
 
 import {useStoreState} from 'easy-peasy';
-
-import {Button, Grid, Link, Paper, TextField, Typography} from '@material-ui/core';
-import Modal from '../../Components/Modal/Modal.jsx';
+import {useHistory} from 'react-router-dom';
 
 import {ApiGet, ApiPost, ApiDelete} from '../../Utils/AccountActions';
 
+import {Button, Grid, Paper, TextField, Typography} from '@material-ui/core';
+import Modal from '../../Components/Modal/Modal.jsx';
+
 function View() {
+    const history = useHistory();
+
     const userIsLoggedIn = useStoreState(state => state.appState.userLoggedIn);
     const token = useStoreState(state => state.appState.token);
 
@@ -45,11 +48,7 @@ function View() {
     }
 
     const redirectToDetails = (id) => {
-
-    }
-
-    const redirectToEdit = (id) => {
-        
+        history.push(`/Characters/${id}`);
     }
 
     const handleModalClose = () => {

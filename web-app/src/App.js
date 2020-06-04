@@ -15,7 +15,6 @@ import Register from './Views/Account/Register.jsx';
 import AccountDetails from './Views/Account/AccountDetails.jsx';
 
 import CharacterView from './Views/DndCharacters/View.jsx';
-import NewCharacter from './Views/DndCharacters/NewCharacter.jsx';
 import CharacterDetails from './Views/DndCharacters/Details.jsx';
 
 import {loginReq} from './Utils/AccountActions';
@@ -76,11 +75,8 @@ function App() {
                         {userIsLoggedIn && <Route path="/AccountDetails">
                             <AccountDetails />
                         </Route>}
-                        <Route path="/Characters">
+                        <Route exact path="/Characters">
                             <CharacterView />
-                        </Route>
-                        <Route path="/NewCharacter">
-                            <NewCharacter />
                         </Route>
                         <Route path="/Characters/:id">
                             <CharacterDetails />

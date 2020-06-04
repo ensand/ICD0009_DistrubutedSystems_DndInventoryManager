@@ -1,5 +1,5 @@
 using System;
-using Contracts.Domain;
+using com.enola.inventorymanager.Contracts.Domain;
 
 namespace Contracts.DAL.Base
 {

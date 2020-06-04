@@ -1,7 +1,6 @@
 using System;
-using Contracts.DAL.Base;
 using Contracts.DAL.Base.Repositories;
-using Contracts.Domain;
+using com.enola.inventorymanager.Contracts.Domain;
 
 namespace Contracts.BLL.Base.Services
 {

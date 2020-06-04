@@ -1,7 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Identity;
 
-namespace Contracts.Domain
+namespace com.enola.inventorymanager.Contracts.Domain
 {
     public interface IDomainEquipmentEntity<TUser, TOwnerEntity> : IDomainEquipmentEntity<Guid, TUser, TOwnerEntity>
         where TUser : IdentityUser<Guid>

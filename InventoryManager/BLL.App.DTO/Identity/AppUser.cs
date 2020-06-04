@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using Contracts.Domain;
+using com.enola.inventorymanager.Contracts.Domain;
 
 namespace BLL.App.DTO.Identity
 {

@@ -2,6 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
+        <AssemblyName>com.enola.inventorymanager.Contracts.Domain</AssemblyName>
+        <RootNamespace>com.enola.inventorymanager.Contracts.Domain</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

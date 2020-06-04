@@ -1,5 +1,5 @@
 ﻿
-namespace Contracts.Domain
+namespace com.enola.inventorymanager.Contracts.Domain
 {
     public interface IDomainEntity
     {

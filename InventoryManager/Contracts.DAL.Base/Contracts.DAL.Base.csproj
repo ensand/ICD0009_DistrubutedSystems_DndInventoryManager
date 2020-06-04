@@ -5,11 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="com.enola.inventorymanager.Contracts.Domain" Version="1.0.0" />
       <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.4" />
     </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Contracts.Domain\Contracts.Domain.csproj" />
-    </ItemGroup>
-
 </Project>

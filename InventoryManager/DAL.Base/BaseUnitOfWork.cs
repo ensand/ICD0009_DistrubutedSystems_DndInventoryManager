@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Contracts.DAL.Base;
-using Contracts.Domain;
+using com.enola.inventorymanager.Contracts.Domain;
 
 namespace DAL.Base
 {

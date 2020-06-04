@@ -1,6 +1,6 @@
 using System;
 
-namespace Contracts.Domain
+namespace com.enola.inventorymanager.Contracts.Domain
 {
     public interface IDomainEntityId : IDomainEntityId<Guid>
     {

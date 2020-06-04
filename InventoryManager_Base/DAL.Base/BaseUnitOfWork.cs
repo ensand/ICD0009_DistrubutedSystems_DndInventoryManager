@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using com.enola.inventorymanager.Contracts.DAL.Base;
 using com.enola.inventorymanager.Contracts.Domain;
 
-namespace DAL.Base
+namespace com.enola.inventorymanager.DAL.Base
 {
     public abstract class BaseUnitOfWork<TKey> : IBaseUnitOfWork, IBaseEntityTracker<TKey> 
         where TKey : IEquatable<TKey>

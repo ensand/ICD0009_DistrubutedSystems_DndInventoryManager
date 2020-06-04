@@ -8,7 +8,7 @@ namespace DAL.App.EF.Repositories
         IArmorRepository
     {
         public ArmorRepository(AppDbContext repoDbContext) 
-            : base(repoDbContext, new DAL.Base.Mappers.BaseMapper<Domain.App.Armor, DAL.App.DTO.Armor>())
+            : base(repoDbContext, new com.enola.inventorymanager.DAL.Base.Mappers.BaseMapper<Domain.App.Armor, DAL.App.DTO.Armor>())
         {
         }
     }

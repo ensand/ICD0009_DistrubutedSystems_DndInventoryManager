@@ -1,6 +1,6 @@
 using com.enola.inventorymanager.Contracts.DAL.Base.Mappers;
 
-namespace DAL.Base.Mappers
+namespace com.enola.inventorymanager.DAL.Base.Mappers
 {
     public class IdentityMapper<TLeftObject, TRightObject> : IBaseMapper<TLeftObject, TRightObject> 
         where TRightObject : class?, new() 

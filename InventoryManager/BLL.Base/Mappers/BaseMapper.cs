@@ -5,7 +5,7 @@ namespace BLL.Base.Mappers
     /// </summary>
     /// <typeparam name="TLeftObject"></typeparam>
     /// <typeparam name="TRightObject"></typeparam>
-    public class BaseMapper<TLeftObject, TRightObject> : DAL.Base.Mappers.BaseMapper<TLeftObject, TRightObject>
+    public class BaseMapper<TLeftObject, TRightObject> : com.enola.inventorymanager.DAL.Base.Mappers.BaseMapper<TLeftObject, TRightObject>
         where TLeftObject : class?, new() 
         where TRightObject : class?, new()
     {

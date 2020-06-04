@@ -8,7 +8,7 @@ namespace DAL.App.EF.Repositories
         IWeaponRepository
     {
         public WeaponRepository(AppDbContext repoDbContext) 
-            : base(repoDbContext, new DAL.Base.Mappers.BaseMapper<Domain.App.Weapon, DAL.App.DTO.Weapon>())
+            : base(repoDbContext, new com.enola.inventorymanager.DAL.Base.Mappers.BaseMapper<Domain.App.Weapon, DAL.App.DTO.Weapon>())
         {
         }
     }

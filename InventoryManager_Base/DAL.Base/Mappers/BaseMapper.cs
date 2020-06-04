@@ -2,7 +2,7 @@ using AutoMapper;
 using AutoMapper.Configuration;
 using com.enola.inventorymanager.Contracts.DAL.Base.Mappers;
 
-namespace DAL.Base.Mappers
+namespace com.enola.inventorymanager.DAL.Base.Mappers
 {
     /// <summary>
     /// Maps using AutoMapper. No mapper configuration. Property types and names have to match.

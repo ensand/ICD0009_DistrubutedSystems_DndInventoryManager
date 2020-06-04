@@ -2,6 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
+        <AssemblyName>com.enola.inventorymanager.DAL.Base</AssemblyName>
+        <RootNamespace>com.enola.inventorymanager.DAL.Base</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

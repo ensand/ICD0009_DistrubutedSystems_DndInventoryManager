@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.Configuration;
 
 namespace PublicApi.DTO.V1.Mappers
 {

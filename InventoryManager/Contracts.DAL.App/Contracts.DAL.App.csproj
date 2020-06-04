@@ -9,4 +9,8 @@
       <ProjectReference Include="..\Domain.App\Domain.App.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="com.enola.inventorymanager.Contracts.DAL.Base" Version="1.0.0" />
+    </ItemGroup>
+
 </Project>

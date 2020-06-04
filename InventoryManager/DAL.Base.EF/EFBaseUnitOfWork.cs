@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using com.enola.inventorymanager.DAL.Base;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace DAL.Base.EF
 {

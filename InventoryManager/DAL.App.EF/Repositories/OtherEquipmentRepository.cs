@@ -8,7 +8,7 @@ namespace DAL.App.EF.Repositories
         IOtherEquipmentRepository
     {
         public OtherEquipmentRepository(AppDbContext repoDbContext) 
-            : base(repoDbContext, new DAL.Base.Mappers.BaseMapper<Domain.App.OtherEquipment, DAL.App.DTO.OtherEquipment>())
+            : base(repoDbContext, new com.enola.inventorymanager.DAL.Base.Mappers.BaseMapper<Domain.App.OtherEquipment, DAL.App.DTO.OtherEquipment>())
         {
         }
     }

@@ -5,10 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DAL.Base\DAL.Base.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
+        <PackageReference Include="com.enola.inventorymanager.Contracts.Domain" Version="1.0.0" />
         <PackageReference Include="System.Text.Json" Version="4.7.2" />
     </ItemGroup>
 

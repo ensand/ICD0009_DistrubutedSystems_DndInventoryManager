@@ -14,7 +14,7 @@ namespace DAL.App.EF.Repositories
         IDndCharacterRepository
     {
         public DndCharacterRepository(AppDbContext repoDbContext) 
-            : base(repoDbContext, new DAL.Base.Mappers.BaseMapper<Domain.App.DndCharacter, DAL.App.DTO.DndCharacter>())
+            : base(repoDbContext, new com.enola.inventorymanager.DAL.Base.Mappers.BaseMapper<Domain.App.DndCharacter, DAL.App.DTO.DndCharacter>())
         {
         }
 

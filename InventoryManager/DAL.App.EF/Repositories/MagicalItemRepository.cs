@@ -8,7 +8,7 @@ namespace DAL.App.EF.Repositories
         IMagicalItemRepository
     {
         public MagicalItemRepository(AppDbContext repoDbContext) 
-            : base(repoDbContext, new DAL.Base.Mappers.BaseMapper<Domain.App.MagicalItem, DAL.App.DTO.MagicalItem>())
+            : base(repoDbContext, new com.enola.inventorymanager.DAL.Base.Mappers.BaseMapper<Domain.App.MagicalItem, DAL.App.DTO.MagicalItem>())
         {
         }
     }

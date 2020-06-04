@@ -5,12 +5,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Contracts.BLL.Base\Contracts.BLL.Base.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="AutoMapper" Version="9.0.0" />
       <PackageReference Include="com.enola.inventorymanager.DAL.Base" Version="1.0.0" />
+        <PackageReference Include="com.enola.inventorymanager.Contracts.BLL.Base" Version="1.0.0" />
+
     </ItemGroup>
 
 </Project>

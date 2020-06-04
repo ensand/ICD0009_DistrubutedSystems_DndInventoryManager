@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using com.enola.inventorymanager.Contracts.BLL.Base;
 using com.enola.inventorymanager.Contracts.DAL.Base;
-using Contracts.BLL.Base;
 
 namespace BLL.Base
 {

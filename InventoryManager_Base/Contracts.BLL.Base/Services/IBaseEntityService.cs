@@ -2,7 +2,7 @@ using System;
 using com.enola.inventorymanager.Contracts.DAL.Base.Repositories;
 using com.enola.inventorymanager.Contracts.Domain;
 
-namespace Contracts.BLL.Base.Services
+namespace com.enola.inventorymanager.Contracts.BLL.Base.Services
 {
     public interface IBaseEntityService<TEntity> : IBaseEntityService<Guid, TEntity>
         where TEntity : class, IDomainEntityId<Guid>, new()

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Contracts.BLL.Base
+namespace com.enola.inventorymanager.Contracts.BLL.Base
 {
     public interface IBaseBLL
     {

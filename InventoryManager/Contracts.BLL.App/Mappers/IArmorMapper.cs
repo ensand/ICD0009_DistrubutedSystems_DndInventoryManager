@@ -1,4 +1,4 @@
-using Contracts.BLL.Base.Mappers;
+using com.enola.inventorymanager.Contracts.BLL.Base.Mappers;
 using BLLAppDTO = BLL.App.DTO;
 using DALAppDTO = DAL.App.DTO;
 

@@ -1,4 +1,4 @@
-using Contracts.BLL.Base.Services;
+using com.enola.inventorymanager.Contracts.BLL.Base.Services;
 
 namespace BLL.Base.Services
 {

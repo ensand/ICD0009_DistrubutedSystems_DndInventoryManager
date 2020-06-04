@@ -1,7 +1,7 @@
 using System;
 using com.enola.inventorymanager.Contracts.Domain;
 
-namespace Contracts.DAL.Base
+namespace com.enola.inventorymanager.Contracts.DAL.Base
 {
     public interface IBaseEntityTracker : IBaseEntityTracker<Guid>
     {

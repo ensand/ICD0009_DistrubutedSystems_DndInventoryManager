@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Contracts.DAL.Base;
+using com.enola.inventorymanager.Contracts.DAL.Base;
 using com.enola.inventorymanager.Contracts.Domain;
 using Domain.App;
 using Domain.Identity;

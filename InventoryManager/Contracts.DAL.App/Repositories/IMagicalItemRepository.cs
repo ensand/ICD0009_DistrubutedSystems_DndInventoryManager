@@ -1,4 +1,4 @@
-using Contracts.DAL.Base.Repositories;
+using com.enola.inventorymanager.Contracts.DAL.Base.Repositories;
 using DAL.App.DTO;
 
 namespace Contracts.DAL.App.Repositories

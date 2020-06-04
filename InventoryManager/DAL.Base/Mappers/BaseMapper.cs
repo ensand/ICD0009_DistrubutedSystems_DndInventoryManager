@@ -1,6 +1,6 @@
 using AutoMapper;
 using AutoMapper.Configuration;
-using Contracts.DAL.Base.Mappers;
+using com.enola.inventorymanager.Contracts.DAL.Base.Mappers;
 
 namespace DAL.Base.Mappers
 {

@@ -1,6 +1,5 @@
 using System;
 using System.Text.Json.Serialization;
-using Contracts.DAL.Base;
 using com.enola.inventorymanager.Contracts.Domain;
 using Domain.Identity;
 

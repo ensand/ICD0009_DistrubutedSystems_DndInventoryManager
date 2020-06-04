@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using com.enola.inventorymanager.Contracts.Domain;
 
-namespace Contracts.DAL.Base.Repositories
+namespace com.enola.inventorymanager.Contracts.DAL.Base.Repositories
 {
     public interface IBaseRepository<TEntity> : IBaseRepository<Guid, TEntity>
         where TEntity : class, IDomainEntityId<Guid>, new()

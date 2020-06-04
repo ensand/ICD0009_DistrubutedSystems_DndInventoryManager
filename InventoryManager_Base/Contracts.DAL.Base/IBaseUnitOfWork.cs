@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Contracts.DAL.Base
+namespace com.enola.inventorymanager.Contracts.DAL.Base
 {
     public interface IBaseUnitOfWork
     {

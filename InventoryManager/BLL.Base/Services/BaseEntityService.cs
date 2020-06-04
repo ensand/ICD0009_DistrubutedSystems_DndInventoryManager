@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using com.enola.inventorymanager.Contracts.DAL.Base;
+using com.enola.inventorymanager.Contracts.DAL.Base.Repositories;
 using Contracts.BLL.Base.Mappers;
 using Contracts.BLL.Base.Services;
-using Contracts.DAL.Base;
-using Contracts.DAL.Base.Repositories;
 using com.enola.inventorymanager.Contracts.Domain;
 
 namespace BLL.Base.Services

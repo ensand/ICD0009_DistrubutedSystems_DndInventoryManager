@@ -1,5 +1,5 @@
+using com.enola.inventorymanager.Contracts.DAL.Base;
 using Contracts.DAL.App.Repositories;
-using Contracts.DAL.Base;
 
 namespace Contracts.DAL.App
 {

@@ -1,4 +1,4 @@
-namespace Contracts.DAL.Base.Mappers
+namespace com.enola.inventorymanager.Contracts.DAL.Base.Mappers
 {
     public interface IBaseMapper<TInObject, TOutObject>
         where TInObject : class?, new()

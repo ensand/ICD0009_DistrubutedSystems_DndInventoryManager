@@ -1,5 +1,5 @@
 using System;
-using Contracts.DAL.Base.Repositories;
+using com.enola.inventorymanager.Contracts.DAL.Base.Repositories;
 using com.enola.inventorymanager.Contracts.Domain;
 
 namespace Contracts.BLL.Base.Services

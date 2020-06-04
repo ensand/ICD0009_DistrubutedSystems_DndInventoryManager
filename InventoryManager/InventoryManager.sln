@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionFiles", "_Solution
 ProjectSection(SolutionItems) = preProject
 	..\Documentation\README.md = ..\Documentation\README.md
 	..\.gitignore = ..\.gitignore
+	Dockerfile = Dockerfile
+	.dockerignore = .dockerignore
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL.Base.EF", "DAL.Base.EF\DAL.Base.EF.csproj", "{AE9D86A3-69C1-40D0-ACAA-2483F6B0AFDD}"

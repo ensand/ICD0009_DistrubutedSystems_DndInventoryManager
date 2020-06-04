@@ -1,4 +1,4 @@
-using Domain.Base;
+using com.enola.inventorymanager.Domain.Base;
 using Domain.Identity;
 
 namespace Domain.App

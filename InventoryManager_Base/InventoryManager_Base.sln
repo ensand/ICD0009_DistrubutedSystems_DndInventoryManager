@@ -8,6 +8,8 @@ ProjectSection(SolutionItems) = preProject
 	publish_nuget.sh = publish_nuget.sh
 EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Base", "Domain.Base\Domain.Base.csproj", "{D13DD9BC-FFDF-4D2D-95C3-07764F30E22B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{087D6622-E57C-4DA2-8C1D-EF96C9E692BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{087D6622-E57C-4DA2-8C1D-EF96C9E692BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{087D6622-E57C-4DA2-8C1D-EF96C9E692BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D13DD9BC-FFDF-4D2D-95C3-07764F30E22B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D13DD9BC-FFDF-4D2D-95C3-07764F30E22B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D13DD9BC-FFDF-4D2D-95C3-07764F30E22B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D13DD9BC-FFDF-4D2D-95C3-07764F30E22B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

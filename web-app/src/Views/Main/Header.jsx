@@ -9,7 +9,6 @@ function Header() {
     return (
         <header>
             <nav className="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-                <div className="container">
                     <Link className="navbar-brand" to="/">Inventory manager</Link>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse">
                         <span className="navbar-toggler-icon"></span>
@@ -17,24 +16,11 @@ function Header() {
                     <div className="navbar-collapse collapse d-sm-inline-flex flex-sm-row">                            
                         <ul className="navbar-nav flex-grow-1">
                             <li className="nav-item">
-                                <Link className="nav-link text-dark" to="/Characters">Characters</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link text-dark" to="/Armor">Armor</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link text-dark" to="/Weapons">Weapons</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link text-dark" to="/MagicalItems">Magical items</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link text-dark" to="/OtherEquipment">Other equipment</Link>
+                                <Link className="nav-link text-dark" to="/Characters">Your characters</Link>
                             </li>
                         </ul>
                         <AccountLinks />
                     </div>
-                </div>
             </nav>
         </header>
     );

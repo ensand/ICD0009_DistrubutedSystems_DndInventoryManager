@@ -15,10 +15,8 @@ import Register from './Views/Account/Register.jsx';
 import AccountDetails from './Views/Account/AccountDetails.jsx';
 
 import CharacterView from './Views/DndCharacters/View.jsx';
-import ArmorView from './Views/Armor/View.jsx';
-import WeaponsView from './Views/Weapons/View.jsx';
-import MagicalItemsView from './Views/MagicalItems/View.jsx';
-import OtherEquipmentView from './Views/OtherEquipments/View.jsx';
+import NewCharacter from './Views/DndCharacters/NewCharacter.jsx';
+import CharacterDetails from './Views/DndCharacters/Details.jsx';
 
 import {loginReq} from './Utils/AccountActions';
 
@@ -67,7 +65,7 @@ function App() {
                             <Privacy />
                         </Route>
                         <Route path="/ForgotPassword">
-                            <div>Tough shit. Make a new account.</div>
+                            <div>Make a new account and write the password down.</div>
                         </Route>
                         {!userIsLoggedIn && <Route path="/Register">
                             <Register />
@@ -81,17 +79,11 @@ function App() {
                         <Route path="/Characters">
                             <CharacterView />
                         </Route>
-                        <Route path="/Armor">
-                            <ArmorView />
+                        <Route path="/NewCharacter">
+                            <NewCharacter />
                         </Route>
-                        <Route path="/Weapons">
-                            <WeaponsView />
-                        </Route>
-                        <Route path="/MagicalItems">
-                            <MagicalItemsView />
-                        </Route>
-                        <Route path="/OtherEquipment">
-                            <OtherEquipmentView />
+                        <Route path="/Characters/:id">
+                            <CharacterDetails />
                         </Route>
                     </Switch>
                 </main>

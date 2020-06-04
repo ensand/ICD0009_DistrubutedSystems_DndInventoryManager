@@ -5,6 +5,7 @@ import {Button, FormControl, IconButton, Input, InputAdornment, InputLabel, Text
 import {VisibilityOff, Visibility} from '@material-ui/icons';
 
 import {TranslateServerResponse} from '../../Utils/ServerResponse';
+import {registerReq} from '../../Utils/AccountActions';
 
 
 function Register() {
@@ -25,14 +26,7 @@ function Register() {
             return;
         }
 
-        const res = await fetch(
-            'https://localhost:5001/api/v1.0/account/register', 
-            {
-                method: 'POST', 
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({email, firstName, lastName, password}),
-            }).then(response => response.json())
-            .catch(error => console.log('error', error));
+        const res = await registerReq({email, firstName, lastName, password});
         
         if (res !== undefined && res.status === "Registration successful") {
             setError(false);

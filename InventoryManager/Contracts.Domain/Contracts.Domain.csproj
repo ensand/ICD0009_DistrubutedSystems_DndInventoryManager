@@ -5,8 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\DAL.Base\DAL.Base.csproj" />
-      <ProjectReference Include="..\..\Domain.App\Domain.App.csproj" />
+      <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.4" />
     </ItemGroup>
 
 </Project>

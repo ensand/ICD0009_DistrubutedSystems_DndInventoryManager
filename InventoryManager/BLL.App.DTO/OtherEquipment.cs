@@ -2,6 +2,7 @@ using System;
 using System.Text.Json.Serialization;
 using BLL.App.DTO.Identity;
 using Contracts.DAL.Base;
+using Contracts.Domain;
 
 namespace BLL.App.DTO
 {

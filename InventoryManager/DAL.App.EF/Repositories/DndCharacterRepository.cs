@@ -10,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 namespace DAL.App.EF.Repositories
 {
     public class DndCharacterRepository : 
-        EFBaseRepository<AppDbContext, Domain.Identity.AppUser, Domain.DndCharacter, DAL.App.DTO.DndCharacter>, 
+        EFBaseRepository<AppDbContext, Domain.Identity.AppUser, Domain.App.DndCharacter, DAL.App.DTO.DndCharacter>, 
         IDndCharacterRepository
     {
         public DndCharacterRepository(AppDbContext repoDbContext) 
-            : base(repoDbContext, new DAL.Base.Mappers.BaseMapper<Domain.DndCharacter, DAL.App.DTO.DndCharacter>())
+            : base(repoDbContext, new DAL.Base.Mappers.BaseMapper<Domain.App.DndCharacter, DAL.App.DTO.DndCharacter>())
         {
         }
 
@@ -65,7 +65,7 @@ namespace DAL.App.EF.Repositories
             return result;
         }
 
-        private DndCharacter MapCharacterWithEquipment(Domain.DndCharacter entity)
+        private DndCharacter MapCharacterWithEquipment(Domain.App.DndCharacter entity)
         {
             var itemValues = CalculateAllItemsWeightAndValue(entity.Armor, entity.Weapons, entity.MagicalItems, entity.OtherEquipment);
             
@@ -97,7 +97,7 @@ namespace DAL.App.EF.Repositories
             return dalEntity;
         }
         
-        private ICollection<Armor> MapArmor(ICollection<Domain.Armor>? armors)
+        private ICollection<Armor> MapArmor(ICollection<Domain.App.Armor>? armors)
         {
             if (armors == null || armors.Count == 0)
                 return new List<Armor>();
@@ -121,7 +121,7 @@ namespace DAL.App.EF.Repositories
             return result;
         }
         
-        private ICollection<Weapon> MapWeapons(ICollection<Domain.Weapon>? weapons)
+        private ICollection<Weapon> MapWeapons(ICollection<Domain.App.Weapon>? weapons)
         {
             if (weapons == null || weapons.Count == 0)
                 return new List<Weapon>();
@@ -146,7 +146,7 @@ namespace DAL.App.EF.Repositories
             return result;
         }
         
-        private ICollection<MagicalItem> MapMagicalItems(ICollection<Domain.MagicalItem>? magicalItems)
+        private ICollection<MagicalItem> MapMagicalItems(ICollection<Domain.App.MagicalItem>? magicalItems)
         {
             if (magicalItems == null || magicalItems.Count == 0)
                 return new List<MagicalItem>();
@@ -169,7 +169,7 @@ namespace DAL.App.EF.Repositories
             return result;
         }
 
-        private ICollection<OtherEquipment> MapOtherEquipments(ICollection<Domain.OtherEquipment>? equipments)
+        private ICollection<OtherEquipment> MapOtherEquipments(ICollection<Domain.App.OtherEquipment>? equipments)
         {
             if (equipments == null || equipments.Count == 0)
                 return new List<OtherEquipment>();
@@ -189,9 +189,9 @@ namespace DAL.App.EF.Repositories
             return result;
         }
         
-        private (float totalValue, float totalWeight) CalculateAllItemsWeightAndValue(ICollection<Domain.Armor>? armors,
-            ICollection<Domain.Weapon>? weapons, ICollection<Domain.MagicalItem>? magicalItems,
-            ICollection<Domain.OtherEquipment>? equipments)
+        private (float totalValue, float totalWeight) CalculateAllItemsWeightAndValue(ICollection<Domain.App.Armor>? armors,
+            ICollection<Domain.App.Weapon>? weapons, ICollection<Domain.App.MagicalItem>? magicalItems,
+            ICollection<Domain.App.OtherEquipment>? equipments)
         {
             float totalValue = 0;
             float totalWeight = 0;

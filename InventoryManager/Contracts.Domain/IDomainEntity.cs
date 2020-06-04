@@ -1,5 +1,5 @@
 ﻿
-namespace Contracts.DAL.Base
+namespace Contracts.Domain
 {
     public interface IDomainEntity
     {

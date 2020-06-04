@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 using Contracts.DAL.Base;
+using Contracts.Domain;
 using DAL.App.DTO.Identity;
 
 namespace DAL.App.DTO

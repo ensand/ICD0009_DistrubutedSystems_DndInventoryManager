@@ -258,4 +258,28 @@
       <UpToDateCheckInput Remove="Views\OtherEquipments\Edit.cshtml" />
       <UpToDateCheckInput Remove="Views\OtherEquipments\Index.cshtml" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Controllers\**" />
+      <Compile Remove="Areas\**" />
+      <Compile Remove="Views\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Controllers\**" />
+      <EmbeddedResource Remove="Areas\**" />
+      <EmbeddedResource Remove="Views\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Controllers\**" />
+      <None Remove="Areas\**" />
+      <None Remove="Views\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Controllers\**" />
+      <Content Remove="Areas\**" />
+      <Content Remove="Views\**" />
+    </ItemGroup>
 </Project>

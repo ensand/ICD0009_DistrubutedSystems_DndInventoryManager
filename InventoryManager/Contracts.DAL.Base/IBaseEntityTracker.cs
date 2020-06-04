@@ -1,4 +1,5 @@
 using System;
+using Contracts.Domain;
 
 namespace Contracts.DAL.Base
 {

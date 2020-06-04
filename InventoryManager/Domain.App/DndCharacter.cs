@@ -2,7 +2,7 @@
 using Domain.Base;
 using Domain.Identity;
 
-namespace Domain
+namespace Domain.App
 {
     public class DndCharacter : DomainEntity<AppUser>
     {

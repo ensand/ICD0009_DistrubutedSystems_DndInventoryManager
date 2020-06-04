@@ -1,7 +1,7 @@
 using Domain.Base;
 using Domain.Identity;
 
-namespace Domain
+namespace Domain.App
 {
     public class OtherEquipment : DomainEquipmentEntity<AppUser, DndCharacter>
     {

@@ -5,7 +5,7 @@ using Contracts.BLL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
-using Domain;
+using Domain.App;
 using Extensions;
 using Microsoft.AspNetCore.Authorization;
 

@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Contracts.DAL.Base;
+using Contracts.Domain;
 using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Base

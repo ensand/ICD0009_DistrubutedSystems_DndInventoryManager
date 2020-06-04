@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Domain.Base;
 using Domain.Identity;
 
-namespace Domain
+namespace Domain.App
 {
     public class Armor : DomainEquipmentEntity<AppUser, DndCharacter>
     {

@@ -1,6 +1,7 @@
 using System;
 using Contracts.DAL.Base;
 using Contracts.DAL.Base.Repositories;
+using Contracts.Domain;
 
 namespace Contracts.BLL.Base.Services
 {

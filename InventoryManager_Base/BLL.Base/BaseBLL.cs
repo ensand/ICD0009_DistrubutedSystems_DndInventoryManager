@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using com.enola.inventorymanager.Contracts.BLL.Base;
 using com.enola.inventorymanager.Contracts.DAL.Base;
 
-namespace BLL.Base
+namespace com.enola.inventorymanager.BLL.Base
 {
     public abstract class BaseBLL<TUnitOfWork> : IBaseBLL
         where TUnitOfWork : IBaseUnitOfWork

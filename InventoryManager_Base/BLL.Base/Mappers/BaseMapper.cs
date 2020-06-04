@@ -1,4 +1,4 @@
-namespace BLL.Base.Mappers
+namespace com.enola.inventorymanager.BLL.Base.Mappers
 {
     /// <summary>
     /// Maps using AutoMapper. No mapper configuration. Property types and names have to match.

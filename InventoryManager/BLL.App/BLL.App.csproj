@@ -5,9 +5,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BLL.Base\BLL.Base.csproj" />
-      <ProjectReference Include="..\Contracts.BLL.App\Contracts.BLL.App.csproj" />
-      <ProjectReference Include="..\Contracts.DAL.App\Contracts.DAL.App.csproj" />
+        <PackageReference Include="com.enola.inventorymanager.BLL.Base" Version="1.0.0" />
+        <ProjectReference Include="..\Contracts.BLL.App\Contracts.BLL.App.csproj" />
+        <ProjectReference Include="..\Contracts.DAL.App\Contracts.DAL.App.csproj" />
     </ItemGroup>
 
 </Project>

@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using com.enola.inventorymanager.Contracts.DAL.Base;
-using com.enola.inventorymanager.Contracts.DAL.Base.Repositories;
 using com.enola.inventorymanager.Contracts.BLL.Base.Mappers;
 using com.enola.inventorymanager.Contracts.BLL.Base.Services;
+using com.enola.inventorymanager.Contracts.DAL.Base;
+using com.enola.inventorymanager.Contracts.DAL.Base.Repositories;
 using com.enola.inventorymanager.Contracts.Domain;
 
-namespace BLL.Base.Services
+namespace com.enola.inventorymanager.BLL.Base.Services
 {
     public class BaseEntityService<TUnitOfWork, TRepository, TMapper, TDALEntity, TBLLEntity> : 
         BaseEntityService<Guid, TUnitOfWork, TRepository, TMapper, TDALEntity, TBLLEntity>, 

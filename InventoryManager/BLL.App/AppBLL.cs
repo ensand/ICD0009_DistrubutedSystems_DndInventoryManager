@@ -1,5 +1,5 @@
 ﻿using BLL.App.Services;
-using BLL.Base;
+using com.enola.inventorymanager.BLL.Base;
 using Contracts.BLL.App;
 using Contracts.BLL.App.Services;
 using Contracts.DAL.App;

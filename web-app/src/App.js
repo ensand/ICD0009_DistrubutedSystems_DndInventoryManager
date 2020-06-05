@@ -50,8 +50,9 @@ function App() {
 
     return (
         <div className="main">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
             <Header/>
-            <div className="container">
+            <div className="container" style={{marginBottom: "80px"}}>
                 <main role="main" className="pb-3">
                     <Switch>
                         <Route exact path="/">

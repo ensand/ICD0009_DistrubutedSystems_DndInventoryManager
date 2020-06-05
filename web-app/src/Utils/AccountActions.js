@@ -1,7 +1,7 @@
 // const domain = "dndinventorymanagerapi.azurewebsites.net/api";
 const domain = "https://localhost:5001/api";
 const version = "v1.0";
-
+  
 
 async function login(body, loginWithToken) {
     let url = `${domain}/${version}/account/login${loginWithToken ? 'WithToken' : ''}`;
@@ -13,6 +13,26 @@ async function login(body, loginWithToken) {
     }).then(response => {
         return response.json();
     });
+
+
+    // var myHeaders = new Headers();
+    // myHeaders.append("Content-Type", "application/json");
+
+    // var raw = JSON.stringify({"email":"enola1998@gmail.com","password":"_Kibuvitsa196"});
+
+    // var requestOptions = {
+    //     method: 'POST',
+    //     headers: myHeaders,
+    //     body: raw,
+    //     redirect: 'follow'
+    // };
+
+    // var res = fetch("dndinventorymanagerapi.azurewebsites.net/api/v1.0/account/login", requestOptions)
+    //     .then(response => response.text())
+    //     .then(result => console.log(result))
+    //     .catch(error => console.log('error', error));
+
+    console.log(res)
 
     return res;
 }

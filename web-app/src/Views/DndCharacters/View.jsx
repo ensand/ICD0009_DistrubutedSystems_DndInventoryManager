@@ -92,7 +92,7 @@ function View() {
             <p><Button variant="contained" color="primary" onClick={() => toggleModal(true)}>Create new</Button></p>
             <Grid container spacing={3}>
                 {items.map((item) => {
-                    return <Grid item key={item.id} style={{minHeight: "10vh", minWidth: "15vw", width: "fit-content", height: "fit-content"}}>
+                    return <Grid item key={item.id} style={{minHeight: "10vh", width: "20rem", height: "fit-content"}}>
                         <Paper style={{backgroundColor: "#ececec", padding: "1rem"}}>
                             <Typography variant="h5">{item.name}</Typography>
                             {item.comment && <Typography variant="subtitle2"><i>{item.comment}</i></Typography>}

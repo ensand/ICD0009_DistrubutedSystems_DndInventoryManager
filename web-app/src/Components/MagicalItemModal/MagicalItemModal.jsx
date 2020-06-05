@@ -61,6 +61,7 @@ export default function MagicalItemModal(props) {
             body.id = oldBody.id;
         }
 
+        handleModalClose(); 
         closeModal();
 
         onSave(body);
@@ -83,7 +84,7 @@ export default function MagicalItemModal(props) {
 
 
     return (
-        <Modal onClose={() => handleModalClose()} onSave={(e) => {handleModalClose(); save();}} title={oldBody ? "Edit equipment" : "Create new equipment"}>
+        <Modal onClose={() => handleModalClose()} onSave={(e) => save()} title={oldBody ? "Edit item" : "Create new magical item"}>
             <div style={{display: "flex", flexDirection: "column"}}>
                 <TextField name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
                 <TextField name="comment" label="Comment" value={comment} onChange={(e) => setComment(e.target.value)}/>

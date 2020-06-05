@@ -13,7 +13,7 @@ export default function DisplayList(props) {
 
                 return <div key={`${itemId}_${index}`} style={{display: "flex", justifyContent: "space-between", width: "inherit", borderBottom: "1px solid lightgray", padding: "5px 0 5px 0"}}>
                     <Typography variant="body1">{displayHeadings[index]}:</Typography>
-                    <Typography variant="body1">{displayItem}</Typography>
+                    <Typography variant="body1">{typeof displayItem === "boolean" ? JSON.stringify(displayItem) : displayItem}</Typography>
                 </div>
             })}
         </div>

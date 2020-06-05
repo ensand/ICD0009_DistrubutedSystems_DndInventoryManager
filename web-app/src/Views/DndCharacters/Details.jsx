@@ -124,7 +124,7 @@ export default function Details(props) {
                 <div>
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Typography variant="h6">Weapons</Typography>
-                        <IconButton color="primary" title="Add a new weapon"><AddIcon/></IconButton>
+                        <IconButton color="primary" title="Add a new weapon" onClick={() => toggleModal("newWeapon")}><AddIcon/></IconButton>
                     </div>
                     {item.weapons.map((weapon) => {
                         return (
@@ -135,11 +135,17 @@ export default function Details(props) {
                                         <Typography variant="subtitle1">Damage: {weapon.damageDice} {weapon.damageType}</Typography>
                                     </div>
                                 </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
+                                <ExpansionPanelDetails style={{display: "flex", flexDirection: "column"}}>
                                     <DisplayList 
                                         itemId={`weapons_${weapon.id}`}
                                         displayItems={[weapon.comment, weapon.weaponType, weapon.weaponRange, weapon.properties, weapon.weight, weapon.valueInGp, weapon.quantity]} 
                                         displayHeadings={["Comment", "Type", "Range", "Properties", "Weight", "Value (GP)", "Quantity"]}/>
+
+                                    <hr/>
+                                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                                        <Button variant="outlined" color="primary" size="small" title="Edit this thing" onClick={() => toggleModal({dbObj: "weapons", id: weapon.id})}>Edit</Button>
+                                        <Button variant="outlined" color="secondary" size="small" title="Delete this thing" onClick={() => deleteItem("weapons", weapon.id)}>Delete</Button>
+                                    </div>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
                         );
@@ -149,7 +155,7 @@ export default function Details(props) {
                 <div>
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Typography variant="h6">Armor</Typography>
-                        <IconButton color="primary" title="Add a new armor"><AddIcon/></IconButton>
+                        <IconButton color="primary" title="Add a new armor" onClick={() => toggleModal("newArmor")}><AddIcon/></IconButton>
                     </div>                       
                     {item.armor.map((armor) => {
                         return (
@@ -160,11 +166,17 @@ export default function Details(props) {
                                         <Typography variant="subtitle1">AC: {armor.ac}</Typography>
                                     </div>
                                 </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
+                                <ExpansionPanelDetails style={{display: "flex", flexDirection: "column"}}>
                                     <DisplayList 
                                         itemId={`armor_${armor.id}`}
-                                        displayItems={[armor.comment, armor.armorType, armor.strengthRequirement, armor.stealthDisdvantage, armor.weight, armor.valueInGp, armor.quantity]} 
+                                        displayItems={[armor.comment, armor.armorType, armor.strengthRequirement, armor.stealthDisadvantage, armor.weight, armor.valueInGp, armor.quantity]} 
                                         displayHeadings={["Comment", "Type", "Strength requirement", "Stealth disadvantage", "Weight", "Value (GP)", "Quantity"]}/>
+
+                                    <hr/>
+                                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                                        <Button variant="outlined" color="primary" size="small" title="Edit this thing" onClick={() => toggleModal({dbObj: "armor", id: armor.id})}>Edit</Button>
+                                        <Button variant="outlined" color="secondary" size="small" title="Delete this thing" onClick={() => deleteItem("armor", armor.id)}>Delete</Button>
+                                    </div>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
                         );
@@ -240,6 +252,9 @@ export default function Details(props) {
         
             {modalOpen === "newMi" && <MagicalItemModal closeModal={handleModalClose} onSave={(body) => create("magicalItems", body)}/>}
             {modalOpen.dbObj === "mi" && modalOpen.id !== undefined && <MagicalItemModal closeModal={handleModalClose} onSave={(body) => edit("magicalItems", body, modalOpen.id)} oldBody={prepareEditBody(item, "magicalItems", modalOpen.id)}/>}
+
+            {modalOpen === "newArmor" && <ArmorModal closeModal={handleModalClose} onSave={(body) => create("armor", body)}/>}
+            {modalOpen.dbObj === "armor" && modalOpen.id !== undefined && <ArmorModal closeModal={handleModalClose} onSave={(body) => edit("armor", body, modalOpen.id)} oldBody={prepareEditBody(item, "armor", modalOpen.id)}/>}
             
         </div>
     );
@@ -273,7 +288,7 @@ function prepareEditBody(characterDetails, dbObj, id) {
                 quantity: item.quantity
             };
 
-        case "magicalItems": {
+        case "magicalItems": 
             return {
                 id,
                 name: item.name, 
@@ -285,6 +300,19 @@ function prepareEditBody(characterDetails, dbObj, id) {
                 maxCharges: item.maxCharges,
                 currentCharges: item.currentCharges
             };
-        }
+
+        case "armor":
+            return {
+                id,
+                name: item.name, 
+                comment: item.comment,
+                weight: item.weight,
+                valueInGp: item.valueInGp,
+                quantity: item.quantity,
+                armorType: item.armorType,
+                ac: item.ac,
+                stealthDisadvantage: item.stealthDisadvantage,
+                strengthRequirement: item.strengthRequirement
+            };
     }
 }

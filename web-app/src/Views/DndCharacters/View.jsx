@@ -5,8 +5,8 @@ import {useHistory} from 'react-router-dom';
 
 import {ApiGet, ApiPost, ApiDelete} from '../../Utils/AccountActions';
 
-import {Button, Grid, Paper, TextField, Typography} from '@material-ui/core';
-import Modal from '../../Components/Modal/Modal.jsx';
+import {Button, Grid, Paper, Typography} from '@material-ui/core';
+import CharacterModal from '../../Components/CharacterModal/CharacterModal.jsx';
 
 function View() {
     const history = useHistory();
@@ -16,14 +16,6 @@ function View() {
 
     const [items, setItems] = React.useState([]);
     const [modalOpen, toggleModal] = React.useState(false);
-
-    const [name, setName] = React.useState("");
-    const [comment, setComment] = React.useState("");
-    const [platinumPieces, setPlatinumPieces] = React.useState("");
-    const [goldPieces, setGoldPieces] = React.useState("");
-    const [electrumPieces, setElectrumPieces] = React.useState("");
-    const [silverPieces, setSilverPieces] = React.useState("");
-    const [copperPieces, setCoppperPieces] = React.useState("");
 
     const fetchItems = async () => {
         const apiCall = await ApiGet(token, "DndCharacters");
@@ -52,29 +44,10 @@ function View() {
     }
 
     const handleModalClose = () => {
-        setName("");
-        setComment("");
-        setPlatinumPieces("");
-        setGoldPieces("");
-        setElectrumPieces("");
-        setSilverPieces("");
-        setCoppperPieces("");
-
         toggleModal(false);
     }
 
-    const createChar = async () => {
-        let body = {
-            name,
-            comment: comment === "" ? null : comment,
-            platinumPieces: platinumPieces === "" ? 0 : parseInt(platinumPieces, 10), 
-            goldPieces: goldPieces === "" ? 0 : parseInt(goldPieces, 10), 
-            electrumPieces: electrumPieces === "" ? 0 : parseInt(electrumPieces, 10), 
-            silverPieces: silverPieces === "" ? 0 : parseInt(silverPieces, 10),
-            copperPieces: copperPieces === "" ? 0 : parseInt(copperPieces, 10)
-        };
-
-
+    const createChar = async (body) => {
         const apiCall = await ApiPost(token, "DndCharacters", body);
         
         if (apiCall.status === "200" || apiCall.status === 200) {
@@ -88,7 +61,7 @@ function View() {
 
     return (
         <div>
-            <h1>Your slaves</h1>
+            <h1>Your sacrifices to the DM</h1>
             <p><Button variant="contained" color="primary" onClick={() => toggleModal(true)}>Create new</Button></p>
             <Grid container spacing={3}>
                 {items.map((item) => {
@@ -110,7 +83,6 @@ function View() {
                             <hr/>
                             <div style={{display: "flex", justifyContent: "space-between"}}>
                                 <Button variant="outlined" color="primary" size="small" title="View and change all details" onClick={() => redirectToDetails(item.id)}>Details</Button>
-                                <Button variant="outlined" color="primary" size="small" title="Edit name, comment, and treasure">Edit</Button>
                                 <Button variant="outlined" color="secondary" size="small" title="There is no return from here" onClick={() => deleteItem(item.id)}>Delete</Button>
                             </div>
                         </Paper>
@@ -118,19 +90,7 @@ function View() {
                 })}
             </Grid>
 
-            {modalOpen && 
-                <Modal onClose={() => handleModalClose()} onSave={(e) => {handleModalClose(); createChar();}} title="Create new character">
-                    <div style={{display: "flex", flexDirection: "column"}}>
-                        <TextField name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
-                        <TextField name="comment" label="Comment" value={comment} onChange={(e) => setComment(e.target.value)}/>
-
-                        <TextField type="number" name="platinumPieces" label="Platinum pieces" value={platinumPieces} onChange={(e) => setPlatinumPieces(e.target.value)}/>
-                        <TextField type="number" name="goldPieces" label="Gold pieces" value={goldPieces} onChange={(e) => setGoldPieces(e.target.value)}/>
-                        <TextField type="number" name="electrumPieces" label="Electrum pieces" value={electrumPieces} onChange={(e) => setElectrumPieces(e.target.value)}/>
-                        <TextField type="number" name="silverPieces" label="Silver pieces" value={silverPieces} onChange={(e) => setSilverPieces(e.target.value)}/>
-                        <TextField type="number" name="copperPieces" label="Coppper pieces" value={copperPieces} onChange={(e) => setCoppperPieces(e.target.value)}/>
-                    </div>
-                </Modal>}
+            {modalOpen && <CharacterModal closeModal={handleModalClose} onSave={(body) => createChar(body)}/>}
 
         </div>
     );

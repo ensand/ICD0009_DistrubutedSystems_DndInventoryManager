@@ -80,10 +80,10 @@ async function ApiPost(token, item, body) {
 }
 
 async function ApiPut(token, item, itemId, body) {
-    let url = `${domain}/${version}/${item}${itemId ? `/${itemId}` : ''}`;
+    let url = `${domain}/${version}/${item}/${itemId}`;
 
     const res = await fetch(url, {
-        method: 'POST', 
+        method: 'PUT', 
         headers: {
             "Content-Type": "application/json",
             "Authorization": `bearer ${token}`

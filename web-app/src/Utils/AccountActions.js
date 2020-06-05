@@ -66,6 +66,7 @@ async function ApiGet(token, item, itemId) {
 
 async function ApiPost(token, item, body) {
     let url = `${domain}/${version}/${item}`;
+    console.log(url, body)
 
     const res = await fetch(url, {
         method: 'POST', 
@@ -75,6 +76,7 @@ async function ApiPost(token, item, body) {
         },
         body: JSON.stringify(body)
     });
+    console.log(res)
 
     return res;
 }
@@ -96,7 +98,8 @@ async function ApiPut(token, item, itemId, body) {
 
 
 async function ApiDelete(token, item, itemId) {
-    let url = `${domain}/${version}/${item}${itemId ? `/${itemId}` : ''}`;
+    let url = `${domain}/${version}/${item}/${itemId}`;
+    console.log(url, item)
 
     const res = await fetch(url, {
         method: 'DELETE', 
@@ -105,6 +108,7 @@ async function ApiDelete(token, item, itemId) {
             "Authorization": `bearer ${token}`
         }
     });
+    console.log(res)
 
     return res;
 }

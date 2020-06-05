@@ -7,6 +7,7 @@ import {ApiGet, ApiPut, ApiPost, ApiDelete} from '../../Utils/AccountActions';
 
 import DisplayList from '../../Components/DisplayList/DisplayList.jsx';
 import CharacterModal from '../../Components/CharacterModal/CharacterModal.jsx';
+import OtherEquipmentModal from '../../Components/OtherEquipmentModal/OtherEquipmentModal.jsx';
 
 import {Button, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Grid, IconButton, Paper, TextField, Typography} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
@@ -22,7 +23,7 @@ export default function Details(props) {
     const token = useStoreState(state => state.appState.token);
 
     const [item, setItem] = React.useState();
-    const [modalOpen, toggleModal] = React.useState();
+    const [modalOpen, toggleModal] = React.useState(false);
 
 
     const fetchItem = async () => {
@@ -39,22 +40,38 @@ export default function Details(props) {
         }
     }
 
-    const deleteItem = async () => {
-        const apiCall = await ApiDelete(token, "DndCharacters", item.id);
-
-        if (apiCall.status === "200" || apiCall.status === 200) {
-            history.push("/Characters");
-        }
-    }
-
     const handleModalClose = () => {
         toggleModal(false);
     }
 
+    const deleteItem = async (dbObj, id) => {
+        const apiCall = await ApiDelete(token, dbObj, id);
+
+        if (apiCall.status === "200" || apiCall.status === 200) {
+            if (dbObj === "DndCharacters") {
+                history.push("/Characters");
+            } else {
+                fetchItem();
+            }
+        }
+    }
     
-    const editChar = async (body) => {
-        body.id = item.id;
-        const apiCall = await ApiPut(token, "DndCharacters", item.id, body);
+    const edit = async (dbObj, body, id) => {
+        if (dbObj === "DndCharacters") {
+            body.id = item.id;
+        } else {
+            body.dndCharacterId = item.id;
+        }
+        const apiCall = await ApiPut(token, dbObj, id, body);
+        
+        if (apiCall.status === "200" || apiCall.status === 200) {
+            await fetchItem();
+        }
+    }
+
+    const create = async (dbObj, body) => {
+        body.dndCharacterId = item.id;
+        const apiCall = await ApiPost(token, dbObj, body);
         
         if (apiCall.status === "200" || apiCall.status === 200) {
             await fetchItem();
@@ -74,10 +91,10 @@ export default function Details(props) {
             <div style={{display: "flex", justifyContent: "space-between"}}>
                 <div style={{display: "flex", justifyContent: "space-between"}}>
                     <h1>{item.name}</h1>
-                    <IconButton color="primary" title="Edit the name, comment or treasure" onClick={() => toggleModal(true)}><EditIcon/></IconButton>
+                    <IconButton color="primary" title="Edit the name, comment or treasure" onClick={() => toggleModal("character")}><EditIcon/></IconButton>
                 </div>
                 <div style={{display: "flex", flexDirection: "column"}}>
-                    <Button variant="contained" color="secondary" onClick={() => deleteItem()}>Delete</Button>
+                    <Button variant="contained" color="secondary" onClick={() => deleteItem("DndCharacters", item.id)}>Delete</Button>
                 </div>
             </div>
             {item.comment && <Typography variant="h5">{item.comment}</Typography>}
@@ -179,7 +196,7 @@ export default function Details(props) {
                 <div>
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Typography variant="h6">Other equipment</Typography>
-                        <IconButton color="primary" title="Add a new equipment"><AddIcon/></IconButton>
+                        <IconButton color="primary" title="Add a new equipment" onClick={() => toggleModal("newEq")}><AddIcon/></IconButton>
                     </div>
                     {item.otherEquipment.map((eq) => {
                         return (
@@ -189,11 +206,17 @@ export default function Details(props) {
                                         <Typography variant="body1"><b>{eq.name}</b></Typography>
                                     </div>
                                 </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
+                                <ExpansionPanelDetails style={{display: "flex", flexDirection: "column"}}>
                                     <DisplayList 
                                         itemId={`eq_${eq.id}`}
                                         displayItems={[eq.comment, eq.weight, eq.valueInGp, eq.quantity]} 
                                         displayHeadings={["Comment", "Weight", "Value (GP)", "Quantity"]}/>
+
+                                    <hr/>
+                                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                                        <Button variant="outlined" color="primary" size="small" title="Edit this thing" onClick={() => toggleModal({dbObj: "eq", id: eq.id})}>Edit</Button>
+                                        <Button variant="outlined" color="secondary" size="small" title="Delete this thing" onClick={() => deleteItem("otherEquipments", eq.id)}>Delete</Button>
+                                    </div>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
                         );
@@ -201,7 +224,40 @@ export default function Details(props) {
                 </div>
             </div>
         
-            {modalOpen && <CharacterModal closeModal={handleModalClose} onSave={(body) => editChar(body)} oldBody={{name: item.name, comment: item.comment, platinumPieces: item.platinumPieces, goldPieces: item.goldPieces, electrumPieces: item.electrumPieces, silverPieces: item.silverPieces, copperPieces: item.copperPieces }}/>}
+            {modalOpen === "character" && <CharacterModal closeModal={handleModalClose} onSave={(body) => edit("DndCharacters", body, item.id)} oldBody={prepareEditBody(item, "DndCharacters")}/>}
+            {modalOpen === "newEq" && <OtherEquipmentModal closeModal={handleModalClose} onSave={(body) => create("otherEquipments", body)}/>}
+            {modalOpen.dbObj === "eq" && modalOpen.id !== undefined && <OtherEquipmentModal closeModal={handleModalClose} onSave={(body) => edit("otherEquipments", body, modalOpen.id)} oldBody={prepareEditBody(item, "otherEquipment", modalOpen.id)}/>}
         </div>
     );
+}
+
+function prepareEditBody(characterDetails, dbObj, id) {
+    let item;
+    console.log(characterDetails)
+    if (id) {
+        item = characterDetails[dbObj].find(x => x.id === id);
+    }
+
+    switch(dbObj){
+        case "DndCharacters":
+            return {
+                name: characterDetails.name, 
+                comment: characterDetails.comment, 
+                platinumPieces: characterDetails.platinumPieces, 
+                goldPieces: characterDetails.goldPieces, 
+                electrumPieces: characterDetails.electrumPieces, 
+                silverPieces: characterDetails.silverPieces, 
+                copperPieces: characterDetails.copperPieces
+            };
+
+        case "otherEquipment":
+            return {
+                id,
+                name: item.name, 
+                comment: item.comment,
+                weight: item.weight,
+                valueInGp: item.valueInGp,
+                quantity: item.quantity
+            };
+    }
 }

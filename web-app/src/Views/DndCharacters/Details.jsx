@@ -7,6 +7,9 @@ import {ApiGet, ApiPut, ApiPost, ApiDelete} from '../../Utils/AccountActions';
 
 import DisplayList from '../../Components/DisplayList/DisplayList.jsx';
 import CharacterModal from '../../Components/CharacterModal/CharacterModal.jsx';
+import ArmorModal from '../../Components/ArmorModal/ArmorModal.jsx';
+import WeaponModal from '../../Components/WeaponModal/WeaponModal.jsx';
+import MagicalItemModal from '../../Components/MagicalItemModal/MagicalItemModal.jsx';
 import OtherEquipmentModal from '../../Components/OtherEquipmentModal/OtherEquipmentModal.jsx';
 
 import {Button, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Grid, IconButton, Paper, TextField, Typography} from '@material-ui/core';
@@ -171,7 +174,7 @@ export default function Details(props) {
                 <div>
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Typography variant="h6">Magical items</Typography>
-                        <IconButton color="primary" title="Add a new magical item"><AddIcon/></IconButton>
+                        <IconButton color="primary" title="Add a new magical item" onClick={() => toggleModal("newMi")}><AddIcon/></IconButton>
                     </div>                 
                     {item.magicalItems.map((magicalItem) => {
                         return (
@@ -182,11 +185,17 @@ export default function Details(props) {
                                         <Typography variant="subtitle1">{magicalItem.spell}</Typography>
                                     </div>
                                 </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
+                                <ExpansionPanelDetails style={{display: "flex", flexDirection: "column"}}>
                                     <DisplayList 
                                         itemId={`magicalItems_${magicalItem.id}`}
                                         displayItems={[magicalItem.comment, magicalItem.maxCharges, magicalItem.currentCharges, magicalItem.weight, magicalItem.valueInGp, magicalItem.quantity]} 
                                         displayHeadings={["Comment", "Maximum charges", "Current charges", "Weight", "Value (GP)", "Quantity"]}/>
+
+                                    <hr/>
+                                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                                        <Button variant="outlined" color="primary" size="small" title="Edit this thing" onClick={() => toggleModal({dbObj: "mi", id: magicalItem.id})}>Edit</Button>
+                                        <Button variant="outlined" color="secondary" size="small" title="Delete this thing" onClick={() => deleteItem("magicalItems", magicalItem.id)}>Delete</Button>
+                                    </div>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
                         );
@@ -225,15 +234,19 @@ export default function Details(props) {
             </div>
         
             {modalOpen === "character" && <CharacterModal closeModal={handleModalClose} onSave={(body) => edit("DndCharacters", body, item.id)} oldBody={prepareEditBody(item, "DndCharacters")}/>}
+            
             {modalOpen === "newEq" && <OtherEquipmentModal closeModal={handleModalClose} onSave={(body) => create("otherEquipments", body)}/>}
             {modalOpen.dbObj === "eq" && modalOpen.id !== undefined && <OtherEquipmentModal closeModal={handleModalClose} onSave={(body) => edit("otherEquipments", body, modalOpen.id)} oldBody={prepareEditBody(item, "otherEquipment", modalOpen.id)}/>}
+        
+            {modalOpen === "newMi" && <MagicalItemModal closeModal={handleModalClose} onSave={(body) => create("magicalItems", body)}/>}
+            {modalOpen.dbObj === "mi" && modalOpen.id !== undefined && <MagicalItemModal closeModal={handleModalClose} onSave={(body) => edit("magicalItems", body, modalOpen.id)} oldBody={prepareEditBody(item, "magicalItems", modalOpen.id)}/>}
+            
         </div>
     );
 }
 
 function prepareEditBody(characterDetails, dbObj, id) {
     let item;
-    console.log(characterDetails)
     if (id) {
         item = characterDetails[dbObj].find(x => x.id === id);
     }
@@ -259,5 +272,19 @@ function prepareEditBody(characterDetails, dbObj, id) {
                 valueInGp: item.valueInGp,
                 quantity: item.quantity
             };
+
+        case "magicalItems": {
+            return {
+                id,
+                name: item.name, 
+                comment: item.comment,
+                weight: item.weight,
+                valueInGp: item.valueInGp,
+                quantity: item.quantity,
+                spell: item.spell,
+                maxCharges: item.maxCharges,
+                currentCharges: item.currentCharges
+            };
+        }
     }
 }

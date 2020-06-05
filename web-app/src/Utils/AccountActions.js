@@ -83,6 +83,7 @@ async function ApiPost(token, item, body) {
 
 async function ApiPut(token, item, itemId, body) {
     let url = `${domain}/${version}/${item}/${itemId}`;
+    console.log(url, body)
 
     const res = await fetch(url, {
         method: 'PUT', 
@@ -92,6 +93,7 @@ async function ApiPut(token, item, itemId, body) {
         },
         body: JSON.stringify(body)
     });
+    console.log(res)
 
     return res;
 }

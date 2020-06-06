@@ -22,12 +22,16 @@ function Register() {
 
     const register = async () => {
         if (email === "" || firstName === "" || lastName === "" || password === "" || confirmPassword === "") {
-            console.log("No.");
+            setError("Make sure all inputs are filled.");
+            return;
+        } else if (password !== confirmPassword) {
+            setError("Make sure password and passowrd confirmation are matching.");
             return;
         }
 
         const res = await registerReq({email, firstName, lastName, password});
-        
+        console.log(res)
+
         if (res !== undefined && res.status === "Registration successful") {
             setError(false);
             history.push("/");
@@ -47,13 +51,14 @@ function Register() {
                 <div className="col-md-4">
                     <h4>Create a new account.</h4>
                     <hr />
-                    <TextField className="space-top-bottom" type="email" name="email" label="Email" value={email} fullWidth onChange={(e) => setEmail(e.target.value)}/>
-                    <TextField className="space-top-bottom" name="firstName" label="First name" value={firstName} fullWidth onChange={(e) => setFirstName(e.target.value)}/>
-                    <TextField className="space-top-bottom" name="lastName" label="Last name" value={lastName} fullWidth onChange={(e) => setLastName(e.target.value)}/>
+                    <TextField required className="space-top-bottom" type="email" name="email" label="Email" value={email} fullWidth onChange={(e) => setEmail(e.target.value)}/>
+                    <TextField required className="space-top-bottom" name="firstName" label="First name" value={firstName} fullWidth onChange={(e) => setFirstName(e.target.value)}/>
+                    <TextField required className="space-top-bottom" name="lastName" label="Last name" value={lastName} fullWidth onChange={(e) => setLastName(e.target.value)}/>
                     
                     <FormControl fullWidth className="space-top-bottom">
                         <InputLabel htmlFor="password">Password</InputLabel>
                         <Input
+                            required
                             id="password"
                             type={showPassword ? 'text' : 'password'}
                             value={password}
@@ -70,8 +75,9 @@ function Register() {
                             }
                         />
                     </FormControl>
+                    Must be at least 6 characters long, contain a symbol, a number, a lowercase and an uppercase letter.
 
-                    <TextField className="space-top-bottom" type="password" name="confirmPassword" label="Confirm password" value={confirmPassword} fullWidth onChange={(e) => setConfirmPassword(e.target.value)}/>
+                    <TextField required className="space-top-bottom" type="password" name="confirmPassword" label="Confirm password" value={confirmPassword} fullWidth onChange={(e) => setConfirmPassword(e.target.value)}/>
 
                     <div className="space-top-bottom"><Button variant="contained" color="primary" onClick={() => register()}>Register</Button></div>
                 </div>

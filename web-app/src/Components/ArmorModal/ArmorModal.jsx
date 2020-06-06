@@ -18,12 +18,12 @@ export default function ArmorModal(props) {
 
     const [name, setName] = React.useState("");
     const [comment, setComment] = React.useState("");
-    const [weight, setWeight] = React.useState("");
-    const [valueInGp, setValueInGp] = React.useState("");
-    const [quantity, setQuantity] = React.useState("");
+    const [weight, setWeight] = React.useState("0");
+    const [valueInGp, setValueInGp] = React.useState("0");
+    const [quantity, setQuantity] = React.useState("1");
     const [armorType, setArmorType] = React.useState("");
     const [ac, setAc] = React.useState("");
-    const [strengthRequirement, setStrengthRequirement] = React.useState("");
+    const [strengthRequirement, setStrengthRequirement] = React.useState("0");
     const [stealthDisadvantage, setStealthDisadvantage] = React.useState(false);
 
     const fetchApiArmors = async () => {
@@ -39,19 +39,19 @@ export default function ArmorModal(props) {
     const handleModalClose = () => {
         setName("");
         setComment("");
-        setWeight("");
-        setValueInGp("");
-        setQuantity("");
+        setWeight("0");
+        setValueInGp("0");
+        setQuantity("1");
         setAc("");
         setArmorType("");
-        setStrengthRequirement("");
+        setStrengthRequirement("0");
         setStealthDisadvantage(false);
 
         closeModal();
     }
 
     const save = async () => {
-        if (oldBody === undefined && activeTab === 0) {
+        if (oldBody === undefined && activeTab === 0 && armor.length > 0) {
             let apiFriendly = armor.toLowerCase().split(" ").join("-").replace(new RegExp(',', 'g'), '');
             let url = `https://www.dnd5eapi.co/api/equipment/${apiFriendly}`;
     
@@ -77,6 +77,10 @@ export default function ArmorModal(props) {
             return;
         }
 
+        if (name.length <= 0 || armorType.length <= 0 || ac.length <= 0) {
+            return;
+        }
+
         let body = {
             name,
             comment: comment === "" ? null : comment,
@@ -97,6 +101,15 @@ export default function ArmorModal(props) {
         closeModal();
 
         onSave(body);
+    }
+
+    const setNumberValue = (method, newValue) => {
+        if (newValue < 0) {
+
+        } else 
+        {
+            method(newValue)
+        }
     }
 
     React.useEffect(() => {
@@ -144,16 +157,16 @@ export default function ArmorModal(props) {
                 
                 <TabPanel value={activeTab} index={1}>
                     <div style={{display: "flex", flexDirection: "column"}}>
-                        <TextField name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
+                        <TextField required name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
                         <TextField name="comment" label="Comment" value={comment} onChange={(e) => setComment(e.target.value)}/>
     
-                        <TextField type="number" step="0.01" name="weight" label="Weight" value={weight} onChange={(e) => setWeight(e.target.value)}/>
-                        <TextField type="number" step="0.01" name="valueInGp" label="Value in gold pieces" value={valueInGp} onChange={(e) => setValueInGp(e.target.value)}/>
-                        <TextField type="number" name="quantity" label="Quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
+                        <TextField type="number" step="0.01" name="weight" label="Weight" value={weight} onChange={(e) => setNumberValue(setWeight, e.target.value)}/>
+                        <TextField type="number" step="0.01" name="valueInGp" label="Value in gold pieces" value={valueInGp} onChange={(e) => setNumberValue(setValueInGp, e.target.value)}/>
+                        <TextField type="number" name="quantity" label="Quantity" value={quantity} onChange={(e) => setNumberValue(setQuantity, e.target.value)}/>
     
-                        <TextField name="armorType" label="Armor type" value={armorType} onChange={(e) => setArmorType(e.target.value)} title="Light, medium, heavy"/>
-                        <TextField name="ac" label="AC" value={ac} onChange={(e) => setAc(e.target.value)} title="Base AC + bonuses"/>
-                        <TextField type="number" name="strengthRequirement" label="Strength requirement" value={strengthRequirement} onChange={(e) => setStrengthRequirement(e.target.value)}/>
+                        <TextField required name="armorType" label="Armor type" value={armorType} onChange={(e) => setArmorType(e.target.value)} title="Light, medium, heavy"/>
+                        <TextField required name="ac" label="AC" value={ac} onChange={(e) => setAc(e.target.value)} title="Base AC + bonuses"/>
+                        <TextField type="number" name="strengthRequirement" label="Strength requirement" value={strengthRequirement} onChange={(e) => setNumberValue(setStrengthRequirement, e.target.value)}/>
                         <FormControlLabel
                                 control={<Checkbox checked={stealthDisadvantage} onChange={(e) => setStealthDisadvantage(e.target.checked)} color="primary"/>}
                                 label="Stealth disadvantage"/>
@@ -166,16 +179,16 @@ export default function ArmorModal(props) {
     return (
         <Modal onClose={() => handleModalClose()} onSave={(e) => save()} title={oldBody ? "Edit armor" : "Create new armor"}>
             <div style={{display: "flex", flexDirection: "column"}}>
-                <TextField name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
+                <TextField required name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
                 <TextField name="comment" label="Comment" value={comment} onChange={(e) => setComment(e.target.value)}/>
 
-                <TextField type="number" step="0.01" name="weight" label="Weight" value={weight} onChange={(e) => setWeight(e.target.value)}/>
-                <TextField type="number" step="0.01" name="valueInGp" label="Value in gold pieces" value={valueInGp} onChange={(e) => setValueInGp(e.target.value)}/>
-                <TextField type="number" name="quantity" label="Quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
+                <TextField type="number" step="0.01" name="weight" label="Weight" value={weight} onChange={(e) => setNumberValue(setWeight, e.target.value)}/>
+                <TextField type="number" step="0.01" name="valueInGp" label="Value in gold pieces" value={valueInGp} onChange={(e) => setNumberValue(setValueInGp, e.target.value)}/>
+                <TextField type="number" name="quantity" label="Quantity" value={quantity} onChange={(e) => setNumberValue(setQuantity, e.target.value)}/>
 
-                <TextField name="armorType" label="Armor type" value={armorType} onChange={(e) => setArmorType(e.target.value)} title="Light, medium, heavy"/>
-                <TextField name="ac" label="AC" value={ac} onChange={(e) => setAc(e.target.value)} title="Base AC + bonuses"/>
-                <TextField type="number" name="strengthRequirement" label="Strength requirement" value={strengthRequirement} onChange={(e) => setStrengthRequirement(e.target.value)}/>
+                <TextField required name="armorType" label="Armor type" value={armorType} onChange={(e) => setArmorType(e.target.value)} title="Light, medium, heavy"/>
+                <TextField required name="ac" label="AC" value={ac} onChange={(e) => setAc(e.target.value)} title="Base AC + bonuses"/>
+                <TextField type="number" name="strengthRequirement" label="Strength requirement" value={strengthRequirement} onChange={(e) => setNumberValue(setStrengthRequirement, e.target.value)}/>
                 <FormControlLabel
                         control={<Checkbox checked={stealthDisadvantage} onChange={(e) => setStealthDisadvantage(e.target.checked)} color="primary"/>}
                         label="Stealth disadvantage"/>

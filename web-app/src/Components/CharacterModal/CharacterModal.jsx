@@ -9,26 +9,29 @@ export default function CharacterModal(props) {
 
     const [name, setName] = React.useState("");
     const [comment, setComment] = React.useState("");
-    const [platinumPieces, setPlatinumPieces] = React.useState("");
-    const [goldPieces, setGoldPieces] = React.useState("");
-    const [electrumPieces, setElectrumPieces] = React.useState("");
-    const [silverPieces, setSilverPieces] = React.useState("");
-    const [copperPieces, setCoppperPieces] = React.useState("");
+    const [platinumPieces, setPlatinumPieces] = React.useState("0");
+    const [goldPieces, setGoldPieces] = React.useState("0");
+    const [electrumPieces, setElectrumPieces] = React.useState("0");
+    const [silverPieces, setSilverPieces] = React.useState("0");
+    const [copperPieces, setCopperPieces] = React.useState("0");
 
 
     const handleModalClose = () => {
-        setName("");
-        setComment("");
-        setPlatinumPieces("");
-        setGoldPieces("");
-        setElectrumPieces("");
-        setSilverPieces("");
-        setCoppperPieces("");
+        setName("0");
+        setComment("0");
+        setPlatinumPieces("0");
+        setGoldPieces("0");
+        setElectrumPieces("0");
+        setSilverPieces("0");
+        setCopperPieces("0");
 
         closeModal();
     }
 
     const save = () => {
+        if (name.length === undefined || name.length === 0) {
+            return;
+        }
         let body = {
             name,
             comment: comment === "" ? null : comment,
@@ -40,8 +43,18 @@ export default function CharacterModal(props) {
         };
 
         closeModal();
+        handleModalClose();
 
         onSave(body);
+    }
+
+    const setNumberValue = (method, newValue) => {
+        if (newValue < 0) {
+
+        } else 
+        {
+            method(newValue)
+        }
     }
 
     React.useEffect(() => {
@@ -52,22 +65,22 @@ export default function CharacterModal(props) {
             setGoldPieces(oldBody.goldPieces);
             setElectrumPieces(oldBody.electrumPieces);
             setSilverPieces(oldBody.silverPieces);
-            setCoppperPieces(oldBody.copperPieces);
+            setCopperPieces(oldBody.copperPieces);
         }
     }, []);
 
 
     return (
-        <Modal onClose={() => handleModalClose()} onSave={(e) => {handleModalClose(); save();}} title={oldBody ? "Edit character" : "Create new character"}>
+        <Modal onClose={() => handleModalClose()} onSave={(e) => save()} title={oldBody ? "Edit character" : "Create new character"}>
             <div style={{display: "flex", flexDirection: "column"}}>
-                <TextField name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
+                <TextField required name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
                 <TextField name="comment" label="Comment" value={comment} onChange={(e) => setComment(e.target.value)}/>
 
-                <TextField type="number" name="platinumPieces" label="Platinum pieces" value={platinumPieces} onChange={(e) => setPlatinumPieces(e.target.value)}/>
-                <TextField type="number" name="goldPieces" label="Gold pieces" value={goldPieces} onChange={(e) => setGoldPieces(e.target.value)}/>
-                <TextField type="number" name="electrumPieces" label="Electrum pieces" value={electrumPieces} onChange={(e) => setElectrumPieces(e.target.value)}/>
-                <TextField type="number" name="silverPieces" label="Silver pieces" value={silverPieces} onChange={(e) => setSilverPieces(e.target.value)}/>
-                <TextField type="number" name="copperPieces" label="Coppper pieces" value={copperPieces} onChange={(e) => setCoppperPieces(e.target.value)}/>
+                <TextField type="number" name="platinumPieces" label="Platinum pieces" value={platinumPieces} onChange={(e) => setNumberValue(setPlatinumPieces, e.target.value)}/>
+                <TextField type="number" name="goldPieces" label="Gold pieces" value={goldPieces} onChange={(e) => setNumberValue(setGoldPieces, e.target.value)}/>
+                <TextField type="number" name="electrumPieces" label="Electrum pieces" value={electrumPieces} onChange={(e) => setNumberValue(setElectrumPieces, e.target.value)}/>
+                <TextField type="number" name="silverPieces" label="Silver pieces" value={silverPieces} onChange={(e) => setNumberValue(setSilverPieces, e.target.value)}/>
+                <TextField type="number" name="copperPieces" label="Copper pieces" value={copperPieces} onChange={(e) => setNumberValue(setCopperPieces, e.target.value)}/>
             </div>
         </Modal>
     );

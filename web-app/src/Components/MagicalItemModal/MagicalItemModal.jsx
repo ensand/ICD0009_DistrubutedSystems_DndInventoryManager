@@ -14,12 +14,12 @@ export default function MagicalItemModal(props) {
 
     const [name, setName] = React.useState("");
     const [comment, setComment] = React.useState("");
-    const [weight, setWeight] = React.useState("");
-    const [valueInGp, setValueInGp] = React.useState("");
-    const [quantity, setQuantity] = React.useState("");
+    const [weight, setWeight] = React.useState("0");
+    const [valueInGp, setValueInGp] = React.useState("0");
+    const [quantity, setQuantity] = React.useState("1");
     const [spell, setSpell] = React.useState("");
-    const [maxCharges, setMaxCharges] = React.useState("");
-    const [currentCharges, setCurrentCharges] = React.useState("");
+    const [maxCharges, setMaxCharges] = React.useState("0");
+    const [currentCharges, setCurrentCharges] = React.useState("0");
 
     const fetchApiSpells = async () => {
         const apiCall = await fetch("https://www.dnd5eapi.co/api/spells");
@@ -35,17 +35,20 @@ export default function MagicalItemModal(props) {
     const handleModalClose = () => {
         setName("");
         setComment("");
-        setWeight("");
-        setValueInGp("");
-        setQuantity("");
+        setWeight("0");
+        setValueInGp("0");
+        setQuantity("1");
         setSpell("");
-        setMaxCharges("");
-        setCurrentCharges("");
+        setMaxCharges("0");
+        setCurrentCharges("0");
 
         closeModal();
     }
 
     const save = () => {
+        if (name.length <= 0 || currentCharges > maxCharges)
+            return;
+
         let body = {
             name,
             comment: comment === "" ? null : comment,
@@ -67,6 +70,15 @@ export default function MagicalItemModal(props) {
         onSave(body);
     }
 
+    const setNumberValue = (method, newValue) => {
+        if (newValue < 0) {
+
+        } else 
+        {
+            method(newValue)
+        }
+    }
+
     React.useEffect(() => {
         if (oldBody) {
             setName(oldBody.name);
@@ -86,12 +98,12 @@ export default function MagicalItemModal(props) {
     return (
         <Modal onClose={() => handleModalClose()} onSave={(e) => save()} title={oldBody ? "Edit item" : "Create new magical item"}>
             <div style={{display: "flex", flexDirection: "column"}}>
-                <TextField name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
+                <TextField required name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
                 <TextField name="comment" label="Comment" value={comment} onChange={(e) => setComment(e.target.value)}/>
 
-                <TextField type="number" step="0.01" name="weight" label="Weight" value={weight} onChange={(e) => setWeight(e.target.value)}/>
-                <TextField type="number" step="0.01" name="valueInGp" label="Value in gold pieces" value={valueInGp} onChange={(e) => setValueInGp(e.target.value)}/>
-                <TextField type="number" name="quantity" label="Quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
+                <TextField type="number" step="0.01" name="weight" label="Weight" value={weight} onChange={(e) => setNumberValue(setWeight, e.target.value)}/>
+                <TextField type="number" step="0.01" name="valueInGp" label="Value in gold pieces" value={valueInGp} onChange={(e) => setNumberValue(setValueInGp, e.target.value)}/>
+                <TextField type="number" name="quantity" label="Quantity" value={quantity} onChange={(e) => setNumberValue(setQuantity, e.target.value)}/>
 
                 {/* <TextField name="spell" label="Spell" value={spell} onChange={(e) => setSpell(e.target.value)} list="apiSpellDataList"/> */}
                 {/* <input name="spell" value={spell} onChange={(e) => setSpell(e.target.value)} list="apiSpellDataList"/> */}
@@ -138,7 +150,6 @@ export default function MagicalItemModal(props) {
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                // value={spell}
                                 onKeyDown={(e) => setSpell(e.target.value)}
                                 label="Spell"
                                 InputProps={{...params.InputProps, type: 'search'}}
@@ -147,8 +158,8 @@ export default function MagicalItemModal(props) {
                         />
 
 
-                <TextField type="number" name="maxCharges" label="Max charges" value={maxCharges} onChange={(e) => setMaxCharges(e.target.value)}/>
-                <TextField type="number" name="currentCharges" label="Current charges" value={currentCharges} onChange={(e) => setCurrentCharges(e.target.value)}/>
+                <TextField type="number" name="maxCharges" label="Max charges" value={maxCharges} onChange={(e) => setNumberValue(setMaxCharges, e.target.value)}/>
+                <TextField type="number" name="currentCharges" label="Current charges" value={currentCharges} onChange={(e) => setNumberValue(setCurrentCharges, e.target.value)}/>
             </div>
         </Modal>
     );

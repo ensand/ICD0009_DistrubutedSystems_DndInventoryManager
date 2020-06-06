@@ -21,13 +21,15 @@ async function login(body, loginWithToken) {
 
 async function register(body) {
     let url = `${domain}/${version}/account/register`;
+    console.log(url, body)
 
     const res = await fetch(url, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
-    }).then(response => response.text())
+    }).then(response => response.json())
     .catch(error => console.log('error', error));
+    console.log(res)
 
     return res;
 }

@@ -18,9 +18,9 @@ export default function WeaponModal(props) {
 
     const [name, setName] = React.useState("");
     const [comment, setComment] = React.useState("");
-    const [weight, setWeight] = React.useState("");
-    const [valueInGp, setValueInGp] = React.useState("");
-    const [quantity, setQuantity] = React.useState("");
+    const [weight, setWeight] = React.useState("0");
+    const [valueInGp, setValueInGp] = React.useState("0");
+    const [quantity, setQuantity] = React.useState("1");
 
     const [damageDice, setDamageDice] = React.useState("");
     const [damageType, setDamageType] = React.useState("");
@@ -42,9 +42,9 @@ export default function WeaponModal(props) {
     const handleModalClose = () => {
         setName("");
         setComment("");
-        setWeight("");
-        setValueInGp("");
-        setQuantity("");
+        setWeight("0");
+        setValueInGp("0");
+        setQuantity("1");
 
         setDamageDice("");
         setDamageType("");
@@ -56,7 +56,7 @@ export default function WeaponModal(props) {
     }
 
     const save = async () => {
-        if (oldBody === undefined && activeTab === 0) {
+        if (oldBody === undefined && activeTab === 0 && weapon.length > 0) {
             let apiFriendly = weapon.toLowerCase().split(" ").join("-").replace(new RegExp(',', 'g'), '');
             let url = `https://www.dnd5eapi.co/api/equipment/${apiFriendly}`;
     
@@ -85,6 +85,9 @@ export default function WeaponModal(props) {
             return;
         }
 
+        if (name.length <= 0 || damageDice.length <= 0 || damageType.length <= 0 || weaponType.length <= 0 || weaponRange.length <= 0)
+            return;
+
 
         let body = {
             name,
@@ -108,6 +111,15 @@ export default function WeaponModal(props) {
         closeModal();
 
         onSave(body);
+    }
+
+    const setNumberValue = (method, newValue) => {
+        if (newValue < 0) {
+
+        } else 
+        {
+            method(newValue)
+        }
     }
 
     React.useEffect(() => {
@@ -159,18 +171,18 @@ export default function WeaponModal(props) {
                 
                 <TabPanel value={activeTab} index={1}>
                     <div style={{display: "flex", flexDirection: "column"}}>
-                        <TextField name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
+                        <TextField required name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
                         <TextField name="comment" label="Comment" value={comment} onChange={(e) => setComment(e.target.value)}/>
     
-                        <TextField type="number" step="0.01" name="weight" label="Weight" value={weight} onChange={(e) => setWeight(e.target.value)}/>
-                        <TextField type="number" step="0.01" name="valueInGp" label="Value in gold pieces" value={valueInGp} onChange={(e) => setValueInGp(e.target.value)}/>
-                        <TextField type="number" name="quantity" label="Quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
+                        <TextField type="number" step="0.01" name="weight" label="Weight" value={weight} onChange={(e) => setNumberValue(setWeight, e.target.value)}/>
+                        <TextField type="number" step="0.01" name="valueInGp" label="Value in gold pieces" value={valueInGp} onChange={(e) => setNumberValue(setValueInGp, e.target.value)}/>
+                        <TextField type="number" name="quantity" label="Quantity" value={quantity} onChange={(e) => setNumberValue(setQuantity, e.target.value)}/>
 
-                        <TextField name="damageDice" label="Damage dice" value={damageDice} onChange={(e) => setDamageDice(e.target.value)} title="Dice + bonuses"/>
-                        <TextField name="damageType" label="Damage type" value={damageType} onChange={(e) => setDamageType(e.target.value)} title="Acid, bludgeoning, cold, fire, force, lightning, necrotic, piercing, poison, psychic, radiant, slashing, thunder"/>
-                        <TextField name="weaponType" label="Weapon type" value={weaponType} onChange={(e) => setWeaponType(e.target.value)} title="Simple, martial"/>
-                        <TextField name="weaponRange" label="Weapon range" value={weaponRange} onChange={(e) => setWeaponRange(e.target.value)} title="Melee, ranged"/>
-                        <TextField name="properties" label="Properties" value={properties} onChange={(e) => setProperties(e.target.value)}/>                       
+                        <TextField required name="damageDice" label="Damage dice" value={damageDice} onChange={(e) => setDamageDice(e.target.value)} title="Dice + bonuses"/>
+                        <TextField required name="damageType" label="Damage type" value={damageType} onChange={(e) => setDamageType(e.target.value)} title="Acid, bludgeoning, cold, fire, force, lightning, necrotic, piercing, poison, psychic, radiant, slashing, thunder"/>
+                        <TextField required name="weaponType" label="Weapon type" value={weaponType} onChange={(e) => setWeaponType(e.target.value)} title="Simple, martial"/>
+                        <TextField required name="weaponRange" label="Weapon range" value={weaponRange} onChange={(e) => setWeaponRange(e.target.value)} title="Melee, ranged"/>
+                        <TextField name="properties" label="Properties" value={properties} onChange={(e) => setProperties(e.target.value)}/>                
                     </div>
                 </TabPanel>
             </Modal>
@@ -178,20 +190,20 @@ export default function WeaponModal(props) {
     }
 
     return (
-        <Modal onClose={() => handleModalClose()} onSave={(e) => save()} title={oldBody ? "Edit armor" : "Create new armor"}>
+        <Modal onClose={() => handleModalClose()} onSave={(e) => save()} title={oldBody ? "Edit weapon" : "Create new weapon"}>
             <div style={{display: "flex", flexDirection: "column"}}>
-                <TextField name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
+                <TextField required name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
                 <TextField name="comment" label="Comment" value={comment} onChange={(e) => setComment(e.target.value)}/>
 
-                <TextField type="number" step="0.01" name="weight" label="Weight" value={weight} onChange={(e) => setWeight(e.target.value)}/>
-                <TextField type="number" step="0.01" name="valueInGp" label="Value in gold pieces" value={valueInGp} onChange={(e) => setValueInGp(e.target.value)}/>
-                <TextField type="number" name="quantity" label="Quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
+                <TextField type="number" step="0.01" name="weight" label="Weight" value={weight} onChange={(e) => setNumberValue(setWeight, e.target.value)}/>
+                <TextField type="number" step="0.01" name="valueInGp" label="Value in gold pieces" value={valueInGp} onChange={(e) => setNumberValue(setValueInGp, e.target.value)}/>
+                <TextField type="number" name="quantity" label="Quantity" value={quantity} onChange={(e) => setNumberValue(setQuantity, e.target.value)}/>
 
-                <TextField name="damageDice" label="Damage dice" value={damageDice} onChange={(e) => setDamageDice(e.target.value)} title="Dice + bonuses"/>
-                <TextField name="damageType" label="Damage type" value={damageType} onChange={(e) => setDamageType(e.target.value)} title="Acid, bludgeoning, cold, fire, force, lightning, necrotic, piercing, poison, psychic, radiant, slashing, thunder"/>
-                <TextField name="weaponType" label="Weapon type" value={weaponType} onChange={(e) => setWeaponType(e.target.value)} title="Simple, martial"/>
-                <TextField name="weaponRange" label="Weapon range" value={weaponRange} onChange={(e) => setWeaponRange(e.target.value)} title="Melee, ranged"/>
-                <TextField name="properties" label="Properties" value={properties} onChange={(e) => setProperties(e.target.value)}/> 
+                <TextField required name="damageDice" label="Damage dice" value={damageDice} onChange={(e) => setDamageDice(e.target.value)} title="Dice + bonuses"/>
+                <TextField required name="damageType" label="Damage type" value={damageType} onChange={(e) => setDamageType(e.target.value)} title="Acid, bludgeoning, cold, fire, force, lightning, necrotic, piercing, poison, psychic, radiant, slashing, thunder"/>
+                <TextField required name="weaponType" label="Weapon type" value={weaponType} onChange={(e) => setWeaponType(e.target.value)} title="Simple, martial"/>
+                <TextField required name="weaponRange" label="Weapon range" value={weaponRange} onChange={(e) => setWeaponRange(e.target.value)} title="Melee, ranged"/>
+                <TextField name="properties" label="Properties" value={properties} onChange={(e) => setProperties(e.target.value)}/>                       
             </div>
         </Modal>
     );

@@ -62,7 +62,8 @@ function View() {
     return (
         <div>
             <h1>Your sacrifices to the DM</h1>
-            <p><Button variant="contained" color="primary" onClick={() => toggleModal(true)}>Create new</Button></p>
+            <p><Button variant="contained" color="primary" disabled={!userIsLoggedIn} onClick={() => toggleModal(true)}>Create new</Button></p>
+            {!userIsLoggedIn && "Log in or register to create characters and items."}
             <Grid container spacing={3}>
                 {items.map((item) => {
                     return <Grid item key={item.id} style={{minHeight: "10vh", width: "20rem", height: "fit-content"}}>
@@ -82,7 +83,7 @@ function View() {
                             </div>
                             <hr/>
                             <div style={{display: "flex", justifyContent: "space-between"}}>
-                                <Button variant="outlined" color="primary" size="small" title="View and change all details" onClick={() => redirectToDetails(item.id)}>Details</Button>
+                                <Button variant="outlined" color="primary" size="small" title="View and change all details" onClick={() => redirectToDetails(item.id)}>Details {"&"} editing</Button>
                                 <Button variant="outlined" color="secondary" size="small" title="There is no return from here" onClick={() => deleteItem(item.id)}>Delete</Button>
                             </div>
                         </Paper>

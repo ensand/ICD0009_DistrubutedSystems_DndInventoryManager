@@ -112,7 +112,10 @@ export default function Details(props) {
                 </Paper>
 
                 <Paper style={{backgroundColor: "#ececec", padding: "1rem", width: "12rem"}}>
-                    <Typography variant="h6">Treasure:</Typography>
+                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                        <Typography variant="h6">Treasure:</Typography>
+                        <IconButton color="primary" size="small" title="Edit the name, comment or treasure" onClick={() => toggleModal("character")}><EditIcon/></IconButton>
+                    </div>
                     <DisplayList
                         itemId={"treasure"}
                         displayItems={[item.platinumPieces, item.goldPieces, item.electrumPieces, item.silverPieces, item.copperPieces]} 

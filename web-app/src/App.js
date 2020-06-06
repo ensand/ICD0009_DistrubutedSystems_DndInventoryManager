@@ -61,7 +61,7 @@ function App() {
                         <Route path="/Error">
                             <Error />
                         </Route>
-                        <Route path="/Privacy">
+                        <Route path="/Links">
                             <Privacy />
                         </Route>
                         <Route path="/ForgotPassword">

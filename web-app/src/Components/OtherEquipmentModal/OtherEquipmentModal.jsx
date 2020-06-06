@@ -9,22 +9,25 @@ export default function OtherEquipmentModal(props) {
 
     const [name, setName] = React.useState("");
     const [comment, setComment] = React.useState("");
-    const [weight, setWeight] = React.useState("");
-    const [valueInGp, setValueInGp] = React.useState("");
-    const [quantity, setQuantity] = React.useState("");
+    const [weight, setWeight] = React.useState("0");
+    const [valueInGp, setValueInGp] = React.useState("0");
+    const [quantity, setQuantity] = React.useState("1");
 
 
     const handleModalClose = () => {
         setName("");
         setComment("");
-        setWeight("");
-        setValueInGp("");
-        setQuantity("");
+        setWeight("0");
+        setValueInGp("0");
+        setQuantity("1");
 
         closeModal();
     }
 
     const save = () => {
+        if (name.length <= 0)
+            return;
+            
         let body = {
             name,
             comment: comment === "" ? null : comment,
@@ -43,6 +46,15 @@ export default function OtherEquipmentModal(props) {
         onSave(body);
     }
 
+    const setNumberValue = (method, newValue) => {
+        if (newValue < 0) {
+
+        } else 
+        {
+            method(newValue)
+        }
+    }
+
     React.useEffect(() => {
         if (oldBody) {
             setName(oldBody.name);
@@ -57,12 +69,12 @@ export default function OtherEquipmentModal(props) {
     return (
         <Modal onClose={() => handleModalClose()} onSave={(e) => save()} title={oldBody ? "Edit equipment" : "Create new equipment"}>
             <div style={{display: "flex", flexDirection: "column"}}>
-                <TextField name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
+                <TextField required name="name" label="Name" value={name} onChange={(e) => setName(e.target.value)}/>
                 <TextField name="comment" label="Comment" value={comment} onChange={(e) => setComment(e.target.value)}/>
 
-                <TextField type="number" step="0.01" name="weight" label="Weight" value={weight} onChange={(e) => setWeight(e.target.value)}/>
-                <TextField type="number" step="0.01" name="valueInGp" label="Value in gold pieces" value={valueInGp} onChange={(e) => setValueInGp(e.target.value)}/>
-                <TextField type="number" name="quantity" label="Quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
+                <TextField type="number" step="0.01" name="weight" label="Weight" value={weight} onChange={(e) => setNumberValue(setWeight, e.target.value)}/>
+                <TextField type="number" step="0.01" name="valueInGp" label="Value in gold pieces" value={valueInGp} onChange={(e) => setNumberValue(setValueInGp, e.target.value)}/>
+                <TextField type="number" name="quantity" label="Quantity" value={quantity} onChange={(e) => setNumberValue(setQuantity, e.target.value)}/>
             </div>
         </Modal>
     );

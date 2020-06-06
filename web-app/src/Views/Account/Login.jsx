@@ -73,6 +73,7 @@ function Login() {
                     <FormControlLabel
                         control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} color="primary"/>}
                         label="Remember me?"/>
+                    If left unchecked, you will be logged out after page refresh.
                     
                     <div className="space-top-bottom"><Button variant="contained" color="primary" onClick={() => login()}>Log in</Button></div>
                     <div>

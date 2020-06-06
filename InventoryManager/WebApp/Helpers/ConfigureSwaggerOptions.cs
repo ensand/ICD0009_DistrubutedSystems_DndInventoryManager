@@ -9,11 +9,23 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace WebApp.Helpers
 {
+    /// <summary>
+    /// Configure API documentation UI
+    /// </summary>
     public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>{
         readonly IApiVersionDescriptionProvider _provider;
+        
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="provider"></param>
         public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) =>
             _provider = provider;
 
+        /// <summary>
+        /// Main method
+        /// </summary>
+        /// <param name="options"></param>
         public void Configure( SwaggerGenOptions options ){
             foreach ( var description in _provider.ApiVersionDescriptions ) {
                 options.SwaggerDoc(

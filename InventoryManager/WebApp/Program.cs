@@ -9,13 +9,25 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApp
 {
+    /// <summary>
+    /// Main program that gets run
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Main method
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
         }
 
+        /// <summary>
+        /// Use Startup
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });

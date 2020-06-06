@@ -11,6 +11,10 @@ using WebApp.ApiControllers._1._0.Identity;
 
 namespace WebApp.ApiControllers._1._0.Functionality
 {
+    /// <summary>
+    /// Future addition for sharing inventory between users.
+    /// Currently can just grab JSON from API call.
+    /// </summary>
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]/[action]")]
@@ -20,6 +24,12 @@ namespace WebApp.ApiControllers._1._0.Functionality
         private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<AccountController> _logger;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="userManager"></param>
+        /// <param name="configuration"></param>
         public ItemsController(ILogger<AccountController> logger, UserManager<AppUser> userManager, IConfiguration configuration)
         {
             _logger = logger;
@@ -27,6 +37,12 @@ namespace WebApp.ApiControllers._1._0.Functionality
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Pass on inventory from one user to another
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         [HttpPost]
         public async Task<ActionResult<string>> PassOnInventory([FromBody] PasserDTO model)
         {
@@ -54,10 +70,14 @@ namespace WebApp.ApiControllers._1._0.Functionality
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// DTO for required inputs
+        /// </summary>
         public class PasserDTO
         {
             [MinLength(5)]
             [MaxLength(1024)]
+#pragma warning disable 1591
             public string OwnerEmail { get; set; } = default!;
             
             // How to make sure owner is logged in?
@@ -72,6 +92,7 @@ namespace WebApp.ApiControllers._1._0.Functionality
             public ICollection<string>? WeaponIds { get; set; }
             public ICollection<string>? MagicalItemIds { get; set; }
             public ICollection<string>? OtherEquipmentIds { get; set; }
+#pragma warning restore 1591
         }
     }
 }

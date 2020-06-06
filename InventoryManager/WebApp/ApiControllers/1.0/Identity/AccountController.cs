@@ -13,6 +13,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace WebApp.ApiControllers._1._0.Identity
 {
+    /// <summary>
+    /// API controller for log-in and registration actions
+    /// </summary>
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]/[action]")]
@@ -23,6 +26,13 @@ namespace WebApp.ApiControllers._1._0.Identity
         private readonly ILogger<AccountController> _logger;
         private readonly SignInManager<AppUser> _signInManager;
         
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <param name="userManager"></param>
+        /// <param name="logger"></param>
+        /// <param name="signInManager"></param>
         public AccountController(IConfiguration configuration, UserManager<AppUser> userManager, ILogger<AccountController> logger, SignInManager<AppUser> signInManager)
         {
             _configuration = configuration;
@@ -31,6 +41,12 @@ namespace WebApp.ApiControllers._1._0.Identity
             _signInManager = signInManager;
         }
 
+        /// <summary>
+        /// Action that will allow users to log in.
+        /// Will not generate a new token if user just refresh a page and a new log-in is requested.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<string>> Login([FromBody] LoginDTO model) // will return json web token (JWT)
         {
@@ -66,12 +82,24 @@ namespace WebApp.ApiControllers._1._0.Identity
             return StatusCode(403);
         }
 
+        /// <summary>
+        /// Prototype for signing in by checking if given token is valid an belongs to given user.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         [HttpPost]
-        public async Task<ActionResult<string>> LoginWithToken([FromBody] TokenLoginDTO model)
+        public Task<ActionResult<string>> LoginWithToken([FromBody] TokenLoginDTO model)
         {
             throw new NotImplementedException();
         }
         
+        /// <summary>
+        /// Register a new user.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <exception cref="ApplicationException"></exception>
         [HttpPost]
         public async Task<ActionResult<string>> Register([FromBody] RegisterDTO model)
         {
@@ -96,8 +124,12 @@ namespace WebApp.ApiControllers._1._0.Identity
             return Ok(new {status = "Registration successful"});
         }
 
+        /// <summary>
+        /// DTO for required inputs for a successful log-in
+        /// </summary>
         public class LoginDTO
         {
+#pragma warning disable 1591
             [MinLength(5)] 
             [MaxLength(1024)] 
             public string Email { get; set; } = default!;
@@ -110,6 +142,9 @@ namespace WebApp.ApiControllers._1._0.Identity
             public string? Token { get; set; }
         }
 
+        /// <summary>
+        /// DTO for required inputs for a successful log-in with a token
+        /// </summary>
         public class TokenLoginDTO
         {
             [MinLength(5)]
@@ -120,6 +155,9 @@ namespace WebApp.ApiControllers._1._0.Identity
             public string Token { get; set; } = default!;
         }
 
+        /// <summary>
+        /// DTO for required inputs for a successful registration
+        /// </summary>
         public class RegisterDTO
         {
             [MinLength(5)]
@@ -137,5 +175,6 @@ namespace WebApp.ApiControllers._1._0.Identity
             [MaxLength(64)] 
             public string LastName { get; set; } = default!;
         }
+#pragma warning restore 1591
     }
 }

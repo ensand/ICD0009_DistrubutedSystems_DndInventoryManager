@@ -256,6 +256,9 @@ export default function Details(props) {
             {modalOpen === "newArmor" && <ArmorModal closeModal={handleModalClose} onSave={(body) => create("armor", body)}/>}
             {modalOpen.dbObj === "armor" && modalOpen.id !== undefined && <ArmorModal closeModal={handleModalClose} onSave={(body) => edit("armor", body, modalOpen.id)} oldBody={prepareEditBody(item, "armor", modalOpen.id)}/>}
             
+
+            {modalOpen === "newWeapon" && <WeaponModal closeModal={handleModalClose} onSave={(body) => create("weapons", body)}/>}
+            {modalOpen.dbObj === "weapons" && modalOpen.id !== undefined && <WeaponModal closeModal={handleModalClose} onSave={(body) => edit("weapons", body, modalOpen.id)} oldBody={prepareEditBody(item, "weapons", modalOpen.id)}/>}
         </div>
     );
 }
@@ -313,6 +316,21 @@ function prepareEditBody(characterDetails, dbObj, id) {
                 ac: item.ac,
                 stealthDisadvantage: item.stealthDisadvantage,
                 strengthRequirement: item.strengthRequirement
+            };
+
+        case "weapons":
+            return {
+                id,
+                name: item.name, 
+                comment: item.comment,
+                weight: item.weight,
+                valueInGp: item.valueInGp,
+                quantity: item.quantity,
+                damageDice: item.damageDice,
+                damageType: item.damageType,
+                weaponType: item.weaponType,
+                weaponRange: item.weaponRange,
+                properties: item.properties
             };
     }
 }

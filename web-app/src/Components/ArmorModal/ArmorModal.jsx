@@ -52,7 +52,7 @@ export default function ArmorModal(props) {
 
     const save = async () => {
         if (oldBody === undefined && activeTab === 0) {
-            let apiFriendly = armor.toLowerCase().split(" ").join("-");
+            let apiFriendly = armor.toLowerCase().split(" ").join("-").replace(new RegExp(',', 'g'), '');
             let url = `https://www.dnd5eapi.co/api/equipment/${apiFriendly}`;
     
             const apiCall = await fetch(url);
@@ -117,13 +117,13 @@ export default function ArmorModal(props) {
     if (oldBody === undefined) {
         return (
             <Modal onClose={() => handleModalClose()} onSave={(e) => save()} title={oldBody ? "Edit armor" : "Create new armor"}>
-    
                 <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)}>
                     <Tab label="Predefined"/>
                     <Tab label="Custom"/>
                 </Tabs>
     
                 <TabPanel value={activeTab} index={0}>
+                    <div>
                     <Autocomplete
                         value={armor}
                         onChange={(e, newValue) => setArmor(newValue === null ? "" : newValue)}
@@ -139,6 +139,7 @@ export default function ArmorModal(props) {
                                 />
                         )}
                         />
+                    </div>
                 </TabPanel>
                 
                 <TabPanel value={activeTab} index={1}>
@@ -150,8 +151,8 @@ export default function ArmorModal(props) {
                         <TextField type="number" step="0.01" name="valueInGp" label="Value in gold pieces" value={valueInGp} onChange={(e) => setValueInGp(e.target.value)}/>
                         <TextField type="number" name="quantity" label="Quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
     
-                        <TextField name="armorType" label="Armor type" value={armorType} onChange={(e) => setArmorType(e.target.value)}/>
-                        <TextField name="ac" label="AC" value={ac} onChange={(e) => setAc(e.target.value)}/>
+                        <TextField name="armorType" label="Armor type" value={armorType} onChange={(e) => setArmorType(e.target.value)} title="Light, medium, heavy"/>
+                        <TextField name="ac" label="AC" value={ac} onChange={(e) => setAc(e.target.value)} title="Base AC + bonuses"/>
                         <TextField type="number" name="strengthRequirement" label="Strength requirement" value={strengthRequirement} onChange={(e) => setStrengthRequirement(e.target.value)}/>
                         <FormControlLabel
                                 control={<Checkbox checked={stealthDisadvantage} onChange={(e) => setStealthDisadvantage(e.target.checked)} color="primary"/>}
@@ -172,8 +173,8 @@ export default function ArmorModal(props) {
                 <TextField type="number" step="0.01" name="valueInGp" label="Value in gold pieces" value={valueInGp} onChange={(e) => setValueInGp(e.target.value)}/>
                 <TextField type="number" name="quantity" label="Quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
 
-                <TextField name="armorType" label="Armor type" value={armorType} onChange={(e) => setArmorType(e.target.value)}/>
-                <TextField name="ac" label="AC" value={ac} onChange={(e) => setAc(e.target.value)}/>
+                <TextField name="armorType" label="Armor type" value={armorType} onChange={(e) => setArmorType(e.target.value)} title="Light, medium, heavy"/>
+                <TextField name="ac" label="AC" value={ac} onChange={(e) => setAc(e.target.value)} title="Base AC + bonuses"/>
                 <TextField type="number" name="strengthRequirement" label="Strength requirement" value={strengthRequirement} onChange={(e) => setStrengthRequirement(e.target.value)}/>
                 <FormControlLabel
                         control={<Checkbox checked={stealthDisadvantage} onChange={(e) => setStealthDisadvantage(e.target.checked)} color="primary"/>}

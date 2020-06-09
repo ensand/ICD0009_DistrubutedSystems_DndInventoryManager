@@ -55,6 +55,7 @@ function Main(props) {
         <div>
             <div className="text-center">
             <h1 className="display-4">Quiz <s>master</s> junior</h1>
+            {!(userIsAdmin && userIsLoggedIn) && <div>These are private polls and you won't see what other people have answered but we will and we WILL laugh at your answers.</div>}
 
             {userIsLoggedIn && userIsAdmin && <Button variant="contained" size="large" color="primary" onClick={() => toggleModal(true)}>New quiz</Button>}
             {!userIsLoggedIn && "Log in or signup to take quizzes"}

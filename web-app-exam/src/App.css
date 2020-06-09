@@ -1,0 +1,14 @@
+.main {
+    height: 100vh;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100vw;
+    line-height: 60px;
+}
+
+.space-top-bottom {
+    margin: 1rem 0 1rem 0 !important;
+}

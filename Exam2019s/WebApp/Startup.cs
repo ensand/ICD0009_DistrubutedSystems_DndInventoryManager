@@ -53,6 +53,17 @@ namespace WebApp
             services.AddControllersWithViews();
             services.AddRazorPages();
             
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsAllowAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin();
+                        builder.AllowAnyHeader();
+                        builder.AllowAnyMethod();
+                    });
+            });
+            
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // Removes default claims
             services.AddAuthentication()
                 .AddCookie(options => { options.SlidingExpiration = true; })
@@ -89,6 +100,8 @@ namespace WebApp
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            
+            app.UseCors("CorsAllowAll");
 
             app.UseRouting();
 

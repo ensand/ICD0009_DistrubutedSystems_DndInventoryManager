@@ -40,7 +40,7 @@ namespace WebApp.ApiControllers.Functionality
                     Question = q.Question,
                     Answers = q.Answers.Select(a => new TextEntryAnswerDTO()
                     {
-                        AppUserId = a.AppUserId,
+                        // AppUserId = a.AppUserId,
                         Id = a.Id,
                         Answer = a.Answer
                     }).ToList()

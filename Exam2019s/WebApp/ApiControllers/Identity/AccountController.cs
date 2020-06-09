@@ -26,7 +26,7 @@ namespace WebApp.ApiControllers.Identity
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> Login([FromBody] LoginDTO model) // will return json web token (JWT)
+        public async Task<ActionResult<string>> Login([FromBody] LoginDTO model)
         {
             var appUser = await _userManager.FindByEmailAsync(model.Email);
             if (appUser == null)
@@ -39,13 +39,24 @@ namespace WebApp.ApiControllers.Identity
 
             if (result.Succeeded)
             {
+                var roles = await _userManager.GetRolesAsync(appUser);
+                var userIsAdmin = false;
+                foreach (var role in roles)
+                {
+                    if (role.Equals("admin"))
+                    {
+                        userIsAdmin = true;
+                        break;
+                    }
+                }
+                
                 if (model.Refresh)
                 {
                     _logger.LogInformation("Web-Api refresh login. User: " + model.Email);
-                    return Ok(new {token = model.Token, status = "Login successful", userFirstName = appUser.Nickname});
+                    return Ok(new {token = model.Token, status = "Login successful", nickname = appUser.Nickname, isAdmin = userIsAdmin});
                 }
                 
-                var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser); // Get the user analog
+                var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
                 var jwt = Extensions.IdentityExtensions.GenerateJwt(
                     claimsPrincipal.Claims, 
                     _configuration["JWT:signingKey"],
@@ -53,7 +64,7 @@ namespace WebApp.ApiControllers.Identity
                     _configuration.GetValue<int>("JWT:expirationInDays"));
                 
                 _logger.LogInformation("Token generated for user: " + model.Email);
-                return Ok(new {token = jwt, status = "Login successful", userNickname = appUser.Nickname});
+                return Ok(new {token = jwt, status = "Login successful", nickname = appUser.Nickname, isAdmin = userIsAdmin});
             }
             
             _logger.LogInformation("Web-Api login. User attempted login with bad password: " + model.Email);

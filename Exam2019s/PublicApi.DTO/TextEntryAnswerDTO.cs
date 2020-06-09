@@ -5,7 +5,7 @@ namespace PublicApi.DTO
 {
     public class TextEntryAnswerDTO
     {
-        public Guid AppUserId { get; set; } = default!;
+        // public Guid AppUserId { get; set; } = default!;
         
         // public Guid TextEntryQuestionId { get; set; } = default!;
 

@@ -51,6 +51,7 @@ async function GetQuizWithAnswers(token, itemId) {
 
 async function UnauthorizedApiGet(item, itemId) {
     let url = `${domain}/${item}${itemId ? `/${itemId}` : ''}`;
+    console.log(url)
 
     const res = await fetch(url, {
         method: 'GET', 
@@ -58,6 +59,7 @@ async function UnauthorizedApiGet(item, itemId) {
             "Content-Type": "application/json"
         }
     });
+    console.log(res)
 
     return res;
 }
@@ -72,6 +74,23 @@ async function ApiGet(token, item, itemId) {
             "Authorization": `bearer ${token}`
         }
     });
+
+    return res;
+}
+
+
+async function UnauthorizedApiPost(item, body) {
+    let url = `${domain}/${item}`;
+    console.log(url, body)
+
+    const res = await fetch(url, {
+        method: 'POST', 
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    });
+    console.log(res)
 
     return res;
 }
@@ -130,4 +149,4 @@ async function ApiDelete(token, item, itemId) {
 
 
 export {login as loginReq, register as registerReq, 
-    ApiGet, UnauthorizedApiGet, GetQuizWithAnswers, ApiPost, ApiPut, ApiDelete};
+    ApiGet, UnauthorizedApiGet, GetQuizWithAnswers, ApiPost, UnauthorizedApiPost, ApiPut, ApiDelete};

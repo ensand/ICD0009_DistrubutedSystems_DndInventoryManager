@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200609061158_InitialDbCreation")]
+    [Migration("20200609131158_InitialDbCreation")]
     partial class InitialDbCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -202,15 +202,14 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasMaxLength(16384);
 
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("TextEntryQuestionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserNickname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("AppUserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("TextEntryQuestionId");
 
@@ -359,12 +358,6 @@ namespace DAL.App.EF.Migrations
 
             modelBuilder.Entity("Domain.App.TextEntryAnswer", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Domain.App.TextEntryQuestion", "TextEntryQuestion")
                         .WithMany("Answers")
                         .HasForeignKey("TextEntryQuestionId")

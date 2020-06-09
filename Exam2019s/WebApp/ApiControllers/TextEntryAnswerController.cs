@@ -42,14 +42,14 @@ namespace WebApp.ApiControllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         // [Authorize(Roles="admin")]
         // [Authorize(Roles="user")]
         public async Task<ActionResult<TextEntryAnswer>> PostTextEntryAnswer(CreateTextEntryAnswerDTO textEntryAnswer)
         {
             var domainAnswer = new Domain.App.TextEntryAnswer()
             {
-                AppUserId = User.UserId(),
+                UserNickname = textEntryAnswer.UserNickname,
                 TextEntryQuestionId = textEntryAnswer.TextEntryQuestionId,
                 Answer = textEntryAnswer.Answer
             };

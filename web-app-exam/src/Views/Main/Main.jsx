@@ -72,7 +72,7 @@ function Main(props) {
                             <Typography variant="subtitle2">Total questions: {item.questionCount}</Typography>
                             <hr/>
                             <div style={{display: "flex", justifyContent: "space-between"}}>
-                                <Button disabled={!userIsLoggedIn} variant="outlined" color="primary" size="small" onClick={() => history.push(`/quiz/${item.id}`)}>Take the quiz</Button>
+                                <Button variant="outlined" color="primary" size="small" onClick={() => history.push(`/quiz/${item.id}`)}>Take the quiz</Button>
                                 {userIsAdmin && <Button variant="outlined" color="primary" size="small" onClick={() => history.push(`/quiz/${item.id}/edit`)}>Edit {"&"} details</Button>}
                             </div>
                         </Paper>

@@ -3,8 +3,9 @@ import React from 'react';
 import {useStoreState} from 'easy-peasy';
 import {useHistory, useParams} from 'react-router-dom';
 
-import {ApiGet, ApiPost} from '../../Utils/AccountActions';
+import {ApiGet, UnauthorizedApiGet, ApiPost, UnauthorizedApiPost} from '../../Utils/AccountActions';
 
+import NicknameModal from '../../Components/NicknameModal/NicknameModal.jsx';
 
 import {Button, TextField, Typography} from '@material-ui/core';
 
@@ -13,15 +14,18 @@ export default function Quiz(props) {
     const history = useHistory();
     const {id} = useParams();
 
+    const [modalOpen, toggleModal] = React.useState();
+
     const [item, setItem] = React.useState();
 
     const [questionAnswers, setQuestionAnswers] = React.useState([]);
 
     const userIsLoggedIn = useStoreState(state => state.appState.userLoggedIn);
+    const nickname = useStoreState(state => state.appState.nickname);
     const token = useStoreState(state => state.appState.token);
 
     const fetchItem = async () => {
-        const apiCall = await ApiGet(token, "Quiz", id);
+        const apiCall = await UnauthorizedApiGet("Quiz", id);
 
         let data;
         try {
@@ -49,7 +53,16 @@ export default function Quiz(props) {
         setQuestionAnswers(state);
     }
 
-    const answerQuestions = async () => {
+    const checkForUserName = () => {
+        if (nickname === null) {
+            toggleModal(true);
+            return;
+        }
+
+        answerQuestions();
+    }
+
+    const answerQuestions = async (anonNickname) => {
         var returnToHomePage = true;
 
         for (var i = 0; i < item.textEntryQuestions.length; i++) {
@@ -60,8 +73,10 @@ export default function Quiz(props) {
                 return;
             }
             let body = {...pieceOfState};
+            body["UserNickname"] = nickname === null ? anonNickname : nickname;
+            console.log("suuuuuuuuuuuuuuuuubmittttt", body)
 
-            const apiCall = await ApiPost(token, "TextEntryAnswer", body);
+            const apiCall = await UnauthorizedApiPost("TextEntryAnswer", body);
             
             if (apiCall.status !== 200) {
                 console.log("Something went wrong with ", body);
@@ -80,7 +95,7 @@ export default function Quiz(props) {
     }, [userIsLoggedIn]);
 
 
-    if (!userIsLoggedIn || item === undefined || item.title === undefined)
+    if (item === undefined || item.title === undefined)
         return <>Not found</>;
 
     return (
@@ -101,9 +116,12 @@ export default function Quiz(props) {
                     );
                 })}
 
-                <Button variant="contained" color="primary" onClick={() => answerQuestions()}>Submit</Button>
+                <Button variant="contained" color="primary" onClick={() => checkForUserName()}>Submit</Button>
                 <Button variant="outlined" color="primary" onClick={() => history.push("/")}>Cancel</Button>
             </div>
+
+
+            {modalOpen && <NicknameModal  closeModal={() => toggleModal(false)} onSave={(body) => answerQuestions(body)}/>}
         </div>
     );
 }

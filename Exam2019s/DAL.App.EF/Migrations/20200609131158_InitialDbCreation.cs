@@ -230,19 +230,13 @@ namespace DAL.App.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    AppUserId = table.Column<Guid>(nullable: false),
+                    UserNickname = table.Column<string>(nullable: false),
                     TextEntryQuestionId = table.Column<Guid>(nullable: false),
                     Answer = table.Column<string>(maxLength: 16384, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TextEntryAnswers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TextEntryAnswers_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TextEntryAnswers_TextEntryQuestions_TextEntryQuestionId",
                         column: x => x.TextEntryQuestionId,
@@ -299,11 +293,6 @@ namespace DAL.App.EF.Migrations
                 name: "IX_MultipleChoiceQuestion_QuizId",
                 table: "MultipleChoiceQuestion",
                 column: "QuizId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TextEntryAnswers_AppUserId",
-                table: "TextEntryAnswers",
-                column: "AppUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TextEntryAnswers_TextEntryQuestionId",

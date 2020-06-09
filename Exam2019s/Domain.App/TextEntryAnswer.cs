@@ -7,10 +7,11 @@ namespace Domain.App
 {
     public class TextEntryAnswer
     {
-        [JsonIgnore]
-        public AppUser? AppUser { get; set; }
-        public Guid AppUserId { get; set; } = default!;
+        // [JsonIgnore]
+        // public AppUser? AppUser { get; set; }
+        // public Guid AppUserId { get; set; } = default!;
         // USe nickname instead? No need for an account then
+        public string UserNickname { get; set; } = default!;
         
         public Guid Id { get; set; } = default!;
 

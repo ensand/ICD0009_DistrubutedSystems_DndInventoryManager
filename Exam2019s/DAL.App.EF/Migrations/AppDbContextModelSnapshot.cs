@@ -200,15 +200,14 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasMaxLength(16384);
 
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("TextEntryQuestionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserNickname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("AppUserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("TextEntryQuestionId");
 
@@ -357,12 +356,6 @@ namespace DAL.App.EF.Migrations
 
             modelBuilder.Entity("Domain.App.TextEntryAnswer", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Domain.App.TextEntryQuestion", "TextEntryQuestion")
                         .WithMany("Answers")
                         .HasForeignKey("TextEntryQuestionId")

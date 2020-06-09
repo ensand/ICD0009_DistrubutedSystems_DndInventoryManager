@@ -6,6 +6,7 @@ namespace PublicApi.DTO
     public class TextEntryAnswerDTO
     {
         // public Guid AppUserId { get; set; } = default!;
+        public string UserNickname { get; set; } = default!;
         
         // public Guid TextEntryQuestionId { get; set; } = default!;
 
@@ -19,15 +20,20 @@ namespace PublicApi.DTO
         public Guid TextEntryQuestionId { get; set; } = default!;
 
         public Guid Id { get; set; } = default!;
+        
+        public string UserNickname { get; set; } = default!;
 
         public string Answer { get; set; } = default!;
     }
 
     public class CreateTextEntryAnswerDTO
     {
-        public Guid AppUserId { get; set; } = default!;
-
         public Guid TextEntryQuestionId { get; set; } = default!;
+        
+        [MinLength(1)]
+        [MaxLength(64)]
+        [Required]
+        public string UserNickname { get; set; } = default!;
 
         [MinLength(1)]
         [MaxLength(16384)]

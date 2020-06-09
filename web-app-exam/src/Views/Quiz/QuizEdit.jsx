@@ -81,7 +81,7 @@ export default function QuizEdit(props) {
                                     {question.answers.map(answer => {
                                         return (
                                             <div key={answer.id} style={{borderTop: "1px solid lightgray", padding: "0.5rem"}}>
-                                                {answer.answer}
+                                                {answer.userNickname} - {answer.answer}
                                             </div>
                                         );
                                     })}

@@ -2,8 +2,10 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DAL.App.EF;
+using Domain.App.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PublicApi.DTO;
 
@@ -14,10 +16,12 @@ namespace WebApp.ApiControllers.Functionality
     public class QuizControllerAdmin : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public QuizControllerAdmin(AppDbContext context)
+        public QuizControllerAdmin(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         [HttpGet("{id}")]
@@ -40,7 +44,7 @@ namespace WebApp.ApiControllers.Functionality
                     Question = q.Question,
                     Answers = q.Answers.Select(a => new TextEntryAnswerDTO()
                     {
-                        // AppUserId = a.AppUserId,
+                        UserNickname = a.UserNickname,
                         Id = a.Id,
                         Answer = a.Answer
                     }).ToList()

@@ -15,7 +15,7 @@ namespace Domain.App
         [Required]
         public string Title { get; set; } = default!;
 
-        public ICollection<MultipleChoiceQuestion>? MultipleChoiceQuestions { get; set; }
+        // public ICollection<MultipleChoiceQuestion>? MultipleChoiceQuestions { get; set; }
         public ICollection<TextEntryQuestion>? TextEntryQuestions { get; set; }
     }
 }

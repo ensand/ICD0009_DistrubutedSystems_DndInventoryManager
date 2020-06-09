@@ -42,7 +42,6 @@ namespace DAL.App.EF.Repositories
                                (float) e.ElectrumPieces / 2 + 
                                (float) e.SilverPieces / 10 + 
                                (float) e.CopperPieces / 100
-
             });
 
             var result = await dndCharacters.ToListAsync();
@@ -86,6 +85,7 @@ namespace DAL.App.EF.Repositories
                 OtherEquipment = MapOtherEquipments(entity.OtherEquipment),
                 AllItemsWeight = itemValues.totalWeight,
                 AllItemsValueInGp = itemValues.totalValue,
+                // todo: future fix calculate in bll
                 TreasureInGp = (float) entity.PlatinumPieces * 10 + 
                                (float) entity.GoldPieces + 
                                (float) entity.ElectrumPieces / 2 + 
@@ -97,6 +97,7 @@ namespace DAL.App.EF.Repositories
             return dalEntity;
         }
         
+        // TODO future fix: eraldi faili
         private ICollection<Armor> MapArmor(ICollection<Domain.App.Armor>? armors)
         {
             if (armors == null || armors.Count == 0)

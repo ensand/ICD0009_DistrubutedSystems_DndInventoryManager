@@ -1,15 +1,13 @@
 import React from 'react';
 
 import {useStoreState} from 'easy-peasy';
-import {useHistory, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 
-import {ApiGet, GetQuizWithAnswers, ApiPut, ApiPost, ApiDelete} from '../../Utils/AccountActions';
+import {GetQuizWithAnswers, ApiPost} from '../../Utils/AccountActions';
 
 import QuestionModal from '../../Components/QuestionModal/QuestionModal.jsx';
 
-import {Button, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Grid, IconButton, Paper, TextField, Typography} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import EditIcon from '@material-ui/icons/Edit';
+import {Button, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Typography} from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
@@ -76,7 +74,7 @@ export default function QuizEdit(props) {
                                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} id={question.id}>
                                     <div style={{display: "flex", flexDirection: "column"}}>
                                         <Typography variant="body1"><b>{question.question}</b></Typography>
-                                        <Typography variant="subtitle1">Answers: {question.length}</Typography>
+                                        <Typography variant="subtitle1">Answers: {question.answers.length}</Typography>
                                     </div>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails style={{display: "flex", flexDirection: "column"}}>
@@ -92,8 +90,6 @@ export default function QuizEdit(props) {
                         );
                     })}
             </div>
-
-
 
             {modalOpen && <QuestionModal closeModal={() => toggleModal(false)} onSave={(body) => addQuestion(body)}/>}
         </div>

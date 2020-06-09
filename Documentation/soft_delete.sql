@@ -240,3 +240,12 @@ SELECT * FROM OtherEquipments;
 SELECT * FROM Weapons;
 SELECT * FROM Armors;
 SELECT * FROM MagicalItems;
+
+
+
+USE ensand_dist_exam;
+
+SELECT * FROM AspNetUsers;
+SELECT * FROM Quizzes;
+SELECT * FROM TextEntryQuestions;
+SELECT * FROM TextEntryAnswers;

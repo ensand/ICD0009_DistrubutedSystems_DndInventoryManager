@@ -43,8 +43,8 @@ namespace WebApp.ApiControllers
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [Authorize(Roles="admin")]
-        [Authorize(Roles="user")]
+        // [Authorize(Roles="admin")]
+        // [Authorize(Roles="user")]
         public async Task<ActionResult<TextEntryAnswer>> PostTextEntryAnswer(CreateTextEntryAnswerDTO textEntryAnswer)
         {
             var domainAnswer = new Domain.App.TextEntryAnswer()

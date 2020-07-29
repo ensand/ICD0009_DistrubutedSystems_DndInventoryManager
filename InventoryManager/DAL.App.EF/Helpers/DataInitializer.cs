@@ -64,36 +64,6 @@ namespace DAL.App.EF.Helpers
                     }
                 }
             }
-
-            // ReSharper disable StringLiteralTypo
-            var userName = "enola1998@gmail.com";
-            var password = "_Kibuvitsa196";
-            var firstName = "Enola";
-            var lastName = "Sander";
-            // ReSharper enable StringLiteralTypo
-            
-            var user = userManager.FindByNameAsync(userName).Result;
-            
-            if (user == null)
-            {
-                user = new AppUser
-                {
-                    Id = new Guid("00000000-0000-0000-0000-000000000001"), 
-                    Email = userName, 
-                    UserName = userName, 
-                    FirstName = firstName, 
-                    LastName = lastName
-                };
-                var result = userManager.CreateAsync(user, password).Result;
-
-                if (!result.Succeeded)
-                {
-                    throw new ApplicationException("User creation failed: " + userName);
-                }
-            }
-
-            var roleResult = userManager.AddToRoleAsync(user, "admin").Result;
-            roleResult = userManager.AddToRoleAsync(user, "user").Result;
         }
     }
 }
